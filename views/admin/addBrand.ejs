@@ -1,0 +1,88 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <body>
+		
+        <form  class="wrapper dashboard-wrapper" action="/admin/addBrand" method="post" >
+            <div class="d-flex flex-wrap flex-xl-nowrap">
+                <%- include('../layouts/adminSidbar.ejs') %>
+                    <div class="page-content">
+                        <%- include('../layouts/adminNav.ejs') %>
+
+                          
+						<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
+							<div class="dashboard-page-content">
+								<div class="row mb-9 align-items-center">
+									<div class="col-xxl-9">
+										<div class="row">
+											<div class="col-sm-6 mb-8 mb-sm-0">
+												<h2 class="fs-4 mb-0">Add New Brand</h2>
+											</div>
+											<div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
+												
+												<button type="submit" class="btn btn-primary">
+													Add
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xxl-9">
+										<div class="row">
+											<div class="col-lg-8">
+												<div class="card mb-8 rounded-4">
+													<!-- <div class="card-header p-7 bg-transparent">
+														<h4 class="fs-18 mb-0 font-weight-500">Basic</h4>
+													</div> -->
+													<div class="card-body p-7">
+														
+															<div class="mb-8">
+																<label for="product_title"
+																	class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Name
+																	</label>
+																<input name="brandName" type="text" placeholder="Type here" class="form-control"
+																	id="brandName">
+															</div>
+															<div class="mb-8">
+																<label class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Full
+																	description</label>
+																<textarea name="description" id="description" placeholder="Type here" class="form-control"
+																	rows="4"></textarea>
+															</div>
+															
+														
+													</div>
+												</div>
+												
+											</div>
+											
+									
+										</div>
+									</div>
+								</div>
+							</div>
+						
+						</main>
+					</div>
+				
+			</div>
+		</form>
+	<style>
+::-webkit-scrollbar{
+	width: 0;
+}
+	</style>	
+
+		
+        <%- include('../layouts/adminFooter.ejs') %>
+            <%- include('../layouts/svg2.ejs') %>
+
+                <div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+                    <a href="#"
+                        class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+                        title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+                </div>
+
+    </body>
+
+    

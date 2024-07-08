@@ -1,0 +1,217 @@
+<%- include('../layouts/header.ejs')  %>
+
+<body>
+    <!-- nav bar -->
+    <%- include('../layouts/navbar.ejs') %>
+    <!-- navbar -->
+
+    <main id="content" class="wrapper layout-page">
+        <section class="pb-lg-20 pb-16">
+            <div class="bg-body-secondary py-5">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-site py-0 d-flex justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-decoration-none text-body" href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active pl-0 d-flex align-items-center" aria-current="page">Register
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <div class="container">
+                <div class=" text-center pt-13 mb-12 mb-lg-15">
+                    <div class="text-center">
+                        <h2 class="fs-36px mb-11 mb-lg-14">Register</h2>
+                    </div>
+                </div>
+                <div class="col-lg-5 col-md-8 mx-auto">
+                    <!-- <form id="myForm" method="post" action="/signUp">
+                        <div class="mb-6">
+                            <label for="name" class="visually-hidden">Name</label>
+                            <input name="name" id="name" type="text" class="form-control"
+                                placeholder="First name" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="email" class="visually-hidden">Email address</label>
+                            <input name="email" id="email" type="email" class="form-control" placeholder="Your email"
+                                required>
+                        </div>
+                        <div  class="mb-7">
+                            <label for="password" class="visually-hidden">Password</label>
+                            <input name="password" id="password" type="password" class="form-control"
+                                placeholder="Password" required>
+                        </div>
+                        <div class="mb-7">
+                            <label for="mobile" class="visually-hidden">Mobile Number</label>
+                            <input name="mno" id="mobile" type="mobile" class="form-control"
+                                placeholder="mobile" required>
+                        </div>
+                       <p><%=locals.msg%></p>
+                        <button type="submit" value="Login" class="btn btn-primary w-100">Sign Up</button>
+                        <div class="border-bottom mt-10"></div>
+                        <div class="text-center mt-n4 lh-1 mb-7">
+                            <span class="fs-14 bg-body lh-1 px-4">or Sign Up with</span>
+                        </div>
+                        <div class="d-flex">
+                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5"><i
+                                    class="fab fa-facebook-f me-4" style="color: #2E58B2"></i>Facebook</a>
+                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 mt-0"><i
+                                    class="fab fa-google me-4" style="color: #DD4B39"></i>Google</a>
+                        </div>
+                    </form> -->
+                    <form id="myForm" method="post" action="/signUp" onsubmit="return validateForm()">
+                        <div class="mb-6">
+                            <label for="name" class="visually-hidden">Name</label>
+                            <input name="name" id="name" type="text" class="form-control" placeholder="First name" required>
+                            <div id="nameError" class="text-danger"></div>
+                        </div>
+                    
+                        <div class="mb-6">
+                            <label for="email" class="visually-hidden">Email address</label>
+                            <input name="email" id="email" type="email" class="form-control" placeholder="Your email" required>
+                            <div id="emailError" class="text-danger"></div>
+                        </div>
+                    
+                        <div class="mb-7">
+                            <label for="password" class="visually-hidden">Password</label>
+                            <input name="password" id="password" type="password" class="form-control" placeholder="Password" required>
+                            <div id="passwordError" class="text-danger"></div>
+                        </div>
+                    
+                        <div class="mb-7">
+                            <label for="mobile" class="visually-hidden">Mobile Number</label>
+                            <input name="mno" id="mobile" type="tel" class="form-control" placeholder="Mobile" required>
+                            <div id="mobileError" class="text-danger"></div>
+                        </div>
+                    
+                        <p id="errorMsg"><%= locals.msg %></p>
+                        <button type="submit" value="Login" class="btn btn-primary w-100">Sign Up</button>
+                    
+                        <!-- Validation JavaScript -->
+                        <script>
+                            function validateForm() {
+                                let valid = true;
+                    
+                                // Reset errors
+                                document.getElementById('nameError').innerText = "";
+                                document.getElementById('emailError').innerText = "";
+                                document.getElementById('passwordError').innerText = "";
+                                document.getElementById('mobileError').innerText = "";
+                                document.getElementById('errorMsg').innerText = "";
+                    
+                                // Name validation
+                                const name = document.getElementById('name').value;
+                                if (name.trim() === "") {
+                                    document.getElementById('nameError').innerText = "Name is required";
+                                    valid = false;
+                                }
+                    
+                                // Email validation
+                                const email = document.getElementById('email').value;
+                                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                                if (!emailPattern.test(email)) {
+                                    document.getElementById('emailError').innerText = "Invalid email format";
+                                    valid = false;
+                                }
+                    
+                                // Password validation
+                                const password = document.getElementById('password').value;
+                                if (password.length < 6) {
+                                    document.getElementById('passwordError').innerText = "Password must be at least 6 characters";
+                                    valid = false;
+                                }
+                    
+                                // Mobile validation
+                                const mobile = document.getElementById('mobile').value;
+                                const mobilePattern = /^\d{10}$/;
+                                if (!mobilePattern.test(mobile)) {
+                                    document.getElementById('mobileError').innerText = "Invalid mobile number";
+                                    valid = false;
+                                }
+                    
+                                return valid;
+                            }
+                    
+                            // Prevent form submission on Enter key press
+                            document.addEventListener("keydown", function(event) {
+                                if (event.key === "Enter") {
+                                    event.preventDefault();
+                                }
+                            });
+                    
+                            // Prevent form submission on Enter key press inside input fields
+                            document.querySelectorAll('input').forEach(function(input) {
+                                input.addEventListener("keydown", function(event) {
+                                    if (event.key === "Enter") {
+                                        event.preventDefault();
+                                    }
+                                });
+                            });
+                        </script>
+                    
+                        <div class="border-bottom mt-10"></div>
+                        <div class="text-center mt-n4 lh-1 mb-7">
+                            <span class="fs-14 bg-body lh-1 px-4">or Sign Up with</span>
+                        </div>
+                        <div class="d-flex">
+                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5"><i
+                                    class="fab fa-facebook-f me-4" style="color: #2E58B2"></i>Facebook</a>
+                            <a href="/auth/google" class="btn btn-outline-primary w-100 px-2 font-weight-500 mt-0"><i
+                                    class="fab fa-google me-4" style="color: #DD4B39"></i>Google</a>
+                        </div>
+                    </form>
+                    
+                </div>
+            </div>
+        </section>
+    </main>
+    <!-- footer -->
+    <%- include('../layouts/footer.ejs') %>
+    <!-- footer -->
+    <!-- layout footer -->
+   
+    <!-- layout footer -->
+    <%- include('../layouts/layoutFooter.ejs') %>
+    <!--layoutFooter  -->
+
+    <!-- svg -->
+    <%- include('../layouts/svg.ejs') %>
+    <!-- svg -->
+
+    <!-- search  -->
+    <%- include('../layouts/search.ejs') %>
+    <!-- search -->
+
+    <!-- mobile nav bar -->
+    <%- include('../layouts/mobileNavbar.ejs') %>
+    <!-- mobile nav bar -->
+<script>
+    const form = document.getElementById('myForm')
+    form.addEventListener('submit',(e)=>{
+        const inp=  form.querySelectorAll('input')
+        let flag=0
+  inp.forEach(elem=>{
+    if(elem.value.trim()==''){
+        return flag=1;
+    }
+  })
+  if(flag==1){
+        e.preventDefault()
+    }else{
+        form.submit()
+    }
+    })
+    
+  
+</script>
+
+    <div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+        <a href="#"
+            class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+            title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+    </div>
+</body>
+
+<!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/home-02.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:45:35 GMT -->
+
+</html>

@@ -1,0 +1,262 @@
+<%- include('../layouts/adminHeader.ejs') %>
+<link
+    href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css"
+    rel="stylesheet"
+/>
+    <body>
+        <div class="wrapper dashboard-wrapper">
+            <div class="d-flex flex-wrap flex-xl-nowrap">
+                <%- include('../layouts/adminSidbar.ejs') %>
+                    <div class="page-content">
+                        <%- include('../layouts/adminNav.ejs') %>
+                    
+                            <main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
+                                <div class="dashboard-page-content">
+                                    <div class="row mb-9 align-items-center justify-content-between">
+                                        <div class="col-md-6 mb-8 mb-md-0">
+                                            <h2 class="fs-4 mb-0">Brand List</h2>
+                                            <p>Lorem ipsum dolor sit amet.</p>
+                                        </div>
+                                        <div class="col-md-6 d-flex flex-wrap justify-content-md-end">
+                                          
+                                            <a href="/admin/addBrand" class="btn btn-primary">
+                                              Add Brand
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-4 rounded-4 p-7">
+                                        
+                                        <div class="card-body px-0 pt-7 pb-0">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover align-middle table-nowrap mb-0">
+                                                    <!-- <tbody>
+                                                    
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input rounded-0 ms-0"
+                                                                            type="checkbox" id="transactionCheck-">
+                                                                        <label class="form-check-label"
+                                                                            for="transactionCheck-"></label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="d-flex align-items-center flex-nowrap">
+                                                                        <a href="" title="">
+                                                                            <img src="#" data-src=""
+                                                                                alt="" class="lazy-image" width="100" height="100">
+                                                                        </a>
+                                                                        <a href="" title="" class="ms-6">
+                                                                            <p class="fw-semibold text-body-emphasis mb-0">
+                                                                                
+                                                                            </p>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                              
+                                                                <td>
+                                                                  
+                                                                </td>
+                                                                <td></td>
+                                                                <td class="text-center">
+                                                                    <div class="d-flex flex-nowrap justify-content-center">
+                                                                        <a href=""
+                                                                            class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4">
+                                                                            <i class="far fa-pen me-2"></i> Edit
+                                                                        </a>
+                                                                        <a href="#" class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4">
+                                                                            <i class="far fa-trash me-2"></i> Block
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        
+                                                    </tbody> -->
+        
+                                                    <thead class="text-center ">
+                                                        <th>Sl No.</th>
+                                                        <th>Brand Name</th>
+                                                        <th>Description</th>
+                                                        <th>Action</th>
+
+                                                    </thead>
+
+                                                   <%brand.forEach((allbrand,index)=>{  %>
+
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-center">
+                                                                <div class="form-check">
+                                                                    <label class="form-check-label"
+                                                                       ><%= index+1 %></label>
+                                                                </div>  
+                                                            </td>
+                                                            <td class="text-center">
+                                                                <div class="flex-nowrap">
+                                                                   <p><%=allbrand.brandName%></p>
+                                                                </div>
+                                                            </td>
+                    
+                                                            <td class="text-center">
+                                                                <p><%=allbrand.description%></p>
+                                                            </td>
+                                                            
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-nowrap justify-content-center">
+                                                                    <a onclick="brands('<%=allbrand._id%>',this)" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                                                                        class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4"><i
+                                                                            class="far fa-pen me-2" ></i> Edit</a>
+                                                                            <% console.log(allbrand.is_Blocked); %>
+                                                                    <a href="#"
+                                                                        class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4"  onclick="block('<%=allbrand._id%>',this)"><i class="fa <%=allbrand.is_Blocked?'fa-eye':'fa-ban';  %>"></i> <%=allbrand.is_Blocked?' Unblock':'  Block';  %></a>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    
+                                                     <% }) %>
+                                                    </tbody>
+
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <nav aria-label="Page navigation example" class="mt-6 mb-4">
+                                        <ul class="pagination justify-content-start">
+                                            <li class="page-item active mx-3"><a class="page-link" href="#">01</a></li>
+                                            <li class="page-item mx-3"><a class="page-link" href="#">02</a></li>
+                                            <li class="page-item mx-3"><a class="page-link" href="#">03</a></li>
+                                            <li class="page-item mx-3"><a class="page-link dot" href="#">...</a></li>
+                                            <li class="page-item mx-3"><a class="page-link" href="#">16</a></li>
+                                            <li class="page-item mx-3">
+                                                <a class="page-link" href="#"><i class="far fa-chevron-right"></i></a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                                <footer class="pt-6 pb-10 footer-dashboard mt-auto">
+                                    <div class="row">
+                                        <div class="col-sm-6 text-sm-start text-center">
+                                            <script>
+                                                document.write(new Date().getFullYear());
+                                            </script>
+                                            © Glowing - Beauty & Cosmetics Shop HTML Template .
+                                        </div>
+                                        <div class="col-sm-6 text-sm-end text-center">
+                                            All rights reserved 
+                                        </div>
+                                    </div>
+                                </footer>
+                            </main>
+                    </div>
+            </div>
+        </div>
+        <%- include('../layouts/adminFooter.ejs')%>
+            <%- include('../layouts/svg2.ejs') %>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <form id="myForm" method="post" action="/admin/editBrand" class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        
+                        <div class="mb-8">
+                            <label for="product_title"
+                                class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand Name
+                                </label>
+                                <input type="text" id="_id"  name="id" hidden>
+                            <input name="brandName" type="text" placeholder="Type here" class="form-control"
+                                id="brandName">
+                        </div>
+                        <div class="mb-8">
+                            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Full
+                                description</label>
+                            <textarea name="description" id="description" placeholder="Type here" class="form-control"
+                                rows="4"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+                <div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+                    <a href="#"
+                        class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+                        title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+                </div>
+
+                <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+                <script>
+function createElement(e) {
+				const border = e.style.borderColor
+				e.style.border = '1px solid red'
+				const ptag = document.createElement('p')
+				ptag.textContent = 'please fill the filed'
+				ptag.style.color = 'red'
+				console.log('form not submit')
+				e.insertAdjacentElement('afterend', ptag)
+				setTimeout(() => {
+					e.style.border = `0.5px solid var(--bs-form-control-bg)`
+					ptag.style.display = 'none'
+				}, 5000)
+			}
+			const form = document.getElementById('myForm');
+			form.addEventListener('submit', (event) => {
+				const inputs = form.querySelectorAll('input');
+				const textarea = form.querySelector('textarea');
+			
+				if ( textarea.value.trim() == '') {
+					createElement(textarea)
+						return event.preventDefault()
+					}
+				inputs.forEach((e, i) => {
+					
+					if (e.value.trim() == '') {
+						createElement(e)
+						return event.preventDefault()
+					}
+				})
+
+			})
+
+
+
+                    function brands(_id){
+                        const name = document.getElementById('brandName')
+                        const text = document.getElementById('description')
+                        const id = document.getElementById('_id')
+                        fetch(`/admin/editBrand?id=${_id}`,{
+                            method:'put'
+                        }).then(res=>res.json()).then(data=>{
+                            id.value=data.currentBrand._id
+                           name.value=data.currentBrand.brandName
+                           text.value=data.currentBrand.description
+                        })
+                    }
+
+                    
+
+                   async function block(id,e){
+                       const {data}=await axios.patch('/admin/brandBlock',{id})
+                       const is_block=data.brand.is_Blocked
+                       const i=e.querySelector('i');
+                       console.log(i)
+                       if(is_block){
+                        e.innerHTML='<i class="fa fa-eye"></i> Unblock'
+                    }else{
+                        
+                        e.innerHTML='<i class="fa fa-ban"></i>Block'
+                       }
+                    }
+                </script>
+
+    </body>
+
+    <!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/home-02.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:45:35 GMT -->
+
+    </html>

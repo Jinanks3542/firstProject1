@@ -1,0 +1,298 @@
+<%- include('../layouts/header.ejs') %>
+
+    <body>
+
+        <%- include('../layouts/navbar.ejs') %>
+
+            <main id="content" class="wrapper layout-page">
+                <section class="z-index-2 position-relative pb-2 mb-12">
+                    <div class="bg-body-secondary mb-3">
+                        <div class="container">
+                            <nav class="py-4 lh-30px" aria-label="breadcrumb">
+                                <ol class="breadcrumb justify-content-center py-1 mb-0">
+                                    <li class="breadcrumb-item"><a title="Home" href="/">Home</a></li>
+                                    <li class="breadcrumb-item"><a title="Shop" href="/shop">Shop</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Shopping Cart</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                </section>
+                <section class="container">
+                    <div class="shopping-cart">
+                        <h2 class="text-center fs-2 mt-12 mb-13">Shopping Cart</h2>
+                        <form class="table-responsive-md pb-8 pb-lg-10">
+
+                            <% if(!cart||cart.products.length===0){ %>
+                                <div style="padding-bottom: 200px; padding-top: 100px; display: flex; flex-direction: column; align-items: center; gap: 2rem; "><h3 class="text-danger text-center">Your cart is Empty </h3>
+                              <a href="/shop"
+                                class="btn w-20 btn-dark btn-hover-bg-primary btn-hover-border-primary "
+                                title="back to shop">Back To Shop</a></div>
+                                <% }else{ %>
+                            <table class="table border">
+                                <thead class="bg-body-secondary">
+                                    <tr class="fs-15px letter-spacing-01 fw-semibold text-uppercase text-body-emphasis">
+                                        <th scope="col" class="fw-semibold border-1 ps-11">products</th>
+                                        <th scope="col" class="fw-semibold border-1">quantity</th>
+                                        <th colspan="2" class="fw-semibold border-1">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    <% cart?.products?.forEach(e=> { %>
+                                        <tr class="position-relative" id="delete<%=e.productId._id %>">
+                                            <th scope="row" class="pe-5 ps-8 py-7 shop-product">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input rounded-0" type="checkbox"
+                                                            name="products" value="checkbox">
+                                                    </div>
+                                                    <div class="ms-6 me-7">
+                                                        <img src="#" data-src="<%=e.productId.images[0]  %>"
+                                                            class="lazy-image" width="75" height="100"
+                                                            alt="Natural Coconut Cleansing Oil">
+                                                    </div>
+                                                    <div class>
+
+                                                        <p class="fw-500 mb-1 text-body-emphasis">
+                                                            <%= e.productId.productName %>
+                                                        </p>
+
+                                                        <p class="card-text">
+                                                            <span
+                                                                class="fs-13px fw-500 text-decoration-line-through pe-3">
+                                                                <%= e.productId.quantity %>
+                                                            </span>
+                                                            <span class="fs-15px fw-bold text-body-emphasis">
+                                                                <%= e.productId.price %>
+                                                            </span>
+                                                        </p>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </th>
+                                            <td class="align-middle">
+                                                <% console.log(e.productId.stock,'jajaj') %>
+                                                <div
+                                                    class="input-group position-relative align-items-center shop-quantity">
+                                                    <i onclick="minus(this,'<%=e.productId._id%>','<%=e.productId.price%>','<%=e.productId.stock%>')"
+                                                        class="ri-subtract-line position-absolute ms-3"
+                                                        style="z-index: 999; cursor: pointer;"></i>
+                                                    <input
+                                                        onchange="priceUpdate('<%=e.productId._id%>',this,'<%=e.productId.price%>','<%=e.productId.stock%>')"
+                                                        name="quantity" type="number"
+                                                        class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0"
+                                                        value="<%=e.quantity%>" max=<%=e.productId.stock %> required>
+                                                    <i onclick="plus(this,'<%=e.productId._id%>','<%=e.productId.price%>','<%=e.productId.stock%>')" class="ri-add-line position-absolute "
+                                                        style="left: 85%; cursor: pointer;"></i>
+                                                    <script>
+                                                        // const g=document.getElementById('akak')
+                                                        function minus(e,proId,price,q) {
+                                                            const inp=e.nextElementSibling
+                                                            inp.value>1&&(inp.value -= 1);
+                                                            priceUpdate(proId,inp,price,q)
+
+                                                         }
+                                                         function plus(e,proId,price,q){
+                                                            const inp=e.previousElementSibling;
+                                                            let val=Number(inp.value)   
+                                                            val<q&&(inp.value=val+1 );
+                                                            priceUpdate(proId,inp,price,q)
+                                                         }
+                                                    </script>
+
+                                                </div>
+                                            </td>
+                                            <% let updatedPrice=e.productId.price*e.quantity %>
+                                            <td class="align-middle">
+                                                    <p class=" amount mb-0 text-body-emphasis fw-bold mr-xl-11"
+                                                        id="totals<%=e.productId._id%>">
+                                                        <%=updatedPrice%>
+                                                    </p>
+                                            </td>
+
+                                            <td class="align-middle text-end pe-8">
+                                                <a href="" class="d-block text-secondary"
+                                                    onclick="remove('<%=e.productId._id%>')">
+                                                    <i class="fa fa-times"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        <% }) %>
+                                        
+
+                                            <tr>
+                                                <td class="pt-5 pb-10 position-relative bg-body ps-0 left">
+                                                    <a href="/shop" title="Countinue Shopping"
+                                                        class="btn btn-outline-dark me-8 text-nowrap my-5">
+                                                        Countinue Shopping
+                                                    </a>
+                                                    <!-- <button type="submit" value="Clear Shopping Cart"
+                                                        class="btn btn-link p-0 border-0 border-bottom border-secondary text-decoration-none rounded-0 my-5 fw-semibold ">
+                                                        <i class="fa fa-times me-3"></i>
+                                                        Clear Shopping Cart
+                                                    </button> -->
+                                                </td>
+
+                                            </tr>
+                                </tbody>
+                            </table>
+                           
+                        </form>
+                        <div class="row pt-8 pt-lg-11 pb-16 pb-lg-18">
+                            <!-- <div class="col-lg-4 pt-2">
+                                <h4 class="fs-24 mb-6">Coupon Discount</h4>
+                                <p class="mb-7">Enter you coupon code if you have one.</p>
+                                <form>
+                                    <input type="text" class="form-control mb-7" placeholder="Enter coupon code here">
+                                    <button type="submit"
+                                        class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary">
+                                        Apply coupon
+                                    </button>
+                                </form>
+                            </div> -->
+                            <!-- <div class="col-lg-4 pt-lg-2 pt-10">
+                        <h4 class="fs-24 mb-6">Shipping Caculator</h4>
+                        <form>
+                            <div class="d-flex mb-5">
+                                <div class="form-check me-6 me-lg-9">
+                                    <input class="form-check-input form-check-input-body-emphasis" type="radio"
+                                        name="flexRadioDefault" id="flexRadioDefault1">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                        Free shipping
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input form-check-input-body-emphasis" type="radio"
+                                        name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                        Flat rate: $75
+                                    </label>
+                                </div>
+                            </div>
+                             <div class="dropdown bg-body-secondary rounded mb-7">
+                                <a href="#"
+                                    class="form-select text-body-emphasis dropdown-toggle d-flex justify-content-between align-items-center text-decoration-none text-secondary position-relative d-block"
+                                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Viet Nam
+                                </a>
+                                <div class="dropdown-menu w-100 px-0 py-4">
+                                    <a class="dropdown-item px-6 py-4" href="#">Andorra</a>
+                                    <a class="dropdown-item px-6 py-4" href="#">San Marino</a>
+                                    <a class="dropdown-item px-6 py-4" href="#">Tunisia</a>
+                                    <a class="dropdown-item px-6 py-4" href="#">Micronesia</a>
+                                    <a class="dropdown-item px-6 py-4" href="#">Solomon Islands</a>
+                                    <a class="dropdown-item px-6 py-4" href="#">Macedonia</a>
+                                </div>
+                            </div> 
+                             <input type="text" class="form-control mb-7" placeholder="State / County" required>
+                            <input type="text" class="form-control mb-7" placeholder="City" required>
+                            <input type="text" class="form-control mb-7" placeholder="Postcode / Zip">
+                            <button type="submit" class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary">
+                                Update total 
+
+                            </button>
+                        </form>
+                    </div>  -->
+                            <div class="col-lg-4 pt-lg-0 pt-11">
+                                <div class="card border-0" style="box-shadow: 0 0 10px 0 rgba(0,0,0,0.1)">
+                                    <div class="card-body px-9 pt-6">
+                                        <div class="d-flex align-items-center justify-content-between mb-5">
+                                            <span>Subtotal:</span>
+                                            <span id="totalPrice" class="d-block ml-auto text-body-emphasis fw-bold"></span>
+                                        </div>
+                                        <!-- <div class="d-flex align-items-center justify-content-between">
+                                            <span>Shipping:</span>
+                                            <span class="d-block ml-auto text-body-emphasis fw-bold">$150</span>
+                                        </div> -->
+                                    </div>
+                                    <div class="card-footer bg-transparent px-0 pt-5 pb-7 mx-9">
+                                        <div class="d-flex align-items-center justify-content-between fw-bold mb-7">
+                                            <span class="text-secondary text-body-emphasis" >Total price:</span>
+                                            <span class="d-block ml-auto text-body-emphasis fs-4 fw-bold" id="totalAmount"></span>
+                                        </div>
+                                        <a href="/checkout"
+                                            class="btn w-100 btn-dark btn-hover-bg-primary btn-hover-border-primary"
+                                            title="Check Out">Check Out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <% } %>
+            </main>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+            <script>
+
+                //    const g= document.getElementById('sksk')
+
+
+
+
+              const totalPrice=document.getElementById('totalPrice')
+              const totalAmount=document.getElementById('totalAmount')
+              
+                const pric1 = document.querySelectorAll('.amount')
+                // console.log(price1);
+                let totalPrice1=0
+                pric1.forEach(e=>{
+                    totalPrice1+=Number(e.textContent.trim(''))
+                })
+                totalPrice.textContent=`${totalPrice1}`
+                totalAmount.textContent=`${totalPrice1}`
+
+                async function priceUpdate(prodId, element, price) {
+                    console.log(price, 'ppppppp');
+                    const inp = element
+                    const totals = document.getElementById('totals' + prodId)
+
+                    let total = price * inp.value
+                    totals.textContent = total
+                    console.log(inp.value, 'hhhhh');
+                    let totalPrice1=0
+                    
+                pric1.forEach(e=>{
+                    totalPrice1+=Number(e.textContent.trim(''))
+                })
+                totalPrice.textContent=`${totalPrice1}`
+                totalAmount.textContent=`${totalPrice1}`
+
+                    await axios.patch('/cart', { prodId, element: inp.value })
+                }
+
+
+
+                async function remove(productId) {
+                    const delts = document.getElementById('delete' + productId)
+                    await axios.post('/remove', { productId })
+                }
+
+
+            </script>
+
+            <%- include('../layouts/footer.ejs')%>
+
+                <!-- layout footer -->
+                <%- include('../layouts/layoutFooter.ejs')%>
+                    <!--layoutFooter  -->
+
+                    <!-- svg -->
+                    <%- include('../layouts/svg.ejs')%>
+                        <!-- svg -->
+
+
+                        <!-- mobile nav bar -->
+                        <%- include('../layouts/mobileNavbar.ejs')%>
+                            <!-- mobile nav bar -->
+
+    </body>
+
+    <!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/shop/shopping-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:46:19 GMT -->
+
+    </html>

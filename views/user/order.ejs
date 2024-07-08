@@ -1,0 +1,46 @@
+<%- include('../layouts/header.ejs') %>
+
+    <body>
+        <%- include('../layouts/navbar.ejs') %>
+
+            <!-- success animation -->
+
+            <div class="svg-container">
+                <div class="svg-container mb-5 justify-content-center d-flex align-items-center " style="height: 40vh;">
+                    <svg class="ft-green-tick" xmlns="http://www.w3.org/2000/svg" height="100" width="100"
+                        viewBox="0 0 48 48" aria-hidden="true">
+                        <circle class="circle" fill="#5bb543" cx="24" cy="24" r="22" />
+                        <path class="tick" fill="none" stroke="#FFF" stroke-width="6" stroke-linecap="round"
+                            stroke-linejoin="round" stroke-miterlimit="10" d="M14 27l5.917 4.917L34 17" />
+                    </svg>
+                </div>
+                <!--  -->
+
+                <h1 class="text-center ">Order Successfully Placed</h1>
+
+                
+
+                <div style="display: flex; flex-direction: column; align-items: center; gap: 20px;">
+                    <h4 class="text-center">Thank you for Shopping!</h4>
+                    <a href="/" class="btn w-20 btn-dark btn-hover-bg-primary btn-hover-border-primary "
+                        title="back to shop">Back To Home</a>
+                </div>
+
+                <!-- layout footer -->
+                <%- include('../layouts/layoutFooter.ejs')%>
+                    <!--layoutFooter  -->
+
+                    <!-- svg -->
+                    <%- include('../layouts/svg.ejs')%>
+                        <!-- svg -->
+
+
+                        <!-- mobile nav bar -->
+                        <%- include('../layouts/mobileNavbar.ejs')%>
+                            <!-- mobile nav bar -->
+
+    </body>
+
+    <!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/shop/shopping-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:46:19 GMT -->
+
+    </html>

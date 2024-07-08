@@ -1,0 +1,124 @@
+<%- include('../layouts/header.ejs')  %>
+
+<body>
+    <!-- nav bar -->
+    <%- include('../layouts/navbar.ejs') %>
+    <!-- navbar -->
+
+    <main id="content" class="wrapper layout-page">
+        <section class="pb-lg-20 pb-16">
+            <div class="bg-body-secondary py-5">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb breadcrumb-site py-0 d-flex justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-decoration-none text-body" href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item active pl-0 d-flex align-items-center" aria-current="page">Register
+                        </li>
+                        <li class="breadcrumb-item active pl-0 d-flex align-items-center" aria-current="page">OTP
+                        </li>
+                    </ol>
+                </nav>
+            </div>
+            <% if (typeof errorMessage !== 'undefined' && errorMessage) { %>
+                <div class="alert alert-danger" role="alert">
+                    <%= errorMessage %>
+                </div>
+            <% } %>
+            <div class="container">
+                <div class=" text-center pt-13 mb-12 mb-lg-15">
+                    <div class="text-center">
+                        <h2 class="fs-36px mb-11 mb-lg-14">OTP</h2>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-8 mx-auto">
+                    <form method="post" action="/otp">
+                        <div class="mb-6">
+                            <label for="name" class="">otp</label>
+                            <br>
+                            <br>
+                            <p class="text-danger "><%=locals.msg%></p>
+                           <div class="d-flex align-items-center  justify-content-center  gap-5 ">
+                                <% for (let i = 0; i < 4; i++) { %>
+                                    <input style="border-radius: 10px; height: 4rem;" type="number" class="border-primary   otp-input form-control " max="9"  maxlength="1" id="otp<%= i %>" name="otp" pattern="\d" required>
+                                <% } %>
+                            </div>
+                                <br>
+                        </div>
+                        <p></p>
+                       
+                        <button type="submit" value="Login" class="btn btn-primary w-100">Submit</button>
+                     <br>
+                     <br>
+                        <!-- <div class="text-center mt-n4 lh-1 mb-7">
+                            <span class="fs-14 bg-body lh-1 px-4">or Sign Up with</span>
+                        </div> -->
+                        <div class="d-flex">
+                            <a href="/resendOtp" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5"><i
+                                    ></i>Resend</a> 
+                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 mt-0"><i
+                                    ></i>Re Submit</a>
+                        </div>
+                        
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <script>
+        const otpFields = document.querySelectorAll('.otp-input');
+        otpFields.forEach((field, index) => {
+            field.addEventListener('input', (event) => {
+                const input = event.target.value.trim();
+                if (/^\d$/.test(input) && index < otpFields.length - 1) {
+                    otpFields[index + 1].focus();
+                } else if (/^\d$/.test(input) && index === otpFields.length - 1) {
+                    // If last digit entered and it's valid, stop the focus on the last field
+                    event.target.blur();
+                } else {
+                    event.target.value = ''; 
+                }
+            });
+    
+            field.addEventListener('keydown', (event) => {
+                if (event.key === 'Backspace' && index > 0 && !event.target.value) {
+                    otpFields[index - 1].focus();
+                }
+            });
+        });
+    </script>
+    
+    <!-- footer -->
+    <%- include('../layouts/footer.ejs') %>
+    <!-- footer -->
+    <!-- layout footer -->
+   
+    <!-- layout footer -->
+    <%- include('../layouts/layoutFooter.ejs') %>
+    <!--layoutFooter  -->
+
+    <!-- svg -->
+    <%- include('../layouts/svg.ejs') %>
+    <!-- svg -->
+
+    <!-- search  -->
+    <%- include('../layouts/search.ejs') %>
+    <!-- search -->
+
+    <!-- mobile nav bar -->
+    <%- include('../layouts/mobileNavbar.ejs') %>
+    <!-- mobile nav bar -->
+<script>
+    
+</script>
+
+    <div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+        <a href="#"
+            class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+            title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+    </div>
+</body>
+
+<!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/home-02.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:45:35 GMT -->
+
+</html>

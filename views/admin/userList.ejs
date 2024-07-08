@@ -1,0 +1,158 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+	<body>
+		<div class="wrapper dashboard-wrapper">
+			<div class="d-flex flex-wrap flex-xl-nowrap">
+				<%- include('../layouts/adminSidbar.ejs') %>
+					<div class="page-content">
+						<%- include('../layouts/adminNav.ejs') %>
+
+							<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
+								<div class="dashboard-page-content">
+									<div class="row mb-9 align-items-center justify-content-between">
+										<div class="col-sm-6 mb-8 mb-sm-0">
+											<h2 class="fs-4 mb-0">User List</h2>
+											<p class="mb-0">Lorem ipsum dolor sit amet.</p>
+										</div>
+
+									</div>
+									<div class="card mb-4 rounded-4 p-7">
+										<div class="card-header bg-transparent px-0 pt-0 pb-7">
+											<div class="row align-items-center justify-content-between">
+												<div class="col-md-4 col-12 mr-auto mb-md-0 mb-6">
+													<input type="text" placeholder="Search..."
+														class="form-control bg-input border-0">
+												</div>
+
+											</div>
+										</div>
+										<div class="card-body px-0 pt-7 pb-0">
+											<div class="table-responsive">
+												<table
+													class="table table-hover align-middle table-nowrap mb-0 table-borderless">
+													<thead class="table-light">
+														<tr>
+															<th class="align-middle" scope="col">No.
+															</th>
+															<th class="align-middle" scope="col">Name
+															</th>
+															<th class="align-middle" scope="col">Email
+															</th>
+															<th class="align-middle" scope="col">status
+															</th>
+															<th class="align-middle" scope="col">Phone
+															</th>
+
+															<th class="align-middle text-center" scope="col">Block
+															</th>
+														</tr>
+													</thead>
+													<tbody>
+														<% userData.forEach((user,i)=> { %>
+
+
+															<tr>
+																<td><a href="#"></a>
+																	<%=i+1 %>
+																</td>
+																<td class="text-body-emphasis">
+																	<%=user.name %>
+																</td>
+																<td>
+																	<%=user.email %>
+																</td>
+																<td>
+																	<span id="s<%= user._id %>"
+																		class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 <%=user.is_blocked?'alert-warning':'alert-success'  %> border-0 text-capitalize fs-12">
+																		<%=user.is_blocked?'blocked':'unBlock' %>
+																	</span>
+																</td>
+																<td>
+																	<%=user.mobile %>
+																</td>
+																<td class="text-center">
+																	<div
+																		class="d-flex flex-nowrap justify-content-center">
+																		<a onclick="block('<%=user._id%>',this)"
+																			class="btn  <%=user.is_blocked?'btn-warning ':'btn-primary'  %> py-4 fs-13px btn-xs me-4">
+																			<%=user.is_blocked?'unBlock':'blocked'%>
+																		</a>
+
+																	</div>
+																</td>
+															</tr>
+															<% }); %>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+									<nav aria-label="Page navigation example" class="mt-6 mb-4">
+										<ul class="pagination justify-content-start">
+											<li class="page-item active mx-3"><a class="page-link" href="#">01</a></li>
+											<li class="page-item mx-3"><a class="page-link" href="#">02</a></li>
+											<li class="page-item mx-3"><a class="page-link" href="#">03</a></li>
+											<li class="page-item mx-3"><a class="page-link dot" href="#">...</a></li>
+											<li class="page-item mx-3"><a class="page-link" href="#">16</a></li>
+											<li class="page-item mx-3">
+												<a class="page-link" href="#"><i class="far fa-chevron-right"></i></a>
+											</li>
+										</ul>
+									</nav>
+								</div>
+
+							</main>
+					</div>
+			</div>
+		</div>
+		<%- include('../layouts/adminFooter.ejs') %>
+			<%- include('../layouts/svg2.ejs') %>
+
+				<div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+					<a href="#"
+						class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+						title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+				</div>
+				<script>
+
+					function block(id,e) {
+						const status= document.getElementById(`s${id}`)
+						console.log(status);
+						fetch('/admin/userList', {
+							method: 'PUT',
+							headers: {
+								'Content-Type': 'application/json'
+							},
+							body:JSON.stringify({id})
+						}).then(res=>res.json()).then(data=>{
+						
+						if(data.user){
+							e.classList.remove('btn-primary')
+							e.classList.add('btn-warning')
+							e.textContent='unBlock';
+							status.classList.remove('alert-success')
+							status.classList.add('alert-warning')
+							status.textContent='blocked'
+						}else{
+							e.classList.add('btn-primary')
+							e.classList.remove('btn-warning')
+							e.textContent='blocked'
+							status.classList.add('alert-success')
+							status.classList.remove('alert-warning')
+							status.textContent='unBlock'
+						}
+
+						})
+
+					}
+
+				</script>
+	</body>
+
+	<!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/home-02.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:45:35 GMT -->
+
+	</html>
+
+
+
+       	

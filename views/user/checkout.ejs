@@ -1,0 +1,525 @@
+<%- include('../layouts/header.ejs')  %>
+
+<body>
+    <%- include('../layouts/navbar.ejs') %>
+    <main id="content" class="wrapper layout-page">
+        <section class="z-index-2 position-relative pb-2 mb-12">
+            <div class="bg-body-secondary mb-3">
+                <div class="container">
+                    <nav class="py-4 lh-30px" aria-label="breadcrumb">
+                        <ol class="breadcrumb justify-content-center py-1 mb-0">
+                            <li class="breadcrumb-item"><a title="Home" href="../index.html">Home</a></li>
+                            <li class="breadcrumb-item"><a title="Shop" href="shop-layout-v2.html">Shop</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Check Out</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <section class="container pb-14 pb-lg-19">
+            <div class="text-center">
+                <h2 class="mb-6">Check out</h2>
+            </div>
+
+            <div class="pt-12">
+                <div class="row">
+                    <div class="col-lg-4 pb-lg-0 pb-14 order-lg-last">
+                        <div class="card border-0 rounded-0 shadow">
+                            <div class="card-header px-0 mx-10 bg-transparent py-8">
+                                <h4 class="fs-4 mb-8">Order Summary</h4>
+                                <% let grandTotal=0 %>
+                                <%cartDetail?.products?.forEach((cartDatas,i)=>{ %>
+                                <div class="d-flex w-100 mb-7">
+                                    <div class="me-6">
+                                        <% i&&console.log(cartDatas.productId.images,"lll");  %>
+                                        <img  src="<%=cartDatas.productId.images[0]  %>"
+                                            class="lazy-image" width="60" height="80"
+                                            alt="Natural Coconut Cleansing Oil">
+                                    </div>
+                                    <div class="d-flex flex-grow-1">
+                                        <div class="pe-6" >
+                                            
+                                            
+                                                    <a href="#" class><%=cartDatas.productId.productName %><span class="text-body">
+                                                    </span></a>
+                                            <p class="fs-14px text-body-emphasis mb-0 mt-1">Brand:
+                                                <% console.log("   cart "+cartDatas.productId.brand.brandName) %>
+                                                <span class="text-body"><%=cartDatas.productId.brand.brandName%></span>
+                                            </p>
+                                            <div class="ms-auto">
+                                                <p class="fs-14px text-body-emphasis mb-0 fw-bold"><%=cartDatas.productId.price%></p>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <% grandTotal += cartDatas.productId.price * cartDatas.quantity %>
+                                    
+                                </div>
+                                <% }) %>
+                                
+                            </div>
+
+                            <div class="card-footer bg-transparent py-5 px-0 mx-10">
+                                <div class="d-flex align-items-center fw-bold mb-6">
+                                    <span class="text-body-emphasis p-0">Total price:</span>
+                                    <span class="d-block ms-auto text-body-emphasis fs-4 fw-bold">$<%=grandTotal %></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 order-lg-first pe-xl-20 pe-lg-6">
+                        <div class="checkout">
+                            <p class="mb-5">Returning customer? 
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#signInModal">Click here to login</a>
+                            </p>
+                            <p>Have a coupon?
+                                <a data-bs-toggle="collapse" href="#collapsecoupon" role="button" aria-expanded="false"
+                                    aria-controls="collapsecoupon">Click here to enter your code</a>
+                            </p>
+                            <div class="collapse" id="collapsecoupon">
+                                <div class="card mw-60 border-0">
+                                    <div class="card-body py-10 px-8 my-10 border">
+                                        <p class="card-text text-body-emphasis mb-8">
+                                            If you have a coupon code, please apply it below.</p>
+                                        <div class="input-group position-relative">
+                                            <input type="email" class="form-control bg-body rounded-end"
+                                                placeholder="Your Email*">
+                                            <button type="submit"
+                                                class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary">
+                                                Apply Coupon
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="fs-4 pt-4 mb-7">Shipping Information</h4>
+                            <div class="mb-7">
+                                
+                                
+                                <div style="border-radius: 10px; border: 1px solid gray; width: 50%; padding: 1rem; margin-bottom: 1rem;" id="addressCard" class="address-card">
+                                    <div class="title" style="text-align: center; margin-bottom: 0.5rem;">
+                                        <h5 style="margin: 0;">Address</h5>
+                                    </div>
+                                    <% addresses.forEach((value)=>{%>
+                                    <div class="address-content" style="font-family: Arial, sans-serif; line-height: 1.6;  border-radius: 10px; border: 1px dashed gray; padding: 1rem; margin-bottom: 1rem;" >
+                                        <div style="display: flex; flex-direction: row-reverse;">
+                                            <input type="radio" class="" name="select"  onclick="radioButton('<%=value._id%>')" >
+                                        </div>
+                                        <p style="margin: 0;">
+                                            <span style="font-weight: bold;"><%= value.name %></span><br>
+                                            <%= value.street %>, <%= value.locality %><br>
+                                            <%= value.city %>, <%= value.state %>, <%= value.pincode %><br>
+                                            Phone: <%= value.phone %>
+                                        </p>
+                                        <div>
+                                            <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-2 mt-md-4 mt-2" style=" bottom: 10px; left: 10px; padding: 0.2rem 0.5rem; font-size: 0.7rem;" data-bs-toggle="modal" data-bs-target="#editAddress">Edit Address</button>
+                                            <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-2 mt-md-4 mt-2" style=" bottom: 10px; left: 10px; padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="remove('<%=value._id%>')" >Remove</button>
+                                           
+                                        </div>
+                                    </div>
+                                    <%})%>
+                                    <script>
+                                          async function remove(ID){
+            
+                                            await axios.patch('/removeAddress',{ID})
+                                        }
+
+                                        async function radioButton(addressId){
+                                            await axios.patch('/radioAddress',{addressId})
+                                        }
+                                    </script>
+                                    
+                                </div>
+                              <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11 mt-md-7 mt-4" data-bs-toggle="modal" data-bs-target="#addAddress">Add Address</button>  
+                            
+                        </div>
+                        <form id="orderForm" action="/order" method="post">
+                            <input type="radio" hidden class="" name="selectAddress" id="" >
+                        <div class="checkout mb-7">
+                            <div class="mb-7">
+                                <h4 class="fs-4 mb-8 mt-12 pt-lg-1">Payment Infomation</h4>
+                                <div class="nav nav-tabs border-0">
+                                    <button class="btn btn-payment px-12 mx-2 py-6 me-7 my-3 nav-link" data-bs-toggle="tab"  
+                                        data-bs-target="#paypal-tab">
+                                        <input type="radio"    name="pp"  value="upi">
+                                        <svg class="icon icon-paylay fs-32px text-body-emphasis">
+                                            <use xlink:href="#icon-paylay"></use>
+                                        </svg>
+                                        <span class="ms-3 text-body-emphasis fw-semibold fs-6">Razorpay</span>
+                                    </button>
+
+
+                                    <button class="btn btn-payment px-12 mx-2 py-6 me-7 my-3 nav-link active" 
+                                        data-bs-toggle="tab" data-bs-target="#credit-card-tab">
+                                        <input type="radio"   name="pp"  value="Cash on Delivery">
+                                        <svg class="icon icon-paylay fs-32px text-body-emphasis">
+                                            <!-- <use xlink:href="#icon-card"></use> -->
+                                        </svg>
+                                        <span class="ms-3 text-body-emphasis fw-semibold fs-6" >Cash on delivery</span>
+                                    </button>
+                                </div>
+                                
+                            </div>
+                            <button type="button"
+                                class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11 mt-md-7 mt-4" onclick="placeOrder('<%=grandTotal%>','<%=cartDetail._id%>')">Place
+                                Order</button>
+                        </div>
+                    </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- place order end here -->
+
+        <!-- edit address -->
+
+        <div class="modal" id="editAddress" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Modal title</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-7">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-md-0 mb-7">
+                                <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">name</label>
+                                <input type="text" class="form-control" id="editName" name="name"
+                                    placeholder="First Name"  value="<%=  %>" required>
+                                    <div id="nameError" class="text-danger"></div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-md-0 mb-7">
+                                <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Phone</label>
+                                <input type="number" class="form-control" id="editphone" name="phone"
+                                    placeholder="Phone number" required>
+                                    <div id="numberError" class="text-danger"></div>
+                            </div>
+                            <!-- <div class="col-md-6">
+                                <input type="text" class="form-control" id="last-name" name="lasttname"
+                                    placeholder="Last Name" required>
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="mb-7">
+                        <div class="row">
+                            <div class="col-md-8 mb-md-0 mb-7">
+                                <label for="street-address"
+                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Street
+                                    Address</label>
+                                <input type="text" class="form-control" id="editstreetAddress" name="street"
+                                    required>
+                                    <div id="streetError" class="text-danger"></div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="mb-7">
+                        <div class="row">
+                            <div class="col-md-4 mb-md-0 mb-7">
+                                <label for="city"
+                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">locality</label>
+                                <input type="text" class="form-control" id="editlocality" name="locality" required>
+                                <div id="localityError" class="text-danger"></div>
+                            </div>
+                            <div class="col-md-4 mb-md-0 mb-7">
+                                <label for="state"
+                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">State</label>
+                                <input type="text" class="form-control" id="editstate" name="state" required>
+                                <div id="stateError" class="text-danger"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="zip"
+                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">pin
+                                    code</label>
+                                <input type="number" class="form-control" id="editpincode" name="pincode" required>
+                                <div id="pincodeError" class="text-danger"></div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-7">
+                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">city</label >
+                        <div class=" bg-body-secondary rounded">
+                            <input type="text" class="form-control" id="editcity" name="city" required>
+                            <div id="cityError" class="text-danger">
+                                
+                            </div>
+                            <p id="editEmptyError" class="text-danger"></p>
+                           
+                        </div>
+                    </div>
+                    <div class="mb-7">
+                        
+                        <div class="row">
+                           
+                            
+                        </div>
+                    </div>
+                    
+
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- add address -->
+
+        <div class="modal" id="addAddress" tabindex="-1">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Modal title</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-7">
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-md-0 mb-7">
+                                <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">name</label>
+                                <input type="text" class="form-control" id="firstName" name="name"
+                                    placeholder="First Name" required>
+                                    <div id="nameError" class="text-danger"></div>
+                            </div>
+                            
+                            <div class="col-md-6 mb-md-0 mb-7">
+                                <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Phone</label>
+                                <input type="number" class="form-control" id="phone" name="phone"
+                                    placeholder="Phone number" required>
+                                    <div id="numberError" class="text-danger"></div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                    <div class="mb-7">
+                        <div class="row">
+                            <div class="col-md-8 mb-md-0 mb-7">
+                                <label for="street-address"
+                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Street
+                                    Address</label>
+                                <input type="text" class="form-control" id="streetAddress" name="street"
+                                    required>
+                                    <div id="streetError" class="text-danger"></div>
+                            </div>
+                           
+                        </div>
+                    </div>
+
+                   
+                    <div class="mb-7">
+                        <div class="row">
+                            <div class="col-md-4 mb-md-0 mb-7">
+                                <label for="city"
+                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">locality</label>
+                                <input type="text" class="form-control" id="locality" name="locality" required>
+                                <div id="localityError" class="text-danger"></div>
+                            </div>
+                            <div class="col-md-4 mb-md-0 mb-7">
+                                <label for="state"
+                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">State</label>
+                                <input type="text" class="form-control" id="state" name="state" required>
+                                <div id="stateError" class="text-danger"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="zip"
+                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">pin
+                                    code</label>
+                                <input type="number" class="form-control" id="pincode" name="pincode" required>
+                                <div id="pincodeError" class="text-danger"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-7">
+                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">city</label >
+                        <div class=" bg-body-secondary rounded">
+                            <input type="text" class="form-control" id="city" name="city" required>
+                            <div id="cityError" class="text-danger"></div>
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="mb-7">
+
+                        <div class="row">
+                           
+                        </div>
+                    </div>
+                    
+                </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary" onclick="addAddress()">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- add address end here -->
+    </main>
+
+    <%- include('../layouts/footer.ejs')%>
+
+    <!-- layout footer -->
+    <%- include('../layouts/layoutFooter.ejs')%>
+        <!--layoutFooter  -->
+
+        <!-- svg -->
+        <%- include('../layouts/svg.ejs')%>
+            <!-- svg -->
+
+
+            <!-- mobile nav bar -->
+            <%- include('../layouts/mobileNavbar.ejs')%>
+                <!-- mobile nav bar -->
+            
+                
+            </body>
+            
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script>
+    async function addAddress(){
+
+        // reset errors
+        
+        
+
+        // for name
+
+        const name = document.getElementById('firstName').value 
+  
+        const phone = document.getElementById('phone').value
+      
+        const street = document.getElementById('streetAddress').value
+        
+        const city = document.getElementById('city').value
+       
+        const state = document.getElementById('state').value
+    
+        const pin = document.getElementById('pincode').value
+        
+        const locality = document.getElementById('locality').value
+        console.log(name);
+
+        // document.getElementById('nameError').innerText = "";
+        // document.getElementById('numberError').innerText = "";
+        // document.getElementById('streetError').innerText = "";
+        // document.getElementById('localityError').innerText = "";
+        // document.getElementById('stateError').innerText = "";
+        // document.getElementById('pincodeError').innerText = "";
+        // document.getElementById('cityError').innerText = "";
+
+        
+        // if(firstName === '' && phone === '' && state === '' && pincode === '' && locality === ''){
+        //         document.getElementById('adEmptyError').innerHTML = 'Please fill all the fields';
+        //         return false
+        //     } 
+
+        //     if(firstName === '' || /\d/.test(firstName) || /[^\w\s]/.test(firstName)){
+        //         document.getElementById('nameError').innerHTML = 'Please enter a name';
+        //         return false
+        //     } 
+
+
+            console.log(name,phone,street,city,state,pin,locality,'name,phone,street,city,state,pin,locality')
+        const close = document.getElementById('CloseId')
+        await axios.post('/address',{name,phone,street,city,state,pin,locality})
+        
+        close.click()
+        
+
+      
+
+}
+const form = document.getElementById('orderForm')
+
+ function placeOrder(amount,userId){
+
+    const upi= document.querySelector('input[name="pp"]:checked')
+    if(upi.value==="Cash on Delivery"){
+        form.submit()
+    }else{
+        razor(amount, userId)
+    }
+
+}
+
+function razor(amount, userId) {
+   
+            fetch('/razor', {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify({ amount, userId })
+            }).then(res => res.json()).then(data => {
+                if (data.success) {
+
+                    let options = {
+                        "key": `${data.key_id}`,
+                        "amount":` ${data.amount}`,
+                        "currency": "INR",
+                        "name": "GLOWING",
+                        "handler": function (response) {
+                     
+                        },
+                        "profile": {
+                            "name": `${data.name}`,
+                            "email": `${data.email}`
+                        }
+                    }
+
+                    let razorpayObject = new Razorpay(options);
+                    razorpayObject.on('payment.failed', (response) => {
+                        alert('payment failed');
+                       
+                        form.submit();
+                    });
+                    razorpayObject.open();
+                } else if (data.fail) {
+                    const Toast = Swal.mixin({
+
+                        toast: true,
+                        position: "bottom",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+
+                        didOpen: (toast) => {
+
+                            toast.onmouseenter = Swal.stopTimer;
+                            toast.onmouseleave = Swal.resumeTimer;
+                        }
+
+                    });
+
+                    Toast.fire({
+
+                        icon: "warning",
+                        title: "No address",
+                        background: "31363F"
+
+                    })
+                }
+            })
+            .catch(error => {
+            console.error('Error:', error);
+        });
+        }
+        
+</script>
+
+<!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/shop/checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:46:20 GMT -->
+
+</html>

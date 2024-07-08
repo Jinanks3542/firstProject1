@@ -1,0 +1,408 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <body>
+		
+        <form  class="wrapper dashboard-wrapper" action="/admin/addCategory" method="post" enctype="multipart/form-data" >
+            <div class="d-flex flex-wrap flex-xl-nowrap">
+                <%- include('../layouts/adminSidbar.ejs') %>
+                    <div class="page-content">
+                        <%- include('../layouts/adminNav.ejs') %>
+
+                          
+						<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
+							<div class="dashboard-page-content">
+								<div class="row mb-9 align-items-center">
+									<div class="col-xxl-9">
+										<div class="row">
+											<div class="col-sm-6 mb-8 mb-sm-0">
+												<h2 class="fs-4 mb-0">Add New Category</h2>
+											</div>
+											<div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
+												
+												<button type="submit" class="btn btn-primary">
+													Add
+												</button>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-xxl-9">
+										<div class="row">
+											<div class="col-lg-8">
+												<div class="card mb-8 rounded-4">
+													<!-- <div class="card-header p-7 bg-transparent">
+														<h4 class="fs-18 mb-0 font-weight-500">Basic</h4>
+													</div> -->
+													<div class="card-body p-7">
+														<form class="form-border-1">
+															<div class="mb-8">
+																<label for="product_title"
+																	class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Category Name
+																	</label>
+																<input name="catName" type="text" placeholder="Type here" class="form-control"
+																	id="catName">
+															</div>
+															<div class="mb-8">
+																<label class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Full
+																	description</label>
+																<textarea name="description" id="description" placeholder="Type here" class="form-control"
+																	rows="4"></textarea>
+															</div>
+															
+														
+													</div>
+												</div>
+												
+											</div>
+											<div class="col-lg-4">
+												<div class="card mb-8 rounded-4">
+													<div class="card-header p-7 bg-transparent">
+														<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
+													</div>
+													<div class="card-body p-7">
+														<div class="input-upload">
+															<div class="mb-7">
+																<img id="img" src="../assets/images/dashboard/upload.svg" width="102"
+																	class="d-block mx-auto" alt>
+															</div>
+															<input onchange="preview(this)" class="form-control"   name='image' type="file">
+														</div>
+													</div>
+												</div>
+												
+											</div>
+										</form>
+										</div>
+									</div>
+								</div>
+							</div>
+							<footer class="pt-6 pb-10 footer-dashboard mt-auto">
+								<div class="row">
+									<div class="col-sm-6 text-sm-start text-center">
+										<script>
+											document.write(new Date().getFullYear());
+										</script>
+										© Glowing - Beauty & Cosmetics Shop HTML Template .
+									</div>
+									<div class="col-sm-6 text-sm-end text-center">
+										All rights reserved
+									</div>
+								</div>
+							</footer>
+						</main>
+					</div>
+				
+			</div>
+		</form>
+	<style>
+::-webkit-scrollbar{
+	width: 0;
+}
+	</style>	
+
+		<script>
+			function preview(e){
+				const img=document.getElementById('img')
+				img.src=URL.createObjectURL(e.files[0])
+			}
+		</script>	
+        <%- include('../layouts/adminFooter.ejs') %>
+            <%- include('../layouts/svg2.ejs') %>
+
+                <div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+                    <a href="#"
+                        class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+                        title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+                </div>
+
+    </body>
+
+    
+
+
+  <tbody>
+                                                        <% categories.forEach((category, index) => { %>
+                                                            <tr>
+                                                                <td class="text-center">
+                                                                    <div class="form-check">
+                                                                        <input class="form-check-input rounded-0 ms-0"
+                                                                            type="checkbox" id="transactionCheck-<%= index %>">
+                                                                        <label class="form-check-label"
+                                                                            for="transactionCheck-<%= index %>"></label>
+                                                                    </div>
+                                                                </td>
+                                                                <td>
+                                                                    <div class="d-flex align-items-center flex-nowrap">
+                                                                        <a href="" title="<%= category.name %>">
+                                                                            <img src="#" data-src="/productImage/<%= category.image %>"
+                                                                                alt="<%= category.catName %>" class="lazy-image" width="100" height="100">
+                                                                        </a>
+                                                                        <a href="" title="<%= category.catName %>" class="ms-6">
+                                                                            <p class="fw-semibold text-body-emphasis mb-0">
+                                                                                <%= category.catName %>
+                                                                            </p>
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                              
+                                                                <td>
+                                                                  
+                                                                </td>
+                                                                <td><%= category.date %></td>
+                                                                <td class="text-center">
+                                                                    <div class="d-flex flex-nowrap justify-content-center">
+                                                                        <a href="/admin/editProduct?
+                                                                            class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4">
+                                                                            <i class="far fa-pen me-2"></i> Edit
+                                                                        </a>
+                                                                        <a href="#" class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4">
+                                                                            <i class="far fa-trash me-2"></i> Block
+                                                                        </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <% }); %>
+                                                    </tbody>
+
+
+
+
+
+
+													<form id="myForm" method="post" action="/signUp">
+                        <div class="mb-6">
+                            <label for="name" class="visually-hidden">Name</label>
+                            <input name="name" id="name" type="text" class="form-control"
+                                placeholder="First name" required>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <label for="email" class="visually-hidden">Email address</label>
+                            <input name="email" id="email" type="email" class="form-control" placeholder="Your email"
+                                required>
+                        </div>
+                        <div  class="mb-7">
+                            <label for="password" class="visually-hidden">Password</label>
+                            <input name="password" id="password" type="password" class="form-control"
+                                placeholder="Password" required>
+                        </div>
+                        <div class="mb-7">
+                            <label for="mobile" class="visually-hidden">Mobile Number</label>
+                            <input name="mno" id="mobile" type="mobile" class="form-control"
+                                placeholder="mobile" required>
+                        </div>
+                       <p><%=locals.msg%></p>
+                        <button type="submit" value="Login" class="btn btn-primary w-100">Sign Up</button>
+                        <div class="border-bottom mt-10"></div>
+                        <div class="text-center mt-n4 lh-1 mb-7">
+                            <span class="fs-14 bg-body lh-1 px-4">or Sign Up with</span>
+                        </div>
+                        <div class="d-flex">
+                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5"><i
+                                    class="fab fa-facebook-f me-4" style="color: #2E58B2"></i>Facebook</a>
+                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 mt-0"><i
+                                    class="fab fa-google me-4" style="color: #DD4B39"></i>Google</a>
+                        </div>
+                    </form>
+
+
+
+
+
+
+						<form  class="wrapper dashboard-wrapper" action="/admin/addProduct" method="post" enctype="multipart/form-data" >
+				<div class="d-flex flex-wrap flex-xl-nowrap">
+					<%- include('../layouts/adminSidbar.ejs') %>
+						<div class="page-content">
+							<%- include('../layouts/adminNav.ejs') %>
+
+							
+							<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
+								<div class="dashboard-page-content">
+									<div class="row mb-9 align-items-center">
+										<div class="col-xxl-9">
+											<div class="row">
+												<div class="col-sm-6 mb-8 mb-sm-0">
+													<h2 class="fs-4 mb-0">Add New Product</h2>
+												</div>
+												<div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
+													
+													<button type="submit" class="btn btn-primary">
+														Add
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xxl-9">
+											<div class="row">
+												<div class="col-lg-8">
+													<div class="card mb-8 rounded-4">
+														<!-- <div class="card-header p-7 bg-transparent">
+															<h4 class="fs-18 mb-0 font-weight-500">Basic</h4>
+														</div> -->
+														<div class="card-body p-7">
+															
+																<div class="mb-8">
+																	<label for="product_title"
+																		class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Product Name
+																		</label>
+																	<input name="productName" type="text" placeholder="Type here" class="form-control"
+																		id="productName"required>
+																</div>
+																<div class="mb-8">
+																	<label class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Full
+																		description</label>
+																	<textarea name="description" id="description" placeholder="Type here" class="form-control"
+																		rows="4" required></textarea>
+																</div>
+																<div class="mb-8">
+																	<label for="product_title"
+																		class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Category
+																		</label>
+																		<select name="category" id="">
+																			<% categories.forEach((category)=>{  %>
+																				<option value="<%= category._id  %>"><%= category.catName %></option>
+																				<% }) %>
+																		</select>
+																	
+																</div> 
+																<div class="mb-8">
+																	<label for="product_title"
+																		class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Price
+																		</label>
+																	<input name="price" type="text" min="0" placeholder="Type here" class="form-control"
+																		id=""required>
+																</div>
+																<div class="mb-8">
+																	<label for="product_title"
+																		class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Stock
+																		</label>
+																	<input name="stock" min="0" type="text" placeholder="Type here" class="form-control"
+																		id=""required>
+																</div>
+																
+															
+														</div>
+													</div>
+													
+												</div>
+												<div class="col-lg-4">
+													<div class="card mb-8 rounded-4">
+														<div class="card-header p-7 bg-transparent">
+															<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
+														</div>
+														<div class="card-body p-7">
+															<div class="input-upload">
+																<div class="mb-7">
+																	<img id="img1" src="../assets/images/dashboard/upload.svg" width="102"
+																		class="d-block mx-auto" alt>
+																</div>
+																<input onchange="preview(this, 'img1')" class="form-control" id="Image1"  name='image' type="file" required>
+															</div>
+														</div>
+													</div>
+													
+												</div>
+												<div class="col-lg-4">
+													<div class="card mb-8 rounded-4">
+														<div class="card-header p-7 bg-transparent">
+															<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
+														</div>
+														<div class="card-body p-7">
+															<div class="input-upload">
+																<div class="mb-7">
+																	<img id="img2" src="../assets/images/dashboard/upload.svg" width="102"
+																		class="d-block mx-auto" alt>
+																</div>
+																<input onchange="preview(this, 'img2')" class="form-control" id="Image2"  name='image' type="file" required>
+															</div>
+														</div>
+													</div>
+													
+												</div>
+												<div class="col-lg-4">
+													<div class="card mb-8 rounded-4">
+														<div class="card-header p-7 bg-transparent">
+															<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
+														</div>
+														<div class="card-body p-7">
+															<div class="input-upload">
+																<div class="mb-7">
+																	<img id="img3" src="../assets/images/dashboard/upload.svg" width="102"
+																		class="d-block mx-auto" alt>
+																</div>
+																<input onchange="preview(this, 'img3')" class="form-control" id="Image3"  name='image' type="file" required>
+															</div>
+														</div>
+													</div>
+													
+												</div>
+												<div class="col-lg-4">
+													<div class="card mb-8 rounded-4">
+														<div class="card-header p-7 bg-transparent">
+															<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
+														</div>
+														<div class="card-body p-7">
+															<div class="input-upload">
+																<div class="mb-7">
+																	<img id="img4" src="../assets/images/dashboard/upload.svg" width="102"
+																		class="d-block mx-auto" alt>
+																</div>
+																<input onchange="preview(this, 'img4')" class="form-control" id="Image4"  name='image' type="file" required>
+															</div>
+														</div>
+													</div>
+													
+												</div>
+										
+											</div>
+										</div>
+									</div>
+								</div>
+							
+							</main>
+						</div>
+					
+				</div>
+			</form>
+
+
+
+
+			
+                                    <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-5 mt-md-7 mt-4" data-bs-toggle="modal" data-bs-target="#addAddress">Edit Address</button>
+ 
+ 
+ 
+                                    <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-5 mt-md-7 mt-4" data-bs-toggle="modal" data-bs-target="#addAddress">Remove</button>
+
+
+<%- include('../layouts/footer.ejs')%>
+
+
+<div class="svg-container mb-5 justify-content-center d-flex align-items-center " style="height: 40vh;">    
+    <svg class="ft-green-tick" xmlns="http://www.w3.org/2000/svg" height="100" width="100" viewBox="0 0 48 48" aria-hidden="true">
+        <circle class="circle" fill="#5bb543" cx="24" cy="24" r="22"/>
+        <path class="tick" fill="none" stroke="#FFF" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" d="M14 27l5.917 4.917L34 17"/>
+    </svg>
+</div>
+
+
+
+
+  <div class="offcanvas-body">
+                <aside class="primary-sidebar ">
+                    <div class="widget widget-product-category">
+                        <h4 class="widget-title fs-5 mb-6">Categories</h4>
+                        <ul class="navbar-nav navbar-nav-cate" id="widget_product_category">
+                            <!-- <%categoryItemss.forEach(category=>{  %> -->
+                            <li class="nav-item">
+                                <a href="/shop/<%= category.catName %>" title="Body Care"
+                                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5"><span
+                                       
+                                    class="text-hover-underline"></span><%=category.catName %></a>
+                            </li>
+                            <% }) %>

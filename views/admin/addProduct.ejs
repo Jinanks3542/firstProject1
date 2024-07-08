@@ -1,0 +1,249 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+	<body>
+
+		<form id="myForm" class="wrapper dashboard-wrapper" action="/admin/addProduct" method="post">
+			<div class="d-flex flex-wrap flex-xl-nowrap">
+				<%- include('../layouts/adminSidbar.ejs') %>
+					<div class="page-content">
+						<%- include('../layouts/adminNav.ejs') %>
+
+
+							<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
+								<div class="dashboard-page-content">
+									<div class="row mb-9 align-items-center">
+										<div class="col-xxl-9">
+											<div class="row">
+												<div class="col-sm-6 mb-8 mb-sm-0">
+													<h2 class="fs-4 mb-0">Add New Product</h2>
+												</div>
+												<div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
+
+													<button id="add" type="submit"
+														class="overflow-hidden   btn btn-primary">
+														Add
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row">
+										<div class="col-xxl-9">
+											<div class="row">
+												<div class="col-lg-8">
+													<div class="card mb-8 rounded-4">
+														<!-- <div class="card-header p-7 bg-transparent">
+														<h4 class="fs-18 mb-0 font-weight-500">Basic</h4>
+													</div> -->
+														<div class="card-body p-7">
+
+															<div class="mb-8">
+																<label for="product_title"
+																	class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Product
+																	Name
+																</label>
+																<input oninput="exist(this)" name="productName"
+																	type="text" placeholder="Type here"
+																	class="form-control" id="productName" requ                                             ired>
+																	<p class="text-danger" id="msg"></p>
+															</div>
+															<div class="mb-8">
+																<label
+																	class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Full
+																	description</label>
+																<textarea name="description" id="description"
+																	placeholder="Type here" class="form-control"
+																	rows="4" required></textarea>
+															</div>
+															<div class="mb-8 d-flex align-items-center justify-content-around  " style="gap: 1rem;">
+															<div class="">
+																<label for="product_title"
+																class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Category
+															</label>
+															<select name="category" id="">
+																<% categories.forEach((category)=>{ %>
+																	<option value="<%= category._id  %>">
+																		<%= category.catName %>
+																	</option>
+																	<% }) %>
+															</select>
+															
+															</div>
+																<div class="">
+																	<label for="product_title"
+																	class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Brand
+																</label>
+																<select name="brand" id="">
+																	<% brand.forEach((brand)=>{ %>
+																		<option value="<%= brand._id  %>">
+																			<%= brand.brandName %>
+																		</option>
+																		<% }) %>
+																</select>
+																</div>
+
+															</div>
+															<div class="mb-8">
+																<label for="product_title"
+																	class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Price
+																</label> 
+																<input name="price" type="number" min="0"
+																	placeholder="Type here" class="form-control" id=""
+																	required>
+															</div>
+															<div class="mb-8">
+																<label for="product_title"
+																	class="mb-4 fs-13px ls-1 fw-bold text-uppercase">Stock
+																</label>
+																<input name="stock" min="0" type="number"
+																	placeholder="Type here" class="form-control" id=""
+																	required>
+															</div>
+
+
+														</div>
+													</div>
+  
+												</div>
+												<% for(let i=0;i<4;i++){ %>
+													<div class="col-lg-4">
+														<div class="card mb-8 rounded-4">
+															<div class="card-header p-7 bg-transparent">
+																<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
+															</div>
+															<div class="card-body p-7">
+																<div class="input-upload">
+																	<div class="mb-7">
+																		<img id="img<%=i  %>"
+																			src="../assets/images/dashboard/upload.svg"
+																			width="102" class="d-block mx-auto" alt>
+																	</div>
+																	<input
+																		onchange="preview(this, 'img<%=i%>'); upload(this,'<%=i  %>')"
+																		class="form-control" id="Image1" name='imagenn'
+																		type="file" required>
+																	<input required type="text" style="opacity: 0;"
+																		name="image" id="imageU<%=i  %>">
+																</div>
+															</div>
+														</div>
+
+													</div>
+													<% } %>
+
+
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</main>
+					</div>
+
+			</div>
+		</form>
+		<style>
+			::-webkit-scrollbar {
+				width: 0;
+			}
+		</style>
+		<script defer src="https://cdn.crop.guide/loader/l.js?c=VDCZTL"></script>
+		<script>
+			let flag=false
+			function exist(e) {
+				const msg=document.getElementById('msg')
+				fetch('/admin/exist', {
+					method: "put",
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ productName: e.value }),
+				}).then(res => res.json()).then(data => {
+					if (data.exist) {
+						flag=true
+						e.style.border='1px solid red'
+						msg.textContent='product alredy exist'
+				}else{
+					flag=false
+					e.style.border='0px solid'
+					msg.textContent=' '}
+				})
+			}
+
+			function createElement(e) {
+				const border = e.style.borderColor
+				e.style.border = '1px solid red'
+				const ptag = document.createElement('p')
+				ptag.textContent = 'please fill the filed'
+				ptag.style.color = 'red'
+				console.log('form not submit')
+				e.insertAdjacentElement('afterend', ptag)
+				setTimeout(() => {
+					e.style.border = `0.5px solid var(--bs-form-control-bg)`
+					ptag.style.display = 'none'
+				}, 5000)
+			}
+			const form = document.getElementById('myForm');
+			form.addEventListener('submit', (event) => {
+				const inputs = form.querySelectorAll('input');
+				const textarea = form.querySelector('textarea');
+				if(flag) return event.preventDefault()
+				if ( textarea.value.trim() == '') {
+					createElement(textarea)
+						return event.preventDefault()
+					}
+				inputs.forEach((e, i) => {
+					
+					if (e.value.trim() == '') {
+						createElement(e)
+						return event.preventDefault()
+					}
+				})
+
+			})
+
+
+			function preview(e, ImgId) {
+				const img = document.getElementById(ImgId)
+				img.src = URL.createObjectURL(e.files[0])
+			}
+
+			function upload(e, i) {
+				const add = document.getElementById('add');
+
+				add.disabled = true;
+				add.innerHTML = `ADD <div class="spinner-border spinner-border-sm" role="status">
+  <span class="sr-only">Loading...</span>
+</div>`
+				const image = document.getElementById(`imageU${i}`)
+				const pics = e.files[0];
+				const data = new FormData();
+				data.append("file", pics);
+				data.append("upload_preset", "glowing");
+				data.append("cloud_name", "dvlmfufbg");
+				fetch("https://api.cloudinary.com/v1_1/dvlmfufbg/image/upload", {
+					method: "post",
+					body: data,
+				})
+					.then((res) => res.json())
+					.then((data) => {
+
+						console.log(data.url.toString());
+						image.value = data.url.toString()
+						add.innerHTML = `ADD`;
+						add.disabled = false;
+					})
+					.catch((err) => {
+						console.log(err);
+
+					});
+			}
+		</script>
+		<%- include('../layouts/adminFooter.ejs') %>
+			<%- include('../layouts/svg2.ejs') %>
+
+				<div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+					<a href="#"
+						class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+						title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+				</div>
+				
+	</body>
