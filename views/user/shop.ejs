@@ -52,13 +52,12 @@
                     </ul>
                     <ul class="list-unstyled d-flex align-items-center list-inline mb-0">
                         <li class="list-inline-item me-0 w-100 w-lg-auto">
-                            <select class="form-select w-100 w-lg-auto" name="orderby">
-                                <option selected="selected">Default sorting</option>
+                            <select onchange="sort(this)" class="form-select w-100 w-lg-auto" name="orderby">
+                                <option selected="selected"> <a href="/shop"></a>Default sorting</option>
                                 <option value="popularity">Sort by popularity</option>
-                                <option value="rating">Sort by average rating</option>
-                                <option value="date">Sort by latest</option>
-                                <option value="price">Sort by price: low to high</option>
-                                <option value="price-desc">Sort by price: high to low</option>
+                                <option  value="/shop?sort=byLatest"> Sort by latest</option>
+                                <option value="/shop?sort=lowToHigh">Sort by price: low to high</option>
+                                <option value="/shop?sort=highToLow">Sort by price: high to low</option>
                             </select>
                         </li>
                         <li class="list-inline-item d-none d-lg-block ms-7">
@@ -80,7 +79,7 @@
             </div>
             <div class="offcanvas-body">
                 <aside class="primary-sidebar ">
-                    <div class="widget widget-product-category">
+                    <!-- <div class="widget widget-product-category">
                         <h4 class="widget-title fs-5 mb-6">Categories</h4>
                         <ul class="navbar-nav navbar-nav-cate" id="widget_product_category">
                            
@@ -89,35 +88,42 @@
                                     class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5"><span
                                        
                                     class="text-hover-underline"></span></a>
-                            </li>
+                            </li> 
                            
-                            <!-- <li class="nav-item">
-                                <a href="#" title="Skin care"
-                                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active">
-                                    <span class="text-hover-underline me-2">Dry Skin</span>
-                                    <span data-bs-toggle="collapse" data-bs-target="#cat_skin-care"
-                                        class="caret flex-grow-1 d-flex align-items-center justify-content-end collapsed"><svg
-                                            class="icon">
-                                           
-                                        </svg></span> </a>
-                                
-                            </li> -->
-                            <!-- <li class="nav-item">
-                                <a href="#" title="Skin care"
-                                    class="text-reset position-relative d-block text-decoration-none text-body-emphasis-hover d-flex align-items-center text-uppercase fs-14px fw-semibold letter-spacing-5 active">
-                                    <span class="text-hover-underline me-2">Combination Skin </span>
-                                    <span data-bs-toggle="collapse" data-bs-target="#cat_skin-care"
-                                        class="caret flex-grow-1 d-flex align-items-center justify-content-end collapsed"><svg
-                                            class="icon">
-                                           
-                                        </svg></span> </a>
-                                
-                            </li> -->
-                           
-                           
+                         
                         </ul>
-                    </div>
-                    <div class="widget widget-product-hightlight">
+                    </div> -->
+                       <!-- <div class="mb-8 d-flex align-items-center   " style="gap: 1rem;">
+            <div class="">
+                <label  for="product_title"
+                class="mb-4 fs-13px ls-1 fw-bold text-uppercase"><h4>Category</h4>
+            </label>
+            <select name="category" id="">
+                 
+                    <option value=" ">
+                       
+                    </option>
+                    
+            </select>
+            
+            </div>
+        </div> -->
+
+      
+
+
+        <div class="col-lg-8">
+            <label class="mb-4 fs-13px ls-1 fw-bold text-uppercase" for="category"></label>
+            <select onchange="filter(this)" class="form-select" id="category">
+                <option value=""  selected>All Category</option>
+                <% categories.forEach((category)=> { %>
+                    <option <%=cat==category._id?"selected":false%> value="<%= category._id%>"><%= category.catName %></option>
+                    <% }); %>
+            </select>
+        </div>
+        
+        
+                    <!-- <div class="widget widget-product-hightlight">
                         <h4 class="widget-title fs-5 mb-6">Hightlight</h4>
                         <ul class="navbar-nav navbar-nav-cate" id="widget_product_hightlight">
                             <li class="nav-item">
@@ -141,16 +147,16 @@
                                         class="text-hover-underline">Hot Items</span></a>
                             </li>
                         </ul>
-                    </div>
+                    </div> -->
                     
                 </aside>
             </div>
         </div>
-
+        
         <div class="container container-xxl pb-16 pb-lg-18 mb-lg-3">
             <div class="row gy-50px">
                 
-                <%product.forEach((product)=>{  %>
+                <%Productss.forEach((product)=>{  %>
                    
                 <div class="col-sm-6  col-lg-4 col-xl-3">
                     <div class="card card-product grid-1 bg-transparent border-0" data-animate="fadeInUp">
@@ -183,7 +189,7 @@
                                     </span>
                                 </a>
                                 <a class="text-body-emphasis bg-body bg-dark-hover text-light-hover rounded-circle square product-action shadow-sm wishlist"
-                                    href="#" data-bs-toggle="tooltip" data-bs-placement="top"
+                                    href="" data-bs-toggle="tooltip" data-bs-placement="top"
                                     data-bs-title="Add To Wishlist">
                                     <svg class="icon icon-star-light">
                                         <use xlink:href="#icon-star-light"></use>
@@ -198,11 +204,35 @@
                                 </a>
                             </div>
                         </figure>
+                        
                         <div class="card-body text-center p-0">
-                            <span
-                                class="d-flex align-items-center price text-body-emphasis fw-bold justify-content-center mb-3 fs-6">
-                                <!-- <del class=" text-body fw-500 me-4 fs-13px"></del> -->
-                                <ins class="text-decoration-none"> <%=product.price %></ins></span>
+                            <% if (product.offer > 0) { %>
+                                <div style="gap: 10px;" class="d-flex align-items-center justify-content-center mb-3 fs-6">
+                                    
+                                    <span class="price text-body-emphasis me-2" style="font-weight: 100;">
+                                        <s>₹ <%= product.price %>.00</s>
+                                    </span>
+                            
+                                    <span class="price text-body-emphasis fw-bold me-2">
+                                        ₹ <%= product.offerPrice %>.00
+                                    </span>
+                            
+                                    <% 
+                                        let discountPercentage = Math.round(((product.price - product.offerPrice) / product.price) * 100);
+                                    %>
+                                    <span class="fs-6 text-danger">
+                                        (<%= discountPercentage %>% off)
+                                    </span>
+                                </div>
+                            <% } else { %>
+                                <div class="d-flex align-items-center justify-content-center mb-3 fs-6">
+                                  
+                                    <span class="price text-body-emphasis fw-bold">
+                                        ₹ <%= product.price %>.00
+                                    </span>
+                                </div>
+                            <% } %>
+                            
                             <h4
                                 class="product-title card-title text-primary-hover text-body-emphasis fs-15px fw-500 mb-3">
                                 <a class="text-decoration-none text-reset" > <%=product.productName%></a></h4>
@@ -269,33 +299,22 @@
                 </div>
                 <% }) %>
             </div>
-            <nav class="d-flex mt-13 pt-3 justify-content-center" aria-label="pagination" data-animate="fadeInUp">
-                <ul class="pagination m-0">
-                    <li class="page-item">
-                        <a class="page-link rounded-circle d-flex align-items-center justify-content-center" href="#"
-                            aria-label="Previous">
-                            <svg class="icon">
-                                <use xlink:href="#icon-angle-double-left"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">...</a></li>
-                    <li class="page-item"><a class="page-link" href="#">6</a></li>
-                    <li class="page-item">
-                        <a class="page-link rounded-circle d-flex align-items-center justify-content-center" href="#"
-                            aria-label="Next">
-                            <svg class="icon">
-                                <use xlink:href="#icon-angle-double-right"></use>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
+           
         </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+          function filter(item){
+            window.location.href="/shop?cat="+item.value
+        }
+
+        //................................ sorting
+
+        function sort(e){
+            
+            window.location.href=e.value
+        }
+    </script>
     <!-- footer -->
     <%- include('../layouts/footer.ejs') %>
     <!-- footer -->

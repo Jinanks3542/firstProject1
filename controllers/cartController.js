@@ -2,19 +2,10 @@
     const Cart = require('../model/cartModel');
     const Product = require('../model/productModel');
     const Address = require('../model/addressModel')
+    const Coupon = require('../model/coupenModel')
 
 
-    // const loadCart = async(req,res)=>{
-    //     try {
-    //         const userId = req.session.userId
-    //         console.log('userId',userId);
-    //         const cart=await Cart.find({userId:userId})
-    //         console.log('cart',cart);
-    //         res.render('user/cart',{cart:cart})
-    //     } catch (error) {
-    //         console.log(error.message);
-    //     }
-    // }
+ 
     const loadCart = async(req, res) => {
         try {
             const userId = req.session.userId;
@@ -83,6 +74,73 @@
 
     // for checkout
 
+
+    const couponApply = async(req,res)=>{
+        try {    
+
+            const gettingCode = await User.findOne({_id:req.session.userId,'coupons.code':req.body.code},{'coupons.$':1}).populate('coupons.couponId')
+            let percentage
+            let min
+          
+            if(gettingCode.coupons[0].couponStatus=='Claimed'||gettingCode.coupons[0].couponStatus=='Expired'){
+
+
+                const cartData = await  Cart.find({userId:req.session.userId}).populate('products.productId')
+
+                
+                
+                let quantityTotal=0
+                let cartAmountTotal=0
+                cartData.products.forEach(data => {
+                    quantityTotal=data.productId.offerPrice*data.quantity
+                    cartAmountTotal = cartAmountTotal+quantityTotal
+                });
+                res.json({msg:'Your Coupon has already been claimed',total:cartAmountTotal,discount:0})
+
+            }else{
+              
+                gettingCode.coupons.forEach((couponData) => {
+
+                    percentage=couponData.couponId.offer
+                    
+                    
+                    min = couponData.couponId.min
+                   
+                    
+
+                });
+
+                req.session.Coupon=percentage
+                req.session.code=req.body.code
+                const cartDatas = await Cart.findOne({userId:req.session.userId}).populate('products.productId')
+                let quantityTotal =0
+                let cartAmountTotal=0
+
+                cartDatas.products.forEach((Data)=>{
+                    quantityTotal=Data.productId.offerPrice*Data.quantity
+                    cartAmountTotal=cartAmountTotal+quantityTotal
+                })
+
+                if(cartAmountTotal>min){
+                    const discountPrice = Math.round(cartAmountTotal-cartAmountTotal/100*(100-percentage ))
+                    let totalAmount = cartAmountTotal- discountPrice
+                    req.session.totalOrderAmount = totalAmount
+                    res.json({discount:discountPrice,total:totalAmount})
+
+                }else{
+                    res.json({err:'Invalid Amount',total:cartAmountTotal,discount:0})
+                }
+                
+            }
+
+        } catch (error) {
+            console.log(error.message);
+            
+        }
+    }
+
+
+
     const loadCheckout = async(req,res)=>{
         try {
             const {userId}=req.session 
@@ -94,11 +152,27 @@
                   model: 'Brand'
                 }
               });
+              console.log(cartDetail,'cart detail');
+            //   let i = 0
+            //   let  totalAmount =0
+            //   while(i<cartDetail.products.length){
+            //     let iddd = cartDetail.products[i]?.productId
+            //     let product = await Product.findOne({_id:cartDetail.products[i].productId})
+            //     let productPrice = product.price
+            //     let aa = productPrice*cartDetail.products[i].quantity
+            //       totalAmount+=aa
+                  
+            //       i++
+
+            //   }
+              
               const addressDocuments=await Address.find({UserId:userId}).sort({_id:-1}).limit(3)
            
-            const addresses = addressDocuments.length > 0 ? addressDocuments[0].address.slice(-3).reverse() : [];            
-            console.log(cartDetail,'cart detail')
-            res.render('user/checkout',{cartDetail,addresses})
+            const addresses = addressDocuments.length > 0 ? addressDocuments[0].address.slice(-3).reverse() : []; 
+            const couponsData = await User.findOne({_id:userId}).populate('coupons.couponId')
+            
+            
+            res.render('user/checkout',{cartDetail,addresses,couponsData})
 
         } catch (error) {
            console.log(error.message); 
@@ -172,6 +246,7 @@
         loadCheckout,
         checkoutDetails,
         removeAddress,
-        chooseAddress
+        chooseAddress,
+        couponApply
     }
     

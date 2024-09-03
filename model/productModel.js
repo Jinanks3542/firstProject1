@@ -41,25 +41,14 @@ const productSchema = new mongoose.Schema({
         default:false
     },
     //offer details
-    productOfferId:{
-        type:ObjectId,
-        ref:'Offer'
-    },
-    categoryOfferId:{
-        type:ObjectId,
-        ref:'Offer'
-    },
-    productDiscount:{
-        type:Number
-    },
-    categoryDiscount:{
-        type:Number
-    }
+    offer:{
+        type:Number,
+        default:0
+       },
+       offerPrice:{
+        type:Number,
+       }
    
 
-
-},
-{
-    timestamps:true
 })
 module.exports = mongoose.model('Product', productSchema)

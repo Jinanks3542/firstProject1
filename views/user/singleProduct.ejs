@@ -39,14 +39,28 @@
                             </div>
                         </div>
                         <div class="col-md-6 pt-md-0 pt-10">
+                            <% if(singleProduct.offer > 0){ %>
                             <p class="d-flex align-items-center mb-6">
                                 <!-- <span class="text-decoration-line-through">39.00</span> -->
                                 <span class="text-body-emphasis" style="font-weight: bold;">Price :</span>
                                 <span class="fs-18px text-body-emphasis ps-6 fw-bold">
-                                    <%=singleProduct.price%>
+                                   <s><%=singleProduct.price%></s>.00
+                                </span>
+                                <span class="fs-18px text-body-emphasis ps-6 fw-bold">
+                                   <%=singleProduct.offerPrice%>.00
                                 </span>
                                 <!-- <span class="badge text-bg-primary fs-6 fw-semibold ms-7 px-6 py-3">20%</span> -->
                             </p>
+                            <% }else{ %>
+                                <p class="d-flex align-items-center mb-6">
+                                    <!-- <span class="text-decoration-line-through">39.00</span> -->
+                                    <span class="text-body-emphasis" style="font-weight: bold;">Price :</span>
+                                    <span class="fs-18px text-body-emphasis ps-6 fw-bold">
+                                       <%=singleProduct.price%>.00
+                                    </span>
+                    
+                                </p>
+                                <% } %>
                             <h1 class="mb-4 pb-2 fs-4">
                                 <%=singleProduct.productName%>
                             </h1>

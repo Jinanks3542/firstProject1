@@ -14,6 +14,10 @@ const categorySchema=new mongoose.Schema({
     image:{
         type:String,
        
+    },
+    offer:{
+        type:Number,
+        default:0   
     }
 
 })

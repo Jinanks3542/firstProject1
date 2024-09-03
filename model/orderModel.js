@@ -18,7 +18,7 @@ const orderSchema= new mongoose.Schema({
     },
     deliveryAddress:{
         name:{type:String, required:true },
-        phone:{type:String,},
+        phone:{type:Number,required:true},
         pincode:{type:Number,required:true},
         street:{type:String,required:true},
         city:{type:String,required:true},
@@ -56,6 +56,9 @@ const orderSchema= new mongoose.Schema({
                 required:true,
                 default:1,
             }, 
+            productPrice:{
+                type:Number
+            },
                ProductStatus: {
                 type: String,
                 enum: ['Ordered', 'Shipped', 'Delivered','Canceled','Return'], 

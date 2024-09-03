@@ -6,6 +6,7 @@ const auth=require('../middleware/userMiddleware')
 const googleLogin=require('../passport')
 const cartController= require('../controllers/cartController')
 const orderController = require('../controllers/orderController')
+const walletController = require('../controllers/walletController')
 
 
 
@@ -15,6 +16,7 @@ router.get('/login',auth.myAccountauthorize,userControllers.login)
 router.post('/login',userControllers.verifyLogin)
 router.get('/userHome',auth.isblocked,userControllers.loadUserhome)
 router.get('/myAccount',userControllers.loadAccount)
+// router.post('/userProfile',userControllers,loadAccount)
 
 // user signUp
 router.get('/logout',userControllers.userSignUp)
@@ -30,7 +32,6 @@ router.get('/resendOtp',userControllers.resendOtp)
 // shop related
 router.get('/shop',userControllers.shop)
 router.get('/singleProduct/:id',userControllers.singleProduct)
-// router.get('/shop/:name',userControllers.categoryFiltering)
 
 
 // google authentication
@@ -60,7 +61,18 @@ router.post('/order',orderController.placeOrder)
 //  wishlist
 router.get('/wishlist',userControllers.loadWishlist)
 router.patch('/addWishlist',userControllers.addWishlist)
+router.post('/wishRemove',userControllers.wishRemove)
 
+// wallet
+router.post('/razors',walletController.razorPay)
+router.post('/addWallet',walletController.walletAdd)
+
+router.post('/changePassword',userControllers.changepassword)
+router.get('/singleOderDatas/:orderId',userControllers.viewOrder)
+router.post('/couponApply',cartController.couponApply)
+router.post('/addAddress',userControllers.addAddress)
+router.post ('/editAddress',userControllers.editAddress)
+router.patch('/saveEdit',userControllers.saveEdit)
 
 module.exports=router
 

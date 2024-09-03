@@ -48,10 +48,25 @@
                                                                                 <%= category.catName %>
                                                                             </p>
                                                                         </a>
+                                                                        
                                                                     </div>
+
+                                                                  
                                                                 </td>
+
+
                                                               
                                                                 <td>
+                                                                    <div>  
+                                                                        <span style="font-size: 19px;">Offer</span>
+                                                                        <select  name="offerSelect" onchange="catOffer('<%=category._id%>')" id="offerValue<%=category._id  %>" style="width: 40px; height: 20px;" >
+                                                                            <% catOffer.forEach((catoffer)=>{ %>
+
+                                                                            <option value="<%=catoffer.offer %>"  <% if (catoffer.offer === category.offer) { %> selected <% } %>> <%=catoffer.offer%> </option>
+                                                                            <% }) %>
+                                                                        </select>
+
+                                                                    </div>
                                                                   
                                                                 </td>
                                                                 <td><%= category.date %></td>
@@ -120,7 +135,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <nav aria-label="Page navigation example" class="mt-6 mb-4">
+                                    <!-- <nav aria-label="Page navigation example" class="mt-6 mb-4">
                                         <ul class="pagination justify-content-start">
                                             <li class="page-item active mx-3"><a class="page-link" href="#">01</a></li>
                                             <li class="page-item mx-3"><a class="page-link" href="#">02</a></li>
@@ -131,9 +146,29 @@
                                                 <a class="page-link" href="#"><i class="far fa-chevron-right"></i></a>
                                             </li>
                                         </ul>
-                                    </nav>
+                                    </nav> -->
                                 </div>
-                                <footer class="pt-6 pb-10 footer-dashboard mt-auto">
+                                <script>
+                                     function catOffer(categoryId) {
+                                        
+                                         const offerSelect = document.getElementById('offerValue'+categoryId);
+                                         console.log(categoryId,offerSelect.value);
+                                        
+                                        
+                                        
+
+                                            fetch('/admin/categoryOffer', {
+                                            method: "POST",
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            },
+                                            body: JSON.stringify({ categoryId, offer: offerSelect.value })
+                                        })
+
+                                    }
+                                </script>
+
+                                <!-- <footer class="pt-6 pb-10 footer-dashboard mt-auto">
                                     <div class="row">
                                         <div class="col-sm-6 text-sm-start text-center">
                                             <script>
@@ -145,7 +180,7 @@
                                             All rights reserved 
                                         </div>
                                     </div>
-                                </footer>
+                                </footer> -->
                             </main>
                     </div>
             </div>

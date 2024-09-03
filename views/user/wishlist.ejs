@@ -31,27 +31,51 @@
                             <% console.log(item) %>
                             <tr class="border">
                             <th scope="row" class=" ps-xl-10 py-6 d-flex align-items-center border-0">
-                                <a href="#" class=" d-block text-muted fw-lighter"><i class="fas fa-times"></i></a>
+                                <a href="javascript:void(0);" class=" d-block text-muted fw-lighter"  onclick="remove('<%=item.productId._id%>')">
+                                    <i class="fas fa-times"></i></a>
                                 <div class="d-flex align-items-center">
                                     <div class="ms-6 me-7">
+                                        <% if (item.productId && item.productId.images && item.productId.images[0]) { %>
                                         <img src="#" data-src="<%=item.productId.images[0] %>"
                                             class="img-fluid lazy-image" height="100" width="75" alt>
+                                            <% } else { %>
+                                                <img src="#" data-src="placeholder.jpg" class="img-fluid lazy-image" height="100" width="75" alt="No Image">
+                                                <% } %>
                                     </div>
                                     <div>
-                                        <p class=" text-body-emphasis fw-semibold mb-5"><%=item.productId.productName %></p>
-                                        <p class="fw-bold fs-14px mb-4 text-body-emphasis">
-                                            <span
-                                                class=" fw-normal fs-13px text-decoration-line-through text-secondary pe-3"><%=item.productId.catName%></span>
-                                            <span>$<%=item.productId.price%></span>
-                                        </p>
-                                        <p class=" mb-0 text-secondary fw-normal"></p>
+                                        <% if (item.productId) { %>
+                                            <p class="text-body-emphasis fw-semibold mb-5"><%= item.productId.productName %></p>
+                                            <p class="fw-bold fs-14px mb-4 text-body-emphasis">
+                                                <% if (item.productId.offer > 0) { %>
+                                                    <span class="fw-normal fs-13px text-decoration-line-through text-secondary pe-3">
+                                                        <s>₹ <%= item.productId.price %>.00</s>
+                                                    </span>
+                                                    <span class="fw-bold me-3" >
+                                                        ₹ <%= item.productId.offerPrice %>.00
+                                                    </span>
+                                                    <% 
+                                                        
+                                                        let discountPercentage = Math.round(((item.productId.price - item.productId.offerPrice) / item.productId.price) * 100);
+                                                    %>
+                                                    <span class="fs-13px" style="color: rgb(248, 136, 136);">
+                                                        (<%= discountPercentage %>% off)
+                                                    </span>
+                                                <% } else { %>
+                                                    <span class="fw-bold">₹ <%= item.productId.price %>.00</span>
+                                                <% } %>
+                                            </p>
+                                            <p class="mb-0 text-secondary fw-normal"><%= item.productId.catName %></p>
+                                        <% } else { %>
+                                            <p class="text-body-emphasis fw-semibold mb-5">Product information not available</p>
+                                        <% } %>
                                     </div>
+                                    
                                 </div>
                             </th>
-                            <% if(item.productId.stock>0){ %>
+                            <% if (item.productId && item.productId.stock > 0) { %>
                             <td class=" align-middle text-end pe-10">
                                 <span class="me-6 text-success">In stock</span>
-                                <button  class="btn fs-15px px-9 lh-sm btn-outline-dark" onclick="addCart('<%=item.productId._id%>')">Add To Cart</button>
+                                <a href="javascript:void(0)"  class="btn fs-15px px-9 lh-sm btn-outline-dark" onclick="addToCart('<%= item.productId._id %>')">Add To Cart</a>
                             </td>
                             <%}else{  %>
                                 <td class=" align-middle text-end pe-10">
@@ -604,11 +628,15 @@
             </div>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
     <script>
-        async function addcart(wishlistItem){
-            const {data} = await axios.post('/addCart',{id:wishlistItem})
-            if({data}.success){
+          async function addToCart(productId){
+            console.log('jinan');
+            const response = await axios.patch('/addCart',{id:productId})
+            const data = response.data
+            if(data.success){
                         const Toast = Swal.mixin({
                         toast: true,
                        
@@ -648,6 +676,24 @@
                     });
                     }
                 
+        }
+
+        
+       async function remove(id){
+         try {
+            const response = await axios.post('/wishRemove',{id})
+            
+            if(response.data.success){
+                console.log('Item removed successfully:', id);
+
+                window.location.reload()
+            }else{
+                console.error('Failed to remove item:', response.data.message);
+            }
+         } catch (error) {
+            console.error('Error occurred during item removal:', error);
+         }
+            
         }
     </script>
 

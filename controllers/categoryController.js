@@ -2,6 +2,7 @@ const Category = require('../model/categoryModel')
 const Admin = require('../model/adminModel')
 const multer = require('multer')
 const categoryModel = require('../model/categoryModel')
+const Offer = require('../model/offerModel')
 
 
 
@@ -11,10 +12,11 @@ try {
 
     
     const categories=await Category.find({})
+    const catOffer = await Offer.find({})
    
     console.log('categories',categories)
 
-    res.render('admin/allCategory',{categories:categories})
+    res.render('admin/allCategory',{categories:categories, catOffer})
 } catch (error) {
     console.log(error.message);
 }
@@ -36,7 +38,6 @@ const categoryAdd = async(req,res)=>{
             description:req.body.description,
             image: req.file ? req.file.filename : null
 
-            
         })
         res.redirect('/admin/allCategory') 
         
@@ -93,6 +94,8 @@ const catBlock = async(req,res)=>{
         console.log(error.message);
     }
 }
+
+
 
 
 

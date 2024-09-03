@@ -5,6 +5,7 @@ const brandModel = require('../model/brandModel')
 
 const loadBrand = async (req,res)=>{
     try {
+   
         const brand = await Brand.find({})
         res.render('admin/allBrand',{brand})
     } catch (error) {

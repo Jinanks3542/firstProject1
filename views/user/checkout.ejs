@@ -47,51 +47,139 @@
                                                 <span class="text-body"><%=cartDatas.productId.brand.brandName%></span>
                                             </p>
                                             <div class="ms-auto">
-                                                <p class="fs-14px text-body-emphasis mb-0 fw-bold"><%=cartDatas.productId.price%></p>
+                                                <p class="fs-14px text-body-emphasis mb-0 fw-bold"><%=cartDatas.productId.offePrice%></p>
                                             </div>
                                         </div>
                                         
                                     </div>
-                                    <% grandTotal += cartDatas.productId.price * cartDatas.quantity %>
+                                    <% grandTotal += cartDatas.productId.offerPrice * cartDatas.quantity %>
                                     
                                 </div>
                                 <% }) %>
-                                
+                                                           
                             </div>
-
+                            
+                            
                             <div class="card-footer bg-transparent py-5 px-0 mx-10">
+                                <%let total=0%>
+                                <% let finlAmount=0%>
+                                <% let quantityProduct=false%>
+                                <% cartDetail.products.forEach((data) => {%>
+                                    <%total=data.productId.offerPrice*data.quantity%>
+                                    <%finlAmount=finlAmount+total%>
+                                <% }); %> 
+
                                 <div class="d-flex align-items-center fw-bold mb-6">
                                     <span class="text-body-emphasis p-0">Total price:</span>
-                                    <span class="d-block ms-auto text-body-emphasis fs-4 fw-bold">$<%=grandTotal %></span>
+                                    <span class="d-block ms-auto text-body-emphasis fs-4 fw-bold">₹<%=grandTotal %></span>
+                                </div>
+                                <div class="d-flex align-items-center fw-bold mb-6">
+                                    <span class="text-body-emphasis p-0">Discount:</span>
+                                    <span class="d-block ms-auto text-body-emphasis fs-4 fw-bold" id="discount">₹.00</span>
+                                </div>
+                                <div class="d-flex align-items-center fw-bold mb-6">
+                                    <span class="text-body-emphasis p-0">Final Amount:</span>
+                                    <span class="d-block ms-auto text-body-emphasis fs-4 fw-bold" id="final">₹<%=grandTotal %></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-8 order-lg-first pe-xl-20 pe-lg-6">
                         <div class="checkout">
-                            <p class="mb-5">Returning customer? 
+                            <!-- <p class="mb-5">Returning customer? 
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#signInModal">Click here to login</a>
-                            </p>
+                            </p> -->
                             <p>Have a coupon?
+                                <h6 class="text-danger" id="invalidAmount"></h6>
+                                <h6 class="text-danger" id="TimeExceed"></h6>
                                 <a data-bs-toggle="collapse" href="#collapsecoupon" role="button" aria-expanded="false"
                                     aria-controls="collapsecoupon">Click here to enter your code</a>
                             </p>
+                            <button
+                                type="button"
+                                class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11 mt-md-7 mt-4"
+                                data-bs-toggle="modal"
+                                data-bs-target="#availableCoupon">
+                                Available Coupons
+                                </button>
+
+
                             <div class="collapse" id="collapsecoupon">
                                 <div class="card mw-60 border-0">
                                     <div class="card-body py-10 px-8 my-10 border">
                                         <p class="card-text text-body-emphasis mb-8">
                                             If you have a coupon code, please apply it below.</p>
                                         <div class="input-group position-relative">
-                                            <input type="email" class="form-control bg-body rounded-end"
-                                                placeholder="Your Email*">
+                                            <input type="text" id="couponCode" class="form-control bg-body rounded-end"
+                                                placeholder="Your Code">
                                             <button type="submit"
-                                                class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary">
+                                                class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary" onclick="apply()">
                                                 Apply Coupon
                                             </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <!-- Modal for available coupons  -->
+
+                            <div class="bd-example bg-body-tertiary">
+                                <div class="modal fade" id="availableCoupon" tabindex="-1" aria-labelledby="availableCouponLabel" aria-hidden="true">
+                                  <div class="modal-dialog">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="availableCouponLabel">Available Coupons</h5>
+                                        
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                      </div>
+                                      <div class="modal-body">
+
+                                        <% couponsData.coupons.forEach((elements)=>{%>
+                                            <% console.log(couponsData.coupons);
+                                             %>
+                                           <% if(elements.couponStatus=='Claim'){ %>
+                                        <div class="col-md-6 mb-4">
+                                            <div class="card mb-5 shadow-sm" style="max-width: 410px; height: 180px; position: relative;">
+                                              <div class="row g-0 h-100 " style="width: 410px;">
+                                                <div class="col-md-4 h-100">
+                                                  <a href="../shop/product-details-v1.html">
+                                                    
+                                                    <img 
+                                                      src="/image/coupon2.jpg" 
+                                                      alt="<%=elements.couponId.name %>" 
+                                                      class="img-fluid rounded-start h-100" 
+                                                      style="object-fit: cover; width: 100%; height: 100%;">
+                                                  </a>
+                                                </div>
+                                                <div class="col-md-8 h-100" style="background-color: #e3e6ef;">
+                                                  <div class="card-body d-flex flex-column justify-content-center h-100" style="color: #3e3e3e;">
+                                                  
+                                                    <!-- Coupon Details -->
+                                                    <h3 class="card-title mb-2" style="color: #7d3636; font-size: 24px; font-family:fantasy;"><%= elements.couponId.name %></h3>
+                                                    <h4 class="card-text mb-2" style="color: #a33939; font-family: initial;"><%= elements.couponId.offer %>% Off</h4>
+                                                    
+                                                    <p class="card-text mb-2" >
+                                                      <samp style="font-size: 19px; color: #bb4021; font-family: initial;"><%= elements.couponId.code %></samp>
+                                                    </p>
+                                                    
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <% } %>
+                                          <% })  %>
+                                          
+                                      </div>
+                                     
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              
+
+                              <!-- Modal Coupon end here -->
+
                             <h4 class="fs-4 pt-4 mb-7">Shipping Information</h4>
                             <div class="mb-7">
                                 
@@ -141,10 +229,10 @@
                                 <div class="nav nav-tabs border-0">
                                     <button class="btn btn-payment px-12 mx-2 py-6 me-7 my-3 nav-link" data-bs-toggle="tab"  
                                         data-bs-target="#paypal-tab">
-                                        <input type="radio"    name="pp"  value="upi">
-                                        <svg class="icon icon-paylay fs-32px text-body-emphasis">
+                                        <input type="radio"    name="pp"  value="Online Payment">
+                                        <!-- <svg class="icon icon-paylay fs-32px text-body-emphasis">
                                             <use xlink:href="#icon-paylay"></use>
-                                        </svg>
+                                        </svg> -->
                                         <span class="ms-3 text-body-emphasis fw-semibold fs-6">Razorpay</span>
                                     </button>
 
@@ -265,7 +353,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" onclick="">Save changes</button>
+                  <button type="button" class="btn btn-primary" onclick="">Save Changes</button>
                 </div>
               </div>
             </div>
@@ -358,7 +446,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" onclick="addAddress()">Save changes</button>
+                  <button type="button" class="btn btn-primary" onclick="addAddress()">Add Address</button>
                 </div>
               </div>
             </div>
@@ -376,12 +464,10 @@
         <%- include('../layouts/svg.ejs')%>
             <!-- svg -->
 
-
             <!-- mobile nav bar -->
             <%- include('../layouts/mobileNavbar.ejs')%>
                 <!-- mobile nav bar -->
             
-                
             </body>
             
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -391,6 +477,38 @@
 <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
 <script>
+    let discountAmount =0
+           async function apply(){
+            const discount = document.getElementById('discount')
+            const final = document.getElementById('final') 
+            const invalid = document.getElementById('invalidAmount')
+            const exceed = document.getElementById('TimeExceed')
+            
+            try {
+                const code = document.getElementById('couponCode').value
+                const response = await axios.post('/couponApply',{code:code})
+
+                if (response.data.err) {
+
+            exceed.textContent = response.data.err;
+            invalid.textContent = 'Invalid or expired coupon';
+            discount.textContent = '₹0.00';
+            final.textContent = `₹${response.data.total}.00`;
+
+        } else {
+            discountAmount = response.data.discount
+            discount.textContent = `₹${response.data.discount}.00`;
+            final.textContent = `₹${response.data.total}.00`;
+        }
+            } catch (error) {
+                console.log(error);
+                
+            }
+             
+             
+        }
+
+
     async function addAddress(){
 
         // reset errors
@@ -441,24 +559,27 @@
         close.click()
         
 
-      
-
 }
+
+
 const form = document.getElementById('orderForm')
 
  function placeOrder(amount,userId){
-
-    const upi= document.querySelector('input[name="pp"]:checked')
-    if(upi.value==="Cash on Delivery"){
-        form.submit()
-    }else{
-        razor(amount, userId)
+     let final = amount
+     const upi= document.querySelector('input[name="pp"]:checked')
+     if(upi.value==="Cash on Delivery"){
+         form.submit()
+        }else{
+            if(discountAmount > 0){
+                final = amount - discountAmount
+            }
+        razor(final, userId)
     }
 
 }
 
 function razor(amount, userId) {
-   
+
             fetch('/razor', {
                 method: 'POST',
                 headers: { 'Content-type': 'application/json' },
@@ -472,7 +593,7 @@ function razor(amount, userId) {
                         "currency": "INR",
                         "name": "GLOWING",
                         "handler": function (response) {
-                     
+                            form.submit();
                         },
                         "profile": {
                             "name": `${data.name}`,
@@ -517,6 +638,11 @@ function razor(amount, userId) {
             console.error('Error:', error);
         });
         }
+
+
+
+
+
         
 </script>
 

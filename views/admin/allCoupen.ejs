@@ -1,0 +1,285 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <body>
+        <div class="wrapper dashboard-wrapper">
+            <div class="d-flex flex-wrap flex-xl-nowrap">
+                <%- include('../layouts/adminSidbar.ejs') %>
+                    <div class="page-content">
+                        <%- include('../layouts/adminNav.ejs') %>
+
+                            <main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
+                                <div class="dashboard-page-content">
+                                    <div class="row mb-9 align-items-center justify-content-between">
+                                        <div class="col-md-6 mb-8 mb-md-0">
+                                            <h2 class="fs-4 mb-0">Coupon List</h2>
+                                            
+                                        </div>
+                                        <div class="col-md-6 d-flex flex-wrap justify-content-md-end">
+                                          
+                                            <a href="/admin/addCoupen" class="btn btn-primary">
+                                              Add Coupon
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-4 rounded-4 p-7">
+                                        <div class="card-header bg-transparent px-0 pt-0 pb-7">
+                                            <h4 class="fs-4 mb-8">Coupons</h4>
+                                            <div class="row align-items-center justify-content-between">
+                                             
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="card doc-example mb-12 mt-6 ">
+                                            <div class="card-body"> -->
+                                        <!-- <div class="doc-example-preview"> -->
+                                            <%//coupons.forEach((data)=>{%>
+                                              
+                                        <!-- <div class="card mb-5 shadow-sm" style="max-width: 540px; height: 180px;">
+                                            <div class="row g-0 h-100">
+                                                <div class="col-md-4 h-100">
+                                                    <a href="../shop/product-details-v1.html">
+                                                        <img 
+                                                            src="/image/coupon2.jpg" 
+                                                            alt="<%//= data.name %>" 
+                                                            class="img-fluid rounded-start h-100" 
+                                                            style="object-fit: cover; width: 100%; height: 100%;">
+                                                    </a>
+                                                </div>
+                                                <div class="col-md-8 h-100" style="background-color: #d8cfc4;">
+                                                    <div class="card-body d-flex flex-column justify-content-center h-100" style="color: #3e3e3e;">
+                                                        <h3 class="card-title mb-2" style="color: #3e1602;"><%//= data.name %></h3>
+                                                        <h4 class="card-text mb-2" style="color: #c67662;"><%//= data.offer %>% Off</h4>
+                                                        <p class="card-text mb-2" style="color: #252525; font-size: 17px;">
+                                                            Code: <samp style="font-size: 22px; color: #c37663;"><%//= data.code %></samp>
+                                                        </p>
+                                                        <p class="card-text mb-2" style="color: #2a2929; font-size: 17px;">
+                                                            Valid Till: <samp style="font-size: 22px; color: #b96d5a;"><%//= data.expiryDate.toLocaleDateString() %></samp>
+                                                        </p>
+                                                        <p class="card-text" style="color: #b96d5a; font-size: 19px;">
+                                                            <%=// data.description %>
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div> -->
+                                        
+                                        <%// }) %>
+                                        <!-- </div> -->
+                                        <!-- </div>
+                                    </div> -->
+
+                                    <!--.................... coupon listing here......................... -->
+
+                                    <div class="card doc-example mb-12 mt-6">
+                                        <div class="card-body">
+                                          <div class="row">
+                                            <% coupons.forEach(function(data, index) { %>
+                                              <div class="col-md-6 mb-4">
+                                                <div class="card mb-5 shadow-sm" style="max-width: 410px; height: 180px; position: relative;">
+                                                  <div class="row g-0 h-100">
+                                                    <div class="col-md-4 h-100">
+                                                      <a href="../shop/product-details-v1.html">
+                                                        <img 
+                                                          src="/image/coupon2.jpg" 
+                                                          alt="<%= data.name %>" 
+                                                          class="img-fluid rounded-start h-100" 
+                                                          style="object-fit: cover; width: 100%; height: 100%;">
+                                                      </a>
+                                                    </div>
+                                                    <div class="col-md-8 h-100" style="background-color: #e3e6ef;">
+                                                      <div class="card-body d-flex flex-column justify-content-center h-100" style="color: #3e3e3e;">
+                                                        <!-- Edit and Delete Icons -->
+                                                        <div style="position: absolute; top: 10px; right: 10px;">
+                                                          <a href="/admin/editCoupen?id=<%=data._id%>" title="Edit" style="color: #3e3e3e; margin-right: 10px;">
+                                                            <i class="fas fa-edit" style="font-size: 20px;"></i>
+                                                          </a>
+                                                          <a href="" title="Delete" style="color: #b96d5a;"   onclick="remove('<%=data._id%>')">
+                                                            <i class="fas fa-times" style="font-size: 20px;"></i>
+                                                          </a>
+                                                        </div>
+                                                        <!-- Coupon Details -->
+                                                        <h3 class="card-title mb-2" style="color: #7d3636; font-size: 24px; font-family:fantasy;"><%= data.name %></h3>
+                                                        <h4 class="card-text mb-2" style="color: #a33939; font-family: initial;"><%= data.offer %>% Off</h4>
+                                                        
+                                                        <p class="card-text mb-2" >
+                                                          <samp style="font-size: 19px; color: #bb4021; font-family: initial;"><%= data.code %></samp>
+                                                        </p>
+                                                        <!-- <p class="card-text mb-2" style="color: #2a2929; font-size: 17px; font-family: cursive;">
+                                                          Valid Till: <samp style="font-size: 19px; color: #b3543d; font-family:inherit;"><%//= data.expiryDate.toLocaleDateString() %></samp>
+                                                        </p> -->
+                                                        <!-- <p class="card-text" style="color: #b35139; font-size: 19px; font-family: initial;">
+                                                          <%=// data.description %>
+                                                        </p> -->
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                      
+                                              <% if ((index + 1) % 2 === 0) { %>
+                                                </div><div class="row">
+                                              <% } %>
+                                            <% }); %>
+                                      
+                                            <% if (coupons.length % 2 !== 0) { %>
+                                              </div>
+                                            <% } %>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      
+                                      <!-- ...................coupon listing ending here.......................... -->
+                                    
+                                    
+                                        <!-- <div class="card-header px-0 mx-10 bg-transparent py-8">
+                                           
+                                            
+                                            <%//cartDetail?.products?.forEach((cartDatas,i)=>{ %>
+                                            <div class="d-flex w-100 mb-7">
+                                                <div class="me-6">
+                                                    <%// i&&console.log(cartDatas.productId.images,"lll");  %>
+                                                    <img  src="<%//=cartDatas.productId.images[0]  %>"
+                                                        class="lazy-image" width="60" height="80"
+                                                        alt="Natural Coconut Cleansing Oil">
+                                                </div>
+                                                <div class="d-flex flex-grow-1">
+                                                    <div class="pe-6" >
+                                                        
+                                                        
+                                                                <a href="#" class><%//=cartDatas.productId.productName %><span class="text-body">
+                                                                </span></a>
+                                                        <p class="fs-14px text-body-emphasis mb-0 mt-1">Brand:
+                                                            <% //console.log("   cart "+cartDatas.productId.brand.brandName) %>
+                                                            <span class="text-body"><%//=cartDatas.productId.brand.brandName%></span>
+                                                        </p>
+                                                        <div class="ms-auto">
+                                                            <p class="fs-14px text-body-emphasis mb-0 fw-bold">jddjnij:<%//=cartDatas.productId.price%></p>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+                                                <%// grandTotal += cartDatas.productId.price * cartDatas.quantity %>
+                                                
+                                            </div>
+                                            <%// }) %>
+                                            
+                                        </div> -->
+                                        
+                                        <!-- <div class="card-body px-0 pt-7 pb-0">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover align-middle table-nowrap mb-0" >
+                                                    
+                                                     <thead>
+                                                        <th>Sl No.</th>
+                                                        <th>
+                                                        Coupen Name
+                                                        </th>
+                                                        <th>Discount Amount</th>
+                                                        <th>Coupen Code</th>
+                                                        <th>Validity</th> 
+                                                        <th>Description</th>
+                                                        <th class="text-center">Action</th> 
+
+                                                        
+                                                    </thead> 
+                                                
+                                                    <tbody>
+                                                        
+                                                        <%coupons.forEach((data,i)=>{  %>
+                                                            
+                                                        <tr>
+                                                            <td class="text-center">
+                                                              <%=i+1 %>
+                                                            </td>
+                                                            <td>
+                                                                <div class="d-flex align-items-center flex-nowrap">
+                                                                  
+                                                                    <a href="../shop/product-details-v1.html"
+                                                                        title="Flowers cotton dress" class="ms-6">
+                                                                        <p class="fw-semibold text-body-emphasis mb-0">
+                                                                            <%//=data.name%></p>
+                                                                    </a>
+                                                                </div>
+                                                            </td>
+                                                            
+                                                            <td><%//=data.offer%></td>
+                                                            <td><%//=data.offer%></td>
+                                                            <td><%//=data.offer%></td>
+                                                            <td><%//=data.offer%></td>
+                                                           
+                                                            
+                                                            <td class="text-center">
+                                                                <div class="d-flex flex-nowrap justify-content-center">
+                                                                    <a href="/admin/editOffer/?id=<%=data._id%>"
+                                                                        class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4"><i
+                                                                            class="far fa-pen me-2"></i>Edit</a>
+                                                                    
+                                                                    <button
+                                                                         class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4" onclick="remove('<%//=data._id%>')" ><i 
+                                                                            class="far fa-trash me-2"></i>Delete </button>
+                                                                    
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                          
+                                                            
+                                                        <% }) %>
+                                                        
+                                                            
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div> -->
+                                    </div>
+                                   
+                                </div>
+
+                                <%-// include('../layouts/adminPagination.ejs') %>
+
+                                <!-- <footer class="pt-6 pb-10 footer-dashboard mt-auto">
+                                    <div class="row">
+                                        <div class="col-sm-6 text-sm-start text-center">
+                                            <script>
+                                                document.write(new Date().getFullYear());
+                                            </script>
+                                            
+                                        </div>
+                                        <div class="col-sm-6 text-sm-end text-center">
+                                            
+                                        </div>
+                                    </div>
+                                </footer> -->
+                            </main>
+                    </div>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+        <script>
+             function remove(couponId){
+                const rmRemove = document.getElementById('remove'+couponId)
+                
+                axios.post('/admin/removeCoupon',{couponId})
+                rmRemove.remove()
+                  
+            }
+        </script>
+
+        <%- include('../layouts/adminFooter.ejs') %>
+            <%- include('../layouts/svg2.ejs') %>
+
+                <div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+                    <a href="#"
+                        class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+                        title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+                </div>
+
+            
+
+    </body>
+
+    <!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/home-02.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:45:35 GMT -->
+
+    </html>

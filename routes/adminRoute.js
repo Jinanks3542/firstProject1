@@ -8,6 +8,8 @@ const upload = require('../util/multer');
 const productController = require('../controllers/productController')
 const brandController = require('../controllers/brandController')
 const orderController = require('../controllers/orderController')
+const offerController = require('../controllers/offerController')
+const coupenController = require('../controllers/coupenController')
 
 
 
@@ -51,6 +53,24 @@ adminRoute.patch('/brandBlock',brandController.brandBlock)
 // order related
 adminRoute.get('/orderList',orderController.loadOrderList)
 adminRoute.get('/singleOrder/:id',orderController.viewDetail)
+
+// Offer related
+adminRoute.get('/allOffers',offerController.LoadOffer)
+adminRoute.get('/addOffer',offerController.LoadAddOffer)
+adminRoute.post('/addOffer',offerController.addOffer)
+adminRoute.get('/editOffer',offerController.loadEditOffer)
+adminRoute.post('/editOffer',offerController.editOffer)
+adminRoute.post('/removeOffer',offerController.removeOffer)
+adminRoute.post('/productOffer',offerController.productOffer)
+adminRoute.post('/categoryOffer',offerController.categoryOffer)
+
+// Coupen related
+adminRoute.get('/allCoupen',coupenController.LoadCoupen)
+adminRoute.get('/addCoupen',coupenController.loadAddCoupen)
+adminRoute.post('/addCoupen',coupenController.addCoupen)
+adminRoute.get('/editCoupen',coupenController.loadEditCoupen)
+adminRoute.post('/editCoupen',coupenController.editCoupen)
+adminRoute.post('/removeCoupon',coupenController.removeCoupon)
 
 
 module.exports=adminRoute

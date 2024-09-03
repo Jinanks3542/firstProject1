@@ -71,8 +71,16 @@ const loadHome = async (req, res) => {
 
 const allUsers = async (req, res) => {
     try {
+        const limit = 5
+        const page = parseInt(req.query.page)||1
+        const skip = (page-1) * limit
+        const allUsers = await user.countDocuments()
+        const totalPages = Math.ceil(allUsers/limit)
+
+      
+    
         const userData = await user.find()
-        res.render('admin/userList', { userData })
+        res.render('admin/userList', {totalPages,  currentPage :page, userData })
     } catch (error) {
         console.log(error.message);
     }

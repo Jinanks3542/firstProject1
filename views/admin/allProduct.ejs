@@ -44,8 +44,10 @@
                                                         <th>Price</th>
                                                         <th>Description</th>
                                                         <th>Category</th>
-                                                        <th></th>
+                                                        <th>Offer</th>
+                                                        <th>Offer Price</th>
                                                         <th>Stock</th>
+                                                        
                                                         <th class="text-center ">Action</th>
                                                         
                                                     </thead>
@@ -75,10 +77,18 @@
                                                             <td><%=product.price%></td>
                                                             <td><%=product.description%></td>
                                                             <td><%=product.categoryId?.catName%></td>
-                                                            <td>
+                                                            
+                                                            <td><select name="offerSelect" onchange="Offer('<%=product._id%>',)" id="OfferValue<%=product._id%>">
+                                                                <% offerApply.forEach((Offer) => { %>
+                                                                    <option value="<%=Offer.offer%>"  <% if (Offer.offer === product.offer) { %> selected <% } %>><%=Offer.offer%></option>
+                                                                <% }) %>
+                                                            </select></td>
+                                                            <td id="offerPrice<%=product._id %>"><%=product.offerPrice %></td>
+
+                                                            <!-- <td>
                                                                 <span
                                                                     class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-success border-0 text-capitalize fs-12">Active</span>
-                                                            </td>
+                                                            </td> -->
                                                             <td><%=product.stock%></td>
                                                             <td class="text-center">
                                                                 <div class="d-flex flex-nowrap justify-content-center">
@@ -97,8 +107,7 @@
                                                                 </div>
                                                             </td>
                                                         </tr>
-                                                    
-                                                     
+                                                        
                                                         <% }) %>
                                                     </tbody>
                                                 </table>
@@ -110,7 +119,7 @@
 
                                 <%- include('../layouts/adminPagination.ejs') %>
 
-                                <footer class="pt-6 pb-10 footer-dashboard mt-auto">
+                                <!-- <footer class="pt-6 pb-10 footer-dashboard mt-auto">
                                     <div class="row">
                                         <div class="col-sm-6 text-sm-start text-center">
                                             <script>
@@ -122,7 +131,7 @@
                                             All rights reserved
                                         </div>
                                     </div>
-                                </footer>
+                                </footer> -->
                             </main>
                     </div>
             </div>
@@ -146,6 +155,26 @@
 							body:JSON.stringify({id}) 
 						})
                 }
+
+                function Offer(ProductId){
+                const offerSelect = document.getElementById('OfferValue' + ProductId)
+                const OfferPrices = document.getElementById('offerPrice'+ ProductId)
+                    
+                    const selectedOffer = offerSelect.value;
+
+                    fetch('/admin/productOffer', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ ProductId, Offer: selectedOffer })
+                    }).then((res)=>res.json())
+                    .then((data)=>{
+                        OfferPrices.textContent='₹'+data.OfferPrice
+                    })
+
+                    }
+                
 
                 </script>
 

@@ -48,7 +48,7 @@
                                                             name="products" value="checkbox">
                                                     </div>
                                                     <div class="ms-6 me-7">
-                                                        <img src="#" data-src="<%=e.productId.images[0]  %>"
+                                                        <img src="#" data-src="<%=e.productId.images[0] %>"
                                                             class="lazy-image" width="75" height="100"
                                                             alt="Natural Coconut Cleansing Oil">
                                                     </div>
@@ -59,13 +59,33 @@
                                                         </p>
 
                                                         <p class="card-text">
-                                                            <span
-                                                                class="fs-13px fw-500 text-decoration-line-through pe-3">
-                                                                <%= e.productId.quantity %>
+                                                        </span>
+                                                        <% if (e.productId.offer > 0) { %>
+                                                           
+                                                            <span class="fs-15px text-body-emphasis me-3" style="font-weight: 100;">
+                                                                <s>₹ <%= e.productId.price %>.00</s>
                                                             </span>
-                                                            <span class="fs-15px fw-bold text-body-emphasis">
-                                                                <%= e.productId.price %>
+                                                            
+                                                            
+                                                            <span class="fs-15px fw-bold text-body-emphasis me-2" style=" font-weight: bold;">
+                                                                ₹ <%= e.productId.offerPrice %>.00
                                                             </span>
+                                                            
+                                                            <% 
+                                                                let discountPercentage = Math.round(((e.productId.price - e.productId.offerPrice) / e.productId.price) * 100);
+                                                            %>
+                                                            <span class="fs-13px" style="color: rgb(244, 132, 132);">
+                                                                (<%= discountPercentage %>% off)
+                                                            </span>
+                                                        <% } else { %>
+                                                            <!-- Only Display the Price if No Offer -->
+                                                            <span class="fs-15px text-body-emphasis">
+                                                                ₹ <%= e.productId.price %>.00
+                                                            </span>
+                                                        <% } %>
+                                                        
+                                                        
+                                                        
                                                         </p>
 
 
@@ -74,18 +94,18 @@
                                                 </div>
                                             </th>
                                             <td class="align-middle">
-                                                <% console.log(e.productId.stock,'jajaj') %>
+                                                <%// console.log(e.productId.stock,'jajaj') %>
                                                 <div
                                                     class="input-group position-relative align-items-center shop-quantity">
-                                                    <i onclick="minus(this,'<%=e.productId._id%>','<%=e.productId.price%>','<%=e.productId.stock%>')"
+                                                    <i onclick="minus(this,'<%=e.productId._id%>','<%=e.productId.offerPrice%>','<%=e.productId.stock%>')"
                                                         class="ri-subtract-line position-absolute ms-3"
                                                         style="z-index: 999; cursor: pointer;"></i>
                                                     <input
-                                                        onchange="priceUpdate('<%=e.productId._id%>',this,'<%=e.productId.price%>','<%=e.productId.stock%>')"
+                                                        onchange="priceUpdate('<%=e.productId._id%>',this,'<%=e.productId.offerPrice%>','<%=e.productId.stock%>')"
                                                         name="quantity" type="number"
                                                         class="form-control form-control-sm px-10 py-4 fs-6 text-center border-0"
                                                         value="<%=e.quantity%>" max=<%=e.productId.stock %> required>
-                                                    <i onclick="plus(this,'<%=e.productId._id%>','<%=e.productId.price%>','<%=e.productId.stock%>')" class="ri-add-line position-absolute "
+                                                    <i onclick="plus(this,'<%=e.productId._id%>','<%=e.productId.offerPrice%>','<%=e.productId.stock%>')" class="ri-add-line position-absolute "
                                                         style="left: 85%; cursor: pointer;"></i>
                                                     <script>
                                                         // const g=document.getElementById('akak')
@@ -105,7 +125,7 @@
 
                                                 </div>
                                             </td>
-                                            <% let updatedPrice=e.productId.price*e.quantity %>
+                                            <% let updatedPrice=e.productId.offerPrice*e.quantity %>
                                             <td class="align-middle">
                                                     <p class=" amount mb-0 text-body-emphasis fw-bold mr-xl-11"
                                                         id="totals<%=e.productId._id%>">

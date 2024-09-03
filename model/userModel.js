@@ -22,6 +22,36 @@ const userSchema = new mongoose.Schema({
     },
     googleId:{
         type:String
-    }   
+    },
+    address:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"Address" 
+    },
+
+    coupons:[{
+
+        couponId: { type: mongoose.Schema.Types.ObjectId, 
+        ref:'Coupon' 
+    },
+    code:{
+        type:String
+    },
+    couponStatus: {
+        type: String,
+        enum: ['Expired','Claimed','Claim'], 
+        default: 'Claim'
+     },
+     expiryDate:{
+        type:Date,
+        required: true,
+    },
+    }],
+    // refferalId:{
+    //     type:String,
+    //     required:true
+    // },
+    // refferalCodeSave:{
+    //     type:String
+    // }
 })
 module.exports = mongoose.model('User',userSchema)

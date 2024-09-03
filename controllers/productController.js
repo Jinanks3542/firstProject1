@@ -4,6 +4,7 @@ const productModel = require('../model/productModel')
 const categoryModel = require('../model/categoryModel')
 const brandModel = require('../model/brandModel')
 const Admin = require('../model/adminModel');
+const Offer = require('../model/offerModel')
 const { log, error } = require('console');
 
 
@@ -21,16 +22,21 @@ const loadProduct = async (req, res) => {
 
         const productLoad = await productModel.find({}).populate('categoryId').populate('brand').skip(skip).limit(limit).sort({_id:-1})
         const categoryData = await categoryModel.find()
+        const offerApply = await Offer.find()
+      
 
-        res.render('admin/allProduct', {products :productLoad,categoryData,totalPages,  currentPage :page })
+        res.render('admin/allProduct', {products :productLoad,categoryData,totalPages,  currentPage :page, offerApply })
     } catch (error) {
         console.log(error.message);
     }
 }
+
 const loadAddProduct = async (req, res) => {
     try {
         const categories = await categoryModel.find({})
         const brand = await brandModel.find({})
+        const offerApply = await Offer.find()
+        
         console.log(categories);
         res.render('admin/addProduct', { categories, brand })
     } catch (error) {
@@ -50,7 +56,8 @@ const productAdd = async (req, res) => {
             price: price,
             stock: stock,
             images: req.body.image,
-            brand:brand
+            brand:brand,
+            offerPrice:price
         })
         await productAdded.save()
         

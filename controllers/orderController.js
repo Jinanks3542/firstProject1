@@ -4,6 +4,7 @@ const Cart = require('../model/cartModel')
 const Address = require('../model/addressModel')
 const Product = require('../model/productModel');
 const instance = require('../config/razorpay')
+const Coupon = require('../model/coupenModel')
 require('dotenv').config();
 
 
@@ -21,6 +22,13 @@ const loadOrder=async(req,res)=>{
 const placeOrder = async(req,res)=>{
     try {
         const {selectAddress} = req.body
+        let pay=''
+                
+                if(req.body.pp==="Online Payment"){
+                    pay="Paid"
+                }else if(req.body.pp==="Cash on Delivery"){
+                    pay="Pending"
+                }
 
         const {userId}=req.session
         const cartDatas = await Cart.findOne({userId:userId}).populate("products.productId")
@@ -29,18 +37,68 @@ const placeOrder = async(req,res)=>{
         
         let quantityTotal=0
         let totalSum=0
+        if(!req.session.Coupon){
         cartDatas.products.forEach((element)=> {
             quantityTotal=element.productId.price*element.quantity
             totalSum+=quantityTotal
             
         });
+        
+    }else{
+        totalSum = req.session.totalOrderAmount
+        
+         await User.findOneAndUpdate({_id:req.session.userId,'coupons.code':req.session.code},{$set:{'coupons.$.couponStatus':'Claimed'}})
+       
+        
+    }
 
         const productData=cartDatas.products
         
+        const passCouponToUser = await Coupon.find({
+            buyLow:{$lte:totalSum},
+            buyHigh:{$gte:totalSum}
+
+        })
+        
+        
+        let result = true
+        let value
+
+        for(let offer of passCouponToUser){
+            result = await User.findOne({_id:req.session.userId,
+                coupons:{
+                    $elemMatch:{
+                        code:offer.code
+                    }
+                }
+            })
+            if(!result){
+                value=offer;
+                break;
+        }
+
+        }
+
+        if(value){
+           
+            const date = new Date()
+            const expiryDate = new Date(date) 
+            expiryDate.setDate(date.getDate()+ 10)
+            const user = await User.findOneAndUpdate({_id:req.session.userId},{$addToSet:{coupons:{couponId:value._id,code:value.code,expiryDate:expiryDate}}})
+            
+        }
+        
+        const productss = cartDatas.products.map(product=>({
+            productId:product.productId._id,
+            productPrice:product.productId.offerPrice,
+            quantity:product.quantity
+
+        })) 
+ 
 
         const orderDataSave=new Order({
             UserId:userId,
-            products:productData,
+            products:productss,
             
             deliveryAddress:{
                 name,
@@ -54,15 +112,27 @@ const placeOrder = async(req,res)=>{
             payment:req.body.pp,
             orderAmount:totalSum,
             orderDate:Date(),
-            paymentStatus:'Pending',
+            paymentStatus:pay,
         })
        const save= await orderDataSave.save()
-
+        
+        
        if(save){
+        for(const value of productss){
+            let product = await Product.findOne({_id:value.productId})
+            let qty = product.quantity - value.quantity
+            await Product.findOneAndUpdate({_id:value.productId},{$set:{quantity:qty}})
+            
+            
+        }
         await Cart.findOneAndDelete({userId:userId})
+    
+        
        }
 
        res.redirect('/order') 
+       
+       
     } catch (error) {
         console.log(error.message);
     }
@@ -95,6 +165,7 @@ const viewDetail = async(req,res)=>{
         console.log(error.message);
     }
 }
+
 
 // const razor = async (req,res)=>{
 //     try {
