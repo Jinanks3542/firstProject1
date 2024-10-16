@@ -1,0 +1,206 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<body>
+    <div class="wrapper dashboard-wrapper">
+        <div class="d-flex flex-wrap flex-xl-nowrap">
+            <%- include('../layouts/adminSidbar.ejs') %>
+            <div class="page-content">
+                <%- include('../layouts/adminNav.ejs') %>
+
+                <main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
+                    <div class="dashboard-page-content">
+                        <div class="row mb-9 align-items-center justify-content-between">
+                            <div class="col-md-6 mb-8 mb-md-0">
+                                <h2 class="fs-4 mb-0">Sales Report</h2>
+                            </div>
+                            <div class="col-md-6 d-flex flex-wrap justify-content-md-end"> 
+                                <a href="/admin/salesReport">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card mb-4 rounded-4 p-7">
+                            <div class="card-header bg-transparent px-0 pt-0 pb-7">
+                                <div class="row align-items-center">
+                                    <div class="col-md-3 col-12 me-auto mb-md-0 mb-6">
+                                        <select onchange="report()" class="form-select" name="period" id="selectType">
+                                            <option selected data-select2-id="3" value="all">All Report</option>
+                                            <option value="weekly">Weakly</option>
+                                            <option value="monthly">Monthly</option>
+                                            <option value="yearly">Yearly</option>
+                                        </select>
+                                    </div>
+                
+                                    <div class="col-md-2 col-6">
+                                        <input type="date" class="form-control bg-input border-0" id="startDate">
+                                    </div>
+                
+                                    <div class="col-md-2 col-6">
+                                        <input type="date" class="form-control bg-input border-0" id="endDate">
+                                    </div>
+                
+                                    
+                                    <div class="col-md-5 d-flex justify-content-end">
+                                        <a type="button" href="javascript:window.print()" class="btn btn-primary waves-effect waves-light w-sm me-2">
+                                            <i class="mdi mdi-download d-block"></i> PDF
+                                        </a>
+                                        
+                                        <button type="button" onclick="exportExcel()" class="btn btn-primary waves-effect waves-light w-sm">
+                                            <i class="mdi mdi-download d-block"></i> Excel
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                
+                            <div class="card-body px-0 pt-7 pb-0" id="dataDiv">
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle table-nowrap mb-0 table-borderless">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th scope="col" class="text-center">Sl No.</th> 
+                                                <th scope="col" class="align-middle">Order ID</th>
+                                                <th scope="col" class="align-middle">Billing Name</th>
+                                                <th scope="col" class="align-middle">Date</th>
+                                                <th scope="col" class="align-middle">Coupon Discount</th>
+                                                <th scope="col" class="align-middle">Offer</th>
+                                                <th scope="col" class="align-middle">Total Amount</th>
+                                                <th scope="col" class="align-middle">Payment Method</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody id="tbody">
+                                           
+                                           
+                                           <% data.forEach((sales, index) => { %>
+                                            <% let totalPrice=0 %>
+                                            <%let totalDiscount=0 %>
+                                            <% let couponDiscount=0 %>
+                                         
+                                                <% sales.products.forEach((ele)=>{ %>
+
+                                                 <% totalPrice += ele.productPrice*ele.quantity  %>
+                                                 
+                                           <%  }) %>
+
+                                           <% couponDiscount= totalPrice-sales.orderAmount %>
+                                           
+
+                                            <tr>
+                                                
+                                                <td class="text-center align-middle">
+                                                    <%= index + 1 %>
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    <%= sales._id %>
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    <%= sales.deliveryAddress.name %>
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    <%= new Date(sales.orderDate).toLocaleDateString() %>
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    ₹ <%=couponDiscount.toFixed(2)  %>
+                                                </td>
+
+                                                <td class="align-middle">
+                                                    ₹ <%= sales.offer %> %
+                                                </td>
+
+                                                <td class="align-middle">
+                                                    ₹ <%= sales.orderAmount.toFixed(2) %>
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    <%= sales.payment %>
+                                                </td>
+                                            </tr>
+                                            <% }) %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            
+                        </div>
+                        
+                        
+                
+                        <%- include('../layouts/adminPagination.ejs') %>
+                    </div>
+                </main>
+                
+                
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+        <script>
+            async function report(){
+                const reportType = document.getElementById('selectType').value
+                const start = document.getElementById('startDate').value
+                const end = document.getElementById('endDate').value 
+               
+               const {data:{data}}=await axios.post('/admin/salesReport',{period:reportType, start,end});
+               const tbody = document.getElementById('tbody')
+               let Trow="";
+                
+               data?.forEach((sales,index)=>{
+                    Trow+=`   <tr>
+                                                
+                                                <td class="text-center align-middle">
+                                                     ${index + 1} 
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    ${ sales._id} 
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    ${ sales.deliveryAddress.name} 
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    ${ new Date(sales.orderDate).toLocaleDateString()} 
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    ${ sales.orderAmount} 
+                                                </td>
+                                                
+                                                <td class="align-middle">
+                                                    ${ sales.payment} 
+                                                </td>
+                                            </tr>`
+               })
+             tbody.innerHTML=Trow;
+               
+            }
+
+            
+
+            function exportExcel(){
+                const table = document.getElementById('dataDiv');
+                const ws = XLSX.utils.table_to_sheet(table);
+                const wb = XLSX.utils.book_new();
+                XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
+                XLSX.writeFile(wb, 'report.xlsx');
+            }
+        </script>
+    
+
+
+    <%- include('../layouts/adminFooter.ejs') %>
+            <%- include('../layouts/svg2.ejs') %>
+
+                <div class="position-fixed z-index-10 bottom-0 end-0 p-10">
+                    <a href="#"
+                        class="gtf-back-to-top text-decoration-none bg-body text-primary bg-primary-hover text-light-hover shadow square p-0 rounded-circle d-flex align-items-center justify-content-center"
+                        title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
+                </div>
+
+
+</body>

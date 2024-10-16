@@ -45,10 +45,10 @@ const productSchema = new mongoose.Schema({
         type:Number,
         default:0
        },
-       offerPrice:{
+    offerPrice:{
         type:Number,
        }
-   
+     
 
 })
 module.exports = mongoose.model('Product', productSchema)

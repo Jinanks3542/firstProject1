@@ -24,7 +24,7 @@ const orderSchema= new mongoose.Schema({
         city:{type:String,required:true},
         state:{type:String,required:true},
         locality:{type:String,required:true},
-},
+    },
     payment:{
         type:String,
         enum: ['Online Payment','Cash on Delivery','Wallet'], 
@@ -64,7 +64,10 @@ const orderSchema= new mongoose.Schema({
                 enum: ['Ordered', 'Shipped', 'Delivered','Canceled','Return'], 
                 default: 'Ordered'
              },
-            
+            returnReason:{
+                type : String,
+                 default : ''
+            },
 
         }],
 

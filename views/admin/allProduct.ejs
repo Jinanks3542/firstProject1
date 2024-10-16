@@ -38,10 +38,10 @@
                                                         <th>
                                                             Product Name
                                                         </th>
-                                                        <th class="text-center">
+                                                        <!-- <th class="text-center">
                                                            Brand 
-                                                        </th>
-                                                        <th>Price</th>
+                                                        </th> -->
+                                                        
                                                         <th>Description</th>
                                                         <th>Category</th>
                                                         <th>Offer</th>
@@ -70,11 +70,15 @@
                                                                         title="Flowers cotton dress" class="ms-6">
                                                                         <p class="fw-semibold text-body-emphasis mb-0">
                                                                             <%=product.productName%></p>
+                                                                            <p class="fw-semibold text-body-emphasis mb-0">
+                                                                                ₹ <%=product.price.toFixed(2)%></p>
+                                                                                <p class="fw-semibold text-body-emphasis mb-0">
+                                                                                    Brand: <%=product.brand?.brandName%></p>
+
                                                                     </a>
                                                                 </div>
                                                             </td>
-                                                            <td><%=product.brand?.brandName%></td>
-                                                            <td><%=product.price%></td>
+                                                                                                                        
                                                             <td><%=product.description%></td>
                                                             <td><%=product.categoryId?.catName%></td>
                                                             
@@ -83,12 +87,9 @@
                                                                     <option value="<%=Offer.offer%>"  <% if (Offer.offer === product.offer) { %> selected <% } %>><%=Offer.offer%></option>
                                                                 <% }) %>
                                                             </select></td>
-                                                            <td id="offerPrice<%=product._id %>"><%=product.offerPrice %></td>
+                                                            <td id="offerPrice<%=product._id %>">₹ <%=product.offerPrice.toFixed(2) %></td>
 
-                                                            <!-- <td>
-                                                                <span
-                                                                    class="badge rounded-lg rounded-pill alert py-3 px-4 mb-0 alert-success border-0 text-capitalize fs-12">Active</span>
-                                                            </td> -->
+                                                         
                                                             <td><%=product.stock%></td>
                                                             <td class="text-center">
                                                                 <div class="d-flex flex-nowrap justify-content-center">

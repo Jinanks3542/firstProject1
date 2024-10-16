@@ -46,7 +46,7 @@
                             <input name="mno" id="mobile" type="mobile" class="form-control"
                                 placeholder="mobile" required>
                         </div>
-                       <p><%=locals.msg%></p>
+                       <p></p>
                         <button type="submit" value="Login" class="btn btn-primary w-100">Sign Up</button>
                         <div class="border-bottom mt-10"></div>
                         <div class="text-center mt-n4 lh-1 mb-7">
@@ -83,71 +83,16 @@
                             <input name="mno" id="mobile" type="tel" class="form-control" placeholder="Mobile" required>
                             <div id="mobileError" class="text-danger"></div>
                         </div>
+                        <div class="mb-7">
+                            <label for="code" class="visually-hidden">Referral Code</label>
+                            <input name="code" id="referral" type="text" class="form-control" placeholder="Referral Code" >
+                            <div id="referralError" class="text-danger"></div>
+                        </div>
                     
-                        <p id="errorMsg"><%= locals.msg %></p>
+                        <p id="errorMsg" style="color: red;"><%= typeof msg !== 'undefined' ? msg : '' %></p>
                         <button type="submit" value="Login" class="btn btn-primary w-100">Sign Up</button>
                     
-                        <!-- Validation JavaScript -->
-                        <script>
-                            function validateForm() {
-                                let valid = true;
-                    
-                                // Reset errors
-                                document.getElementById('nameError').innerText = "";
-                                document.getElementById('emailError').innerText = "";
-                                document.getElementById('passwordError').innerText = "";
-                                document.getElementById('mobileError').innerText = "";
-                                document.getElementById('errorMsg').innerText = "";
-                    
-                                // Name validation
-                                const name = document.getElementById('name').value;
-                                if (name.trim() === "") {
-                                    document.getElementById('nameError').innerText = "Name is required";
-                                    valid = false;
-                                }
-                    
-                                // Email validation
-                                const email = document.getElementById('email').value;
-                                const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                                if (!emailPattern.test(email)) {
-                                    document.getElementById('emailError').innerText = "Invalid email format";
-                                    valid = false;
-                                }
-                    
-                                // Password validation
-                                const password = document.getElementById('password').value;
-                                if (password.length < 6) {
-                                    document.getElementById('passwordError').innerText = "Password must be at least 6 characters";
-                                    valid = false;
-                                }
-                    
-                                // Mobile validation
-                                const mobile = document.getElementById('mobile').value;
-                                const mobilePattern = /^\d{10}$/;
-                                if (!mobilePattern.test(mobile)) {
-                                    document.getElementById('mobileError').innerText = "Invalid mobile number";
-                                    valid = false;
-                                }
-                    
-                                return valid;
-                            }
-                    
-                            // Prevent form submission on Enter key press
-                            document.addEventListener("keydown", function(event) {
-                                if (event.key === "Enter") {
-                                    event.preventDefault();
-                                }
-                            });
-                    
-                            // Prevent form submission on Enter key press inside input fields
-                            document.querySelectorAll('input').forEach(function(input) {
-                                input.addEventListener("keydown", function(event) {
-                                    if (event.key === "Enter") {
-                                        event.preventDefault();
-                                    }
-                                });
-                            });
-                        </script>
+                        
                     
                         <div class="border-bottom mt-10"></div>
                         <div class="text-center mt-n4 lh-1 mb-7">
@@ -163,6 +108,73 @@
                     
                 </div>
             </div>
+            <!-- Validation JavaScript -->
+            <script>
+                function validateForm() {
+
+                    console.log('its herrrrrrrrrrrrrrrrrrrrrr');
+                    
+                    let valid = true;
+        
+                    // Reset errors
+                    document.getElementById('nameError').innerText = "";
+                    document.getElementById('emailError').innerText = "";
+                    document.getElementById('passwordError').innerText = "";
+                    document.getElementById('mobileError').innerText = "";
+                    document.getElementById('referralError').innerText = "";
+                    document.getElementById('errorMsg').innerText = "";
+        
+                    // Name validation
+                    const name = document.getElementById('name').value;
+                    if (name.trim() === "") {
+                        document.getElementById('nameError').innerText = "Name is required";
+                        valid = false;
+                    }
+        
+                    // Email validation
+                    const email = document.getElementById('email').value;
+                    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                    if (!emailPattern.test(email)) {
+                        document.getElementById('emailError').innerText = "Invalid email format";
+                        valid = false;
+                    }
+        
+                    // Password validation
+                    const password = document.getElementById('password').value;
+                    if (password.length < 6) {
+                        document.getElementById('passwordError').innerText = "Password must be at least 6 characters";
+                        valid = false;
+                    }
+        
+                    // Mobile validation
+                    const mobile = document.getElementById('mobile').value;
+                    const mobilePattern = /^\d{10}$/;
+                    if (!mobilePattern.test(mobile)) {
+                        document.getElementById('mobileError').innerText = "Invalid mobile number";
+                        valid = false;
+                    }
+                    
+                    
+                  if(valid) document.getElementById("myForm").submit();
+                  return valid
+                }
+        
+                // // Prevent form submission on Enter key press
+                // document.addEventListener("keydown", function(event) {
+                //     if (event.key === "Enter") {
+                //         event.preventDefault();
+                //     }
+                // });
+        
+                // // Prevent form submission on Enter key press inside input fields
+                // document.querySelectorAll('input').forEach(function(input) {
+                //     input.addEventListener("keydown", function(event) {
+                //         if (event.key === "Enter") {
+                //             event.preventDefault();
+                //         }
+                //     });
+                // });
+            </script>
         </section>
     </main>
     <!-- footer -->

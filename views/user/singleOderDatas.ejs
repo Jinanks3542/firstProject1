@@ -21,7 +21,7 @@
                               
                             </nav>
                             <div class="mt-4 " >
-                                <a class="btn btn-primary" href="/">Download Invoice</a>
+                                <a class="btn btn-primary" href="/invoice/<%=singleData._id %>">Invoice</a>
                             </div>
                         </aside>
     <!-- dets -->
@@ -81,7 +81,7 @@
                                         <div class="media-body">
                                             <h6 class="mb-4">Deliver to</h6>
                                             <p class="mb-4">
-                                              <%= singleData.deliveryAddress.name %></span><br>
+                                                 <%= singleData.deliveryAddress.name %></span><br>
                                                <%=singleData.deliveryAddress.street %> ,  <%=singleData.deliveryAddress.locality %><br>
                                                <%= singleData.deliveryAddress.city %> ,   <%= singleData.deliveryAddress.state %> ,  <%= singleData.deliveryAddress.pincode %><br>
                                                 <strong style="color: #eee;">Phone : </strong><%= singleData.deliveryAddress.phone %>
@@ -97,104 +97,69 @@
                                     <div class="table-responsive">
                                         <table class="table table-borderless">
                                             <thead style="background-color: #343A40; color: #fff;">
-                                                <tr >
+                                                <tr>
                                                     <th>Product</th>
-                                                    <th> Price</th>
+                                                    <th>Price</th>
                                                     <th>Quantity</th>
-                                                    <th class="text-end">Total</th>
+                                                    <th style="padding-right: 30px; text-align: start;">Total</th>
+                                                    <!-- <th style="padding-left: 30px; text-align: end;"></th> -->
+                                                    <th style="padding-left: 30px; text-align: end;">Action</th>
+
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% singleData.products.forEach(data=>{  %>
+                                                
+                                                <% let status = singleData.paymentStatus %>
+                                                <% let paymentMethod = singleData.payment %>
+                                                <% console.log(paymentMethod,'......................................hhhhhhhhhhhh');
+                                                 %>
+                                                <% let amount = 0 %>
+
+
+                                                <% singleData.products.forEach(data => { %>
+                                                  
+                                                     <!-- for getting the order amount -->
+                                                    <%amount=data.productId.offerPrice*data.quantity  %>
+                                                     
                                                 <tr style="border-bottom: .5px solid gray;">
                                                     <td>
                                                         <div class="d-flex align-items-center flex-nowrap">
-                                                            <a href="../shop/product-details-v1.html"
-                                                                title="Flowers cotton dress">
-                                                                <img src="<%=data.productId.images[0] %>"
-                                                                    data-src=""
-                                                                    alt="Flowers cotton dress" class="lazy-image"
-                                                                    width="60" height="80">
+                                                            <a href="../shop/product-details-v1.html" title="Flowers cotton dress">
+                                                                <img src="<%=data.productId.images[0] %>" data-src="" alt="Flowers cotton dress"
+                                                                    class="lazy-image" width="60" height="80">
                                                             </a>
-                                                          
                                                         </div>
                                                     </td>
-                                                    <td><%=data.productId.offerPrice  %></td>
+                                                    <td>₹ <%=data.productId.offerPrice.toFixed(2) %></td>
                                                     <td><%=data.quantity%></td>
-                                                    <td class="text-end"><%=data.productId.offerPrice*data.quantity  %></td>
-                                                </tr>
-                                               
-                                               
-                                               
-                                                <!-- <tr>
-                                                    <td colspan="4">
-                                                        <div
-                                                            class="d-flex flex-column align-items-end justify-content-end">
-                                                            <div class="mw-40 w-40">
-                                                                <div class="d-flex w-100">
-                                                                    <span
-                                                                        class="d-inline-block w-50">Subtotal:</span>
-                                                                    <span
-                                                                        class="d-inline-block w-50 text-end fw-normal">$973.35</span>
-                                                                </div>
-                                                                <div class="d-flex w-100">
-                                                                    <span class="d-inline-block w-50">Shipping
-                                                                        cost:</span>
-                                                                    <span
-                                                                        class="d-inline-block w-50 text-end fw-normal">$10.00</span>
-                                                                </div>
-                                                                <div class="d-flex w-100 mb-5">
-                                                                    <span class="d-inline-block w-50">Grand
-                                                                        total:</span>
-                                                                    <span
-                                                                        class="d-inline-block w-50 text-end fs-5 fw-semibold">$983.00</span>
-                                                                </div>
-                                                                <div class="d-flex w-100">
-                                                                    <span
-                                                                        class="d-inline-block w-50 text-muted">Status:</span>
-                                                                    <span
-                                                                        class="d-inline-block w-50 text-end fs-20 fw-semibold"><span
-                                                                            class="badge rounded-pill alert alert-success text-success fs-12px px-4 py-3">Payment
-                                                                            done</span>
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <td style="text-align:start;" >₹ <%=data.productId.offerPrice * data.quantity %> .00</td>
+                                                
+                                                    <td style="text-align: end;"> 
+                                                        
+                                                        <% if( paymentMethod=='Online Payment'&&status=='Pending' ){ %>
+                                                           
+                                                            <button class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-15px btn-xs me-3" onclick="Repay('<%=singleData._id%>','<%=data._id%>','<%=amount%>')" <% if(status=='pending'){ %> disabled<% } %>>
+                                                                Re Pay
+                                                            </button>
+                                                        <% } else if((data.ProductStatus=='Delivered' || data.ProductStatus=='Return') && status=='Paid'){ %>
+                                                    
+                                                            <button class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-15px btn-xs me-3" onclick="returnRequest('<%=singleData._id%>','<%=data._id%>')" <% if (data.ProductStatus === 'Return') { %> disabled <% } %>>Return</button>
+                                                    
+                                                        <% } else if((data.ProductStatus=='Ordered' || data.ProductStatus=='Shipped' || data.ProductStatus=='Canceled') || status=='Pending'){ %>  
+                                                    
+                                                            <button class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-15px btn-xs me-3" onclick="cancelOrder('<%=singleData._id%>','<%=data._id%>')" <% if (data.ProductStatus === 'Canceled') { %> disabled <% } %>>cancel</button>
+                                                        <% } %>
                                                     </td>
-                                                </tr> -->
+                                                    
+                                                </tr>
                                                 <% }) %>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
-                                <!-- <div class="col-lg-4 offset-lg-1">
-                                    <div class="box shadow-sm bg-body-tertiary p-6">
-                                        <h6 class="mb-6">Payment info</h6>
-                                        <div>
-                                            <div class="d-flex">
-                                                <div class="me-4">
-                                                    <img src="../assets/images/dashboard/master-card.png"
-                                                        class="border" alt="Card" width="28">
-                                                </div>
-                                                <p class="mb-0"> Master Card **** ****4768</p>
-                                            </div>
-                                            <p class="mb-0">
-                                                Business name: Grand Market LLC <br>
-                                                Phone: +1 (800) 555-154-52
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <div class="h-25 pt-8">
-                                        <div class="mb-6">
-                                            <label
-                                                class="mb-5 fs-13px ls-1 fw-semibold text-uppercase">Notes</label>
-                                            <textarea class="form-control" name="notes" id="notes"
-                                                placeholder="Type some note"></textarea>
-                                        </div>
-                                        <button class="btn btn-primary">Save note</button>
-                                    </div>
-                                </div> -->
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -202,6 +167,9 @@
         </div>
     </main>
     <style>
+
+        
+
         .amount{
         /* box-shadow:1px 1px 1px 8px rgb(219, 211, 211); */
             width: 100%;
@@ -281,6 +249,11 @@
     
         
     </style>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     <script>const select = document.querySelector(".select");
         const options_list = document.querySelector(".options-list");
         const options = document.querySelectorAll(".option");
@@ -306,69 +279,189 @@
             <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
         <script>
-            function razorPay() {
-                const form = document.getElementById('myForm')
-                const amount = document.getElementById('amount')
-                console.log(amount.value)
-   
-   fetch('/razors', {
-       method: 'POST',
-       headers: { 'Content-type': 'application/json' },
-       body: JSON.stringify({ amount:amount.value })
-   }).then(res => res.json()).then(data => {
-       if (data.success) {
+
+            async function Repay(orderId,productId,finalAmount){
+                
+                if(!finalAmount){
+                    alert('Amount is not specified. Please try again.')
+                    return
+                }
+                razorPay(orderId,productId,finalAmount)
+
+            }
+
+
+            function razorPay(orderId,productId,finalAmount) {
+                
+                
+                fetch('/razors', {
+                    method: 'POST',
+                    headers: { 'Content-type': 'application/json' },
+                    body: JSON.stringify({ amount:finalAmount })
+                }).then(res => res.json()).then(data => {
+                    if (data.success) {
         
-           let options = {
-               "key": `${data.key_id}`,
-               "amount":` ${data.amount}`,
-               "currency": "INR",
-               "name": "GLOWING",
-               "handler": function (response) {
-                   form.submit();
-               },
-               "profile": {
-                   "name": `${data.name}`,
-                   "email": `${data.email}`
-               }
-           }
+                        let options = {
+                            "key": `${data.key_id}`,
+                            "amount":finalAmount*100,
+                            "currency": "INR",
+                            "name": "GLOWING",
+                            "handler": function (response) {
+                                
+                                    axios.post('/rePayment',{
+                                        orderId:orderId,
+                                        productId:productId,
+                                        amount:finalAmount
 
-           let razorpayObject = new Razorpay(options);
-           razorpayObject.on('payment.failed', (response) => {
-               alert('payment failed');
-              
-               form.submit();
-           });
-           razorpayObject.open();
-       } else if (data.fail) {
-           const Toast = Swal.mixin({
+                                    })
+                                    .then(response=>{
+                                            const updateData = response.data
+                                            if(updateData.success){
+                                                window.location.href = '/order'
+                                            }else{
+                                                alert('payment failed')
+                                            }
+                                    }).catch(error=>{
+                                        console.log(error);
+                                        alert('There was a problem while payment')
+                                        
+                                    })
 
-               toast: true,
-               position: "bottom",
-               showConfirmButton: false,
-               timer: 3000,
-               timerProgressBar: true,
+                            },
+                            "prefill": {
+                                "name": data.name, 
+                                "email": data.email  
+                            }
+                            
+                        }
 
-               didOpen: (toast) => {
+                        let razorpayObject = new Razorpay(options);
+                        razorpayObject.on('payment.failed', function (response) {
+                            alert('Payment failed. Please try again.');
+                
+                        });
+                        razorpayObject.open();
+                        
+                    } 
+                })
+                .catch(error => {
+                console.error('Error:', error);
+                });
 
-                   toast.onmouseenter = Swal.stopTimer;
-                   toast.onmouseleave = Swal.resumeTimer;
-               }
+                }
 
-           });
 
-           Toast.fire({
 
-               icon: "warning",
-               title: "No address",
-               background: "31363F"
+// .................cancel order
 
-           })
-       }
-   })
-   .catch(error => {
-   console.error('Error:', error);
-});
+
+
+async function cancelOrder(orderId,productId) {
+  try {
+    // Show SweetAlert modal for the cancellation reason input
+    const { value: cancelReason } = await Swal.fire({
+      title: "Cancel reason",
+      input: "text",
+      inputLabel: "Cancel reason",
+      showCancelButton: true,
+      inputValidator: (value) => {
+        if (!value) {
+          return "Please enter a valid reason";
+        }
+      }
+    });
+
+    if (cancelReason) {
+      
+      console.log('Product ID:', productId);
+      console.log('Order ID:', orderId);
+      console.log('Cancel Reason:', cancelReason);
+
+      
+      const response = await axios.post('/cancelOrder', {
+        productId,
+        orderId,
+        cancelReason
+      });
+
+      // Check the response
+      console.log('Response:', response);
+
+      
+      if (response.data.loginRequired) {
+        window.location.href = '/login';
+      } else if (response.data.success) {
+        await Swal.fire({
+          title: "Success",
+          text: "Order has been cancelled",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+        window.location.reload();
+      } else {
+        
+        Swal.fire({
+          title: "Error",
+          text: response.data.message || "Could not cancel the order",
+          icon: "error",
+        });
+      }
+    }
+  } catch (error) {
+    
+    Swal.fire({
+      title: "Error",
+      text: "Something went wrong. Please try again.",
+      icon: "error"
+    });
+    console.error("Cancel order error:", error);
+  }
 }
+
+
+
+//......................... return order
+
+async function returnRequest(orderId,productId){
+    const {value: returnReason} = await Swal.fire({
+                title: "Return reason",
+                input: "text",
+                inputLabel: "Return reason",
+                showCancelButton: true,
+
+                inputValidator: (value)=>{
+                    if(!value){
+                        return "Enter a valid reason"
+                    }
+                }
+            })
+
+            if(returnReason){
+                const response = await axios.post('/returnRequest',{orderId,productId,returnReason})
+
+                if(response.data.loginRequired){
+                    window.location.href = '/login'
+                }else{
+
+                    if(response.data.success){
+                        await Swal.fire({
+                            title:"Success",
+                            text: "Return requested",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        })
+                        window.location.reload()
+                    }
+                }
+                
+            }
+
+        }
+
+
         </script>
     
     <!-- Bootstrap JS -->
@@ -403,7 +496,5 @@
             title="Back To Top" style="--square-size: 48px"><i class="fa-solid fa-arrow-up"></i></a>
     </div>
 </body>
-
 <!-- Mirrored from templates.g5plus.net/glowing-bootstrap-5/home-02.html by HTTrack Website Copier/3.x [XR&CO'2014], Wed, 27 Mar 2024 11:45:35 GMT -->
-
 </html>

@@ -11,11 +11,11 @@ const session=require('express-session')
 const nocache = require('nocache')
 app.set('view engine','ejs')
 app.use(express.json())
-app.use(session({secret:"a1a1a1a1",resave:false,saveUninitialized:true}))
+
 app.use(flash())
 app.use(express.urlencoded({extended:true}))
 app.use(express.static(path.join(__dirname,'public')))
-app.use(nocache())
+
 
 app.use('/',userRoute)
 app.use('/admin',adminRoute)

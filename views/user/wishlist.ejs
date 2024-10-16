@@ -26,7 +26,13 @@
                 <table class="table" style="min-width: 710px">
                    
                     <tbody>
-                        
+                        <% if (!wishlists || wishlists.length === 0 || !wishlists[0].products.length) { %>
+                        <tr>
+                            <td colspan="4" class="text-center">
+                                <p class="text-danger fw-bold" style="font-size:x-large;">Your wishlist is empty</p>
+                            </td>
+                        </tr>
+                        <% } else { %>
                         <%wishlists?.[0]?.products?.forEach(item=>{  %>
                             <% console.log(item) %>
                             <tr class="border">
@@ -86,6 +92,7 @@
                         </tr>
                         
                       <% }) %>
+                      <% } %>
                       
                         <tr>
                             <td class="border-0 py-8 px-0">
@@ -633,10 +640,11 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script> 
     <script>
           async function addToCart(productId){
-            console.log('jinan');
+           
             const response = await axios.patch('/addCart',{id:productId})
             const data = response.data
             if(data.success){
+                await remove(productId)
                         const Toast = Swal.mixin({
                         toast: true,
                        

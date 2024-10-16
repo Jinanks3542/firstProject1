@@ -67,7 +67,7 @@ const productAdd = async (req, res) => {
     }
 }
 
-const productBlock = async (req, res) => {
+const productBlock = async (req, res) => {     
     try {
         
         const productId = await productModel.findOne({ _id: req.body.id })

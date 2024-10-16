@@ -4,8 +4,15 @@ const category = require("../model/categoryModel");
 
 const LoadOffer = async (req, res) => {
   try {
-    const OfferDetails = await Offer.find();
-    res.render("admin/allOffers", { OfferDetails });
+    const limit = 4
+    const page = parseInt(req.query.page)||1
+    const skip = (page-1)*limit
+    const totalOfferCount = await Offer.countDocuments()
+    const totalPages = Math.ceil(totalOfferCount/limit)
+    
+    const OfferDetails = await Offer.find().skip(skip).limit(limit).sort({_id:-1});
+
+    res.render("admin/allOffers", {OfferDetails,currentPage:page,totalPages});
   } catch (error) {
     console.log(error.message);
   }

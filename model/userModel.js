@@ -46,12 +46,12 @@ const userSchema = new mongoose.Schema({
         required: true,
     },
     }],
-    // refferalId:{
-    //     type:String,
-    //     required:true
-    // },
-    // refferalCodeSave:{
-    //     type:String
-    // }
+    refferalId:{
+        type:String,
+        // required:true
+    },
+    refferalCodeSave:{
+        type:String
+    }
 })
 module.exports = mongoose.model('User',userSchema)

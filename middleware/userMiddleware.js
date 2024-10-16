@@ -11,7 +11,7 @@ const noUserLogin = (req,res,next)=>{
 
 const userLogin = (req,res,next)=>{
     if(req.session.userId){
-        res.redirect('/home')
+        res.redirect('/')
     }else{
         next()
     }
@@ -19,13 +19,14 @@ const userLogin = (req,res,next)=>{
 
 const isblocked= async (req,res,next)=>{
     const id = req.session.userId
-    console.log('id',id);
+    
     const user = await User.findOne({_id:id})
-    if(user.is_blocked){
-        req.session.userId=null
-        res.redirect('/')
-    }else{
+    if(!user.is_blocked){
         next()
+        
+    }else{
+        req.session.userId=null
+        res.redirect('/login')
     }
 }
 

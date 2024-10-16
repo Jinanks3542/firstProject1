@@ -188,7 +188,7 @@
                             class="text-heading text-decoration-none lh-1 d-flex sidebar-link align-items-center py-5 px-6 position-relative"
                             data-bs-toggle="collapse" aria-expanded="false" title="Add Product">
                             <span class="sidebar-item-icon d-inline-block w-40px text-muted">
-                                <i class="fas fa-plus-square"></i>
+                                <i class="ri-product-hunt-line"></i>
                             </span>
                             <span class="sidebar-item-text fs-14px fw-semibold">Products</span>
                             <span class="position-absolute top-50 end-5 translate-middle-y"><i
@@ -279,31 +279,62 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="list-group-item px-0 py-0 sidebar-item mb-3 border-0">
+                    <!-- <li class="list-group-item px-0 py-0 sidebar-item mb-3 border-0">
                         <a href='/admin/orderList'
                             class="text-heading text-decoration-none lh-1 sidebar-link py-5 px-6 d-flex align-items-center"
                             title="Order">
-                            <!-- <span class="sidebar-item-icon w-40px d-inline-block text-muted">
-                                <i class="fas fa-certificate"></i>
-                            </span> -->
+                            <span class="sidebar-item-icon w-40px d-inline-block text-muted">
+                                <i class="ri-truck-fill"></i>
+                            </span>
                             <span class="sidebar-item-text fs-14px fw-semibold">Order</span>
                         </a>
-                        <!-- <div class="collapse menu-collapse" id="">
+                        <div class="collapse menu-collapse" id="">
                             <ul class="sub-menu list-unstyled">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
-                                        href="/admin/orderList" title="Transactions 1">Order List</a>
+                                        href="/admin/returnRequest" title="Transactions 1">Return Orders</a>
                                 </li>
                                
                             </ul>
-                        </div> -->
+                        </div>
+
+                    </li> -->
+                    <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">
+                        <a href="#add_Offer"
+                            class="text-heading text-decoration-none lh-1 d-flex sidebar-link align-items-center py-5 px-6 position-relative"
+                            data-bs-toggle="collapse" aria-expanded="false" title="Add Offer">
+                            <span class="sidebar-item-icon d-inline-block w-40px text-muted">
+                                <i class="ri-truck-fill"></i>
+                            </span>
+                            <span class="sidebar-item-text fs-14px fw-semibold">Orders</span>
+                            <span class="position-absolute top-50 end-5 translate-middle-y"><i
+                                    class="far fa-angle-down"></i></span>
+                        </a>
+                        <div class="collapse menu-collapse" id="add_Offer">
+                            <ul class="sub-menu list-unstyled">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
+                                        href="/admin/orderList" title="Add Offer 1">Order List </a>
+                                </li>
+                               
+                            </ul>
+                        </div>
+                        <div class="collapse menu-collapse" id="add_Offer">
+                            <ul class="sub-menu list-unstyled">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
+                                        href="/admin/returnRequest" title="Add Offer 1">Return Orders </a>
+                                </li>
+                               
+                            </ul>
+                        </div>
                     </li>
                     <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">
                         <a href="#add_Offer"
                             class="text-heading text-decoration-none lh-1 d-flex sidebar-link align-items-center py-5 px-6 position-relative"
                             data-bs-toggle="collapse" aria-expanded="false" title="Add Offer">
                             <span class="sidebar-item-icon d-inline-block w-40px text-muted">
-                                <i class="fas fa-plus-square"></i>
+                                <i class="ri-discount-percent-line"></i>
                             </span>
                             <span class="sidebar-item-text fs-14px fw-semibold">Offers</span>
                             <span class="position-absolute top-50 end-5 translate-middle-y"><i
@@ -324,7 +355,7 @@
                             class="text-heading text-decoration-none lh-1 d-flex sidebar-link align-items-center py-5 px-6 position-relative"
                             data-bs-toggle="collapse" aria-expanded="false" title="Add Offer">
                             <span class="sidebar-item-icon d-inline-block w-40px text-muted">
-                                <i class="fas fa-plus-square"></i>
+                                <i class="ri-coupon-line"></i>
                             </span>
                             <span class="sidebar-item-text fs-14px fw-semibold">Coupon</span>
                             <span class="position-absolute top-50 end-5 translate-middle-y"><i
@@ -334,16 +365,39 @@
                             <ul class="sub-menu list-unstyled">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
-                                        href="/admin/allCoupen" title="Add Offer 1">Coupens </a>
+                                        href="/admin/allCoupen" title="Add Offer 1">Coupons </a>
                                 </li>
                                
                             </ul>
                         </div>
                     </li>
-               
+                    
+
+                    <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">
+                        <a href="#add_Offer"
+                            class="text-heading text-decoration-none lh-1 d-flex sidebar-link align-items-center py-5 px-6 position-relative"
+                            data-bs-toggle="collapse" aria-expanded="false" title="Add Offer">
+                            <span class="sidebar-item-icon d-inline-block w-40px text-muted">
+                                <i class="ri-file-list-line"></i>
+                            </span>
+                            <span class="sidebar-item-text fs-14px fw-semibold">Report</span>
+                            <span class="position-absolute top-50 end-5 translate-middle-y"><i
+                                    class="far fa-angle-down"></i></span>
+                        </a>
+                        <div class="collapse menu-collapse" id="add_Offer">
+                            <ul class="sub-menu list-unstyled">
+                                <li class="sidebar-item">
+                                    <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
+                                        href="/admin/salesReport" title="Add Offer 1">Reports </a>
+                                </li>
+                               
+                            </ul>
+                        </div>
+                    </li>
+
                
                     
-                    <!-- <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">
+                     <!-- <li class="list-group-item px-0 py-0 sidebar-item mb-3 has-children border-0">
                         <a href="#setting"
                             class="text-heading text-decoration-none lh-1 d-flex sidebar-link align-items-center py-5 px-6 position-relative"
                             data-bs-toggle="collapse" aria-expanded="false" title="Setting">
@@ -358,8 +412,8 @@
                             <ul class="sub-menu list-unstyled">
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
-                                        href="profile-settings.html" title="Profile settings">Profile
-                                        settings</a>
+                                        href="profile-settings.html" title="Profile settings">Report
+                                        </a>
                                 </li>
                                 <li class="sidebar-item">
                                     <a class="sidebar-link pe-5 ps-8 py-5 lh-1 text-decoration-none fs-14px fw-semibold"
@@ -367,7 +421,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </li> -->
+                    </li>  -->
                     <!-- <li class="list-group-item px-0 py-0 sidebar-item mb-3 border-0">
                         <a href="starter-page.html"
                             class="text-heading text-decoration-none lh-1 sidebar-link py-5 px-6 d-flex align-items-center"

@@ -63,15 +63,15 @@
 													<div class="card-header p-7 bg-transparent">
 														<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
 													</div>
-													<div class="card-body p-7">
+													<!-- <div class="card-body p-7">
 														<div class="input-upload">
 															<div class="mb-7">
-																<img id="img" src="/productImage/<%=category.image%>" width="102"
+																<img id="img" src="/productImage/<%//=category.image%>" width="102"
 																	class="d-block mx-auto" alt>
 															</div>
 															<input onchange="preview(this)" class="form-control"   name='image' type="file">
 														</div>
-													</div>
+													</div> -->
 												</div>
 												
 											</div>
@@ -92,12 +92,12 @@
 }
 	</style>	
 
-		<script>
+		<!-- <script>
 			function preview(e){
 				const img=document.getElementById('img')
 				img.src=URL.createObjectURL(e.files[0])
 			}
-		</script>	
+		</script>	 -->
         <%- include('../layouts/adminFooter.ejs') %>
             <%- include('../layouts/svg2.ejs') %>
 

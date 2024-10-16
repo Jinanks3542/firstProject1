@@ -5,6 +5,7 @@ const session = require('express-session');
 const categoryController = require('../controllers/categoryController')
 const multer = require('../util/multer');
 const upload = require('../util/multer');
+const auth=require('../middleware/userMiddleware')
 const productController = require('../controllers/productController')
 const brandController = require('../controllers/brandController')
 const orderController = require('../controllers/orderController')
@@ -53,6 +54,9 @@ adminRoute.patch('/brandBlock',brandController.brandBlock)
 // order related
 adminRoute.get('/orderList',orderController.loadOrderList)
 adminRoute.get('/singleOrder/:id',orderController.viewDetail)
+adminRoute.post('/updateStatus',orderController.updateStatus)
+adminRoute.get('/returnRequest',adminController.loadReturnRequest)
+adminRoute.patch('/returnApprove',orderController.returnApprove)
 
 // Offer related
 adminRoute.get('/allOffers',offerController.LoadOffer)
@@ -72,6 +76,16 @@ adminRoute.get('/editCoupen',coupenController.loadEditCoupen)
 adminRoute.post('/editCoupen',coupenController.editCoupen)
 adminRoute.post('/removeCoupon',coupenController.removeCoupon)
 
+// sales report
+
+adminRoute.get('/salesReport',adminController.loadSalesPage)
+adminRoute.post('/salesReport',adminController.salesReport)
+adminRoute.post('/salesReport',adminController.custom)
+
+// chart report
+
+adminRoute.put('/home/monthlyChart',adminController.monthlyChart)
+adminRoute.put('/home/yearlyChart',adminController.yearlyChart)
 
 module.exports=adminRoute
 

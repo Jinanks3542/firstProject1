@@ -18,13 +18,13 @@
 												<h2 class="fs-4 mb-0">Edit Category</h2>
 											</div>
 											<div class="col-sm-6 d-flex flex-wrap justify-content-sm-end">
-												
+
 												<button type="submit" class="btn btn-primary">
-													Edit
-													
+													Save
 													<input type="hidden" name="id"  value="<%=category._id%>">
+
 												</button>
-												
+
 											</div>
 										</div>
 									</div>
@@ -66,6 +66,7 @@
 													<div class="card-body p-7">
 														<div class="input-upload">
 															<div class="mb-7">
+																<input type="hidden" name="image" id="" value="<%=category.image%>">
 																<img id="img" src="/productImage/<%=category.image%>" width="102"
 																	class="d-block mx-auto" alt>
 															</div>
@@ -90,7 +91,10 @@
 ::-webkit-scrollbar{
 	width: 0;
 }
-	</style>	
+	</style>
+	
+	<script defer src="https://cdn.crop.guide/loader/l.js?c=JLQPJS"></script>
+
 
 		<script>
 			function preview(e){

@@ -54,7 +54,7 @@
                                                             <% if (data.offer>0) { %>
                                                         <tr id="remove<%=data._id %>">
                                                             <td class="text-center">
-                                                              <%=i %>
+                                                              <%=i+1 %>
                                                             </td>
                                                             <td>
                                                                 <div class="d-flex align-items-center flex-nowrap">
@@ -67,7 +67,7 @@
                                                                 </div>
                                                             </td>
                                                             
-                                                            <td><%=data.offer%></td>
+                                                            <td><%=data.offer%> %</td>
                                                            
                                                             <!-- <td><%//=product.stock%></td> -->
                                                             <td class="text-center">
@@ -97,7 +97,7 @@
                                    
                                 </div>
 
-                                <%-// include('../layouts/adminPagination.ejs') %>
+                                <%-include('../layouts/adminPagination.ejs') %>
 
                                 <!-- <footer class="pt-6 pb-10 footer-dashboard mt-auto">
                                     <div class="row">

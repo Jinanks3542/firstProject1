@@ -13,6 +13,8 @@ try {
     
     const categories=await Category.find({})
     const catOffer = await Offer.find({})
+ 
+    
    
     console.log('categories',categories)
 
@@ -50,9 +52,11 @@ const loadEditCategory = async(req,res)=>{
     try {
         console.log('load edit cat')
         const id=req.query.id
+        console.log('id in load edit',id);
+        
         const category=await Category.findOne({_id:id})
-        console.log('category',category)
-
+        console.log(category,'//////////////////////////////////');
+        
         res.render('admin/editCategory',{category:category})
     } catch (error) {
         console.log(error.message);
@@ -60,25 +64,28 @@ const loadEditCategory = async(req,res)=>{
 }
 const editCat = async(req,res)=>{
     try {
-        console.log('entered edit cat')
-       console.log(req.body);
         const id=req.body.id
-        console.log('id',id);
+        
+        const imageId=req.body.image
+        console.log(imageId,'mmmmmmmmmmmmmmmmmmmmmmmmmmm');
+        
         const updatedCategory = await Category.findByIdAndUpdate(
             {_id:id},
+            {$set:
             {
                 catName: req.body.catName,
                 description:req.body.description,
                 image: req.body.image,
-                image: req.file ? req.file.filename : null
-            },
+                image: req.file ? req.file.filename : imageId
+            }},
             { new: true } 
         );
         console.log('category',updatedCategory)
     
         const categories=await Category.find({})
+        const catOffer = await Offer.find({})
 
-        res.render('admin/allCategory',{categories:categories})
+        res.render('admin/allCategory',{categories:categories,catOffer})
     } catch (error) {
         console.log(error.message);
     }

@@ -32,9 +32,9 @@
                                                 <h6 class="mb-4">Customer</h6>
                                                 <p class="mb-4">
                                                      <br>
-                                                     <%=singleData.UserId.name  %>
+                                                     <strong style="color: azure;">Name: </strong><%=singleData.UserId.name  %>
                                                     <br>
-                                                    <%=singleData.UserId.mobile  %>
+                                                    <strong style="color: azure;">Phone: </strong><%=singleData.UserId.mobile  %>
                                                     <br>
                                                     
                                                 </p>
@@ -55,10 +55,11 @@
                                                 <p class="mb-4">
                                                     <br>
 
-                                                    <%=singleData.payment  %>  <br>
-                                                    <%=singleData.paymentStatus  %>
+                                                    <strong style="color: azure;">Method :</strong> <%=singleData.payment %>  <br>
+                                                    <strong style="color: azure;">Payment Status :</strong> <%=singleData.paymentStatus  %> <br>
+                                                     
                                                 </p>
-                                                
+                                               
                                             </div>
                                         </div>
                                     </div>
@@ -84,110 +85,76 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-lg-12 ">
+                                    <div class="col-lg-12">
                                         <div class="table-responsive">
                                             <table class="table table-borderless">
                                                 <thead>
                                                     <tr>
                                                         <th>Product</th>
-                                                        <th> Price</th>
+                                                        <th>Price</th>
                                                         <th>Quantity</th>
+                                                        <th>Status</th>
                                                         <th class="text-end">Total</th>
+                                                       
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <% singleData.products.forEach(data=>{  %>
+                                                    <% let totalSum=0 %>
+                                                    <% singleData.products.forEach(data => { %>
                                                     <tr>
                                                         <td>
                                                             <div class="d-flex align-items-center flex-nowrap">
-                                                                <a href="../shop/product-details-v1.html"
-                                                                    title="Flowers cotton dress">
-                                                                    <img src="<%=data.productId.images[0] %>"
-                                                                        data-src=""
-                                                                        alt="Flowers cotton dress" class="lazy-image"
-                                                                        width="60" height="80">
+                                                                <a href="../shop/product-details-v1.html" title="<%= data.productId.name %>">
+                                                                    <img src="<%= data.productId.images[0] %>" alt="<%= data.productId.name %>" class="lazy-image" width="60" height="80">
                                                                 </a>
-                                                              
                                                             </div>
                                                         </td>
-                                                        <td><%=data.productId.offerPrice  %></td>
-                                                        <td><%=data.quantity%></td>
-                                                        <td class="text-end"><%=data.productId.offerPrice*data.quantity  %></td>
+                                                        <td> ₹ <%= data.productId.offerPrice.toFixed(2) %></td>
+                                                        <td>  <%= data.quantity %></td>
+                                                        <td>
+                                                            
+                                                            <form action="/admin/updateStatus" method="POST" style="display: inline;">
+                                                                <input type="hidden" name="orderId" value="<%= singleData._id %>">
+                                                                <input type="hidden" name="productId" value="<%= data.productId._id %>">
+                                                                <select name="status" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
+                                                                    <option ><%= data.ProductStatus %></option>
+                                                                    <option <%= data.ProductStatus == 'Shipped' ? 'hidden' : '' %> >Shipped</option>
+                                                                    <option <%= data.ProductStatus == 'Delivered' ? 'hidden' : '' %> >Delivered</option>
+                                                                    <option <%= data.ProductStatus == 'Cancelled' ? 'hidden' : '' %> >Canceled</option>
+                                                                    <option <%= data.ProductStatus == 'Returned' ? 'hidden' : '' %> >Return</option>
+                                                                    <option <%= data.ProductStatus == 'Pending' ? 'hidden' : '' %> >Pending</option>
+                                                                    <option <%= data.ProductStatus == 'Pending' ? 'hidden' : '' %> >Ordered</option>
+                                                                </select>
+                                                            </form>
+                                                        </td>
+                                                        <td class="text-end"> ₹ <%= data.productId.offerPrice * data.quantity%></td>
+                                                        <% totalSum += data.productId.offerPrice * data.quantity; %>
+
                                                     </tr>
-                                                   
-                                                   
-                                                   
-                                                    <!-- <tr>
-                                                        <td colspan="4">
-                                                            <div
-                                                                class="d-flex flex-column align-items-end justify-content-end">
-                                                                <div class="mw-40 w-40">
-                                                                    <div class="d-flex w-100">
-                                                                        <span
-                                                                            class="d-inline-block w-50">Subtotal:</span>
-                                                                        <span
-                                                                            class="d-inline-block w-50 text-end fw-normal">$973.35</span>
-                                                                    </div>
-                                                                    <div class="d-flex w-100">
-                                                                        <span class="d-inline-block w-50">Shipping
-                                                                            cost:</span>
-                                                                        <span
-                                                                            class="d-inline-block w-50 text-end fw-normal">$10.00</span>
-                                                                    </div>
-                                                                    <div class="d-flex w-100 mb-5">
-                                                                        <span class="d-inline-block w-50">Grand
-                                                                            total:</span>
-                                                                        <span
-                                                                            class="d-inline-block w-50 text-end fs-5 fw-semibold">$983.00</span>
-                                                                    </div>
-                                                                    <div class="d-flex w-100">
-                                                                        <span
-                                                                            class="d-inline-block w-50 text-muted">Status:</span>
-                                                                        <span
-                                                                            class="d-inline-block w-50 text-end fs-20 fw-semibold"><span
-                                                                                class="badge rounded-pill alert alert-success text-success fs-12px px-4 py-3">Payment
-                                                                                done</span>
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </td>
-                                                    </tr> -->
                                                     <% }) %>
+
                                                 </tbody>
+
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="4" class="text-end" style="padding-left: 700px">
+                                                            <strong style="color: #e0ece4; font-size: 1.5rem; font-family:monospace;" >Total Price :</strong>
+                                                      
+                                                            <strong style="color: #a8aca9; font-size: 1.3rem; font-family: serif;"> ₹ <%= totalSum.toFixed(2) %></strong>
+                                                        </th>
+                                                    </tr>
+                                                </tfoot>
+                                               
                                             </table>
                                         </div>
                                     </div>
-                                    <!-- <div class="col-lg-4 offset-lg-1">
-                                        <div class="box shadow-sm bg-body-tertiary p-6">
-                                            <h6 class="mb-6">Payment info</h6>
-                                            <div>
-                                                <div class="d-flex">
-                                                    <div class="me-4">
-                                                        <img src="../assets/images/dashboard/master-card.png"
-                                                            class="border" alt="Card" width="28">
-                                                    </div>
-                                                    <p class="mb-0"> Master Card **** ****4768</p>
-                                                </div>
-                                                <p class="mb-0">
-                                                    Business name: Grand Market LLC <br>
-                                                    Phone: +1 (800) 555-154-52
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div class="h-25 pt-8">
-                                            <div class="mb-6">
-                                                <label
-                                                    class="mb-5 fs-13px ls-1 fw-semibold text-uppercase">Notes</label>
-                                                <textarea class="form-control" name="notes" id="notes"
-                                                    placeholder="Type some note"></textarea>
-                                            </div>
-                                            <button class="btn btn-primary">Save note</button>
-                                        </div>
-                                    </div> -->
                                 </div>
+                                
+                                
                             </div>
                         </div>
+                  
+                        
                     </div>
                   
                 </main>

@@ -1,0 +1,102 @@
+<%- include('../layouts/header.ejs')  %>
+
+<div class="container">
+    <div class="invoice" style="font-family:Arial, Helvetica, sans-serif;">
+        <h3>Invoice</h3>
+        <hr>
+
+        <div class="invoice-info" >
+            <div class="invoice-details" style="font-family: serif;">
+                <h4>Order Details</h4>
+                <p><strong>Order ID:</strong> <%= forInvoice._id %></p>
+                <p><strong>Date:</strong> <%=forInvoice.orderDate.toDateString() %></p>
+                <p><strong>Items:</strong>  <%= forInvoice.products.length %> Items</p>
+                <p><strong>Payment Method:</strong> <%= forInvoice.payment %></p>
+                <p><strong>Total Amount:</strong>₹ <%= forInvoice.orderAmount.toFixed(2) %></p>
+               
+            </div>
+
+            <div class="customer-details" style="padding-left: 300px; font-family: serif;">
+                <h4>Customer Details</h4>
+                <p><strong>Name:</strong> <%= forInvoice.deliveryAddress.name %></p>
+                <p><strong>Mobile:</strong> <%= forInvoice.deliveryAddress.phone %></p>
+                <p><strong>Address:</strong> <%= forInvoice.deliveryAddress.street %>, <%= forInvoice.deliveryAddress.locality %></p>
+                <p><strong>Pin Code:</strong><%= forInvoice.deliveryAddress.pincode %></p>
+                    <p><strong>city: </strong><%= forInvoice.deliveryAddress.city %></p>
+                        <p><strong>State: </strong><%= forInvoice.deliveryAddress.state %></p> 
+                
+            </div>
+        </div>
+
+        <div class="invoice-items" style="font-family: serif;">
+            <h4>Order Items</h4>
+            <table class="table" >
+                <thead>
+                    <tr>
+                        <th >Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <%forInvoice.products.forEach((product) => { %>
+                    <tr>
+                        <td><%= product.productId.productName %></td>
+                        <td>₹<%= product.productId.offerPrice.toFixed(2) %></td>
+                        <td><%= product.quantity %></td>
+                        <td>₹<%= (product.productId.offerPrice * product.quantity).toFixed(2) %></td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="invoice-total" style="font-family: serif;">
+            <h4>Total Amount: ₹ <%=forInvoice.orderAmount.toFixed(2) %></h3>
+        </div>
+
+        <div class="invoice-footer" style="padding-left: 470px;">
+            <a type="button" href="javascript:window.print()" class="btn btn-primary">Download</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .invoice {
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #ddd;
+    }
+
+    /* Flex container for order and customer details */
+    .invoice-info {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .invoice-details, .customer-details {
+        width: 48%; /* Each section takes up 48% of the width */
+    }
+
+    .invoice-items table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .invoice-items th, .invoice-items td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    .invoice-total {
+        text-align: right;
+    }
+</style>
+
+<%- include('../layouts/svg.ejs') %>
+
+<%- include('../layouts/search.ejs') %>
+
+<%- include('../layouts/mobileNavbar.ejs') %>

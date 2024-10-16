@@ -140,6 +140,28 @@
     }
 
 
+    const removeCoupon = async(req,res)=>{
+        try {
+            const cartData = await Cart.findOne({userId:req.session.userId}).populate('products.productId').exec()
+            
+            let grandTotal=0
+            cartData.products.forEach(item=>{
+                grandTotal+=item.productId.offerPrice*item.quantity
+            })
+            
+            req.session.Coupon=null
+            req.session.code=null
+
+            res.json({success:true, total:grandTotal})
+
+        } catch (error) {
+            console.log(error.message);
+            res.json({success:false})
+            
+        }
+    }
+
+    
 
     const loadCheckout = async(req,res)=>{
         try {
@@ -179,6 +201,7 @@
         }
     }
 
+
     const checkoutDetails = async(req,res)=>{
         try {
             const {userId}=req.session || req.body
@@ -200,6 +223,7 @@
             console.log(error.message);
         }
     }
+
 
     const removeAddress = async(req,res)=>{
         try {
@@ -247,6 +271,8 @@
         checkoutDetails,
         removeAddress,
         chooseAddress,
-        couponApply
+        couponApply,
+        removeCoupon
     }
+    
     

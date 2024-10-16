@@ -27,7 +27,7 @@
                                 <a class="btn btn-primary" href="/logout">Logout</a>
                             </div>
                         </aside>
-    <!-- dets -->
+    
                         <div class="col-lg-9 px-8">
                             <section class="p-xl-8">
                                 <div class="tab-content">
@@ -37,6 +37,8 @@
                                                 <div class="col-lg-12">
                                                     <div class="row gx-9">
                                                         <div class="col-12 mb-6">
+                                                            <% console.log(userDatas,'...................usewrsadata');
+                                                             %>
                                                             <label class="mb-5 fs-13px ls-1 fw-semibold text-uppercase" for="name">Name</label>
                                                             <input class="form-control" type="text" value="<%= userDatas.name %>" id="name" name="name">
                                                         </div>
@@ -47,6 +49,10 @@
                                                         <div class="col-12 mb-6">
                                                             <label class="mb-5 fs-13px ls-1 fw-semibold text-uppercase" for="phone">Phone</label>
                                                             <input class="form-control" type="tel" value="<%= userDatas.mobile %>" id="phone" name="phone">
+                                                        </div>
+                                                        <div class="col-12 mb-6">
+                                                            <label class="mb-5 fs-13px ls-1 fw-semibold text-uppercase" for="code">Referral Code</label>
+                                                            <input class="form-control" type="text" value="<%= userDatas.refferalId %>" id="code" name="code">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -74,20 +80,17 @@
                                                         </thead>
                                                         <tbody>
                                                             <% order.forEach(order => { %>
-                                                                <% let totalOrderAmount=0 %>
+                                                                <% let totalAmount=order.orderAmount %>
                                                                 <% order.products.forEach(product => { 
-                                                                    let productTotal = product.productId.offerPrice*product.quantity
-                                                                    totalOrderAmount+=productTotal
+                                                                     
                                                                     %>
-
                                                                     <tr>
                                                                         <td class="align-middle">
-                                                                            <%//= product.productId.name %> 
                                                                             <br>
-                                                                            Quantity: <%= product.quantity %>
+                                                                            Qty:  <%= product.quantity %>
                                                                         </td>
                                                                         <td class="align-middle">
-                                                                            $<%= product.productId.offerPrice * product.quantity %> 
+                                                                            ₹  <%= product.productId.offerPrice * product.quantity %>.00 
                                                                         </td>
                                                                         <td class="align-middle">
                                                                             <%= product.ProductStatus %>
@@ -105,19 +108,20 @@
                                                                 
                                                                 <tr>
                                                                     <td colspan="5" class="text-end">
-                                                                        <strong>Total Order Amount: $<%=totalOrderAmount %></strong>
+                                                                        <strong>Total Order Amount: ₹ <%=totalAmount %>.00</strong>
                                                                     </td>
                                                                 </tr>
                                                             <% }) %>
                                                         </tbody>
                                                     </table>
+                                                    
                                                 </div>
                                             </div>
+                                          
+                                        </div>  
+                                        <%- include('../layouts/userPagination.ejs') %>
+
                                         </div>
-                                        
-                                        
-                                        
-                                    </div>
     
                                     <div class="tab-pane fade" id="wallet">
                                         <!-- Wallet content here -->
@@ -140,44 +144,44 @@
                                                 <div class="col-md-4 addButton">
                                                     <button class="btn btn-primary" type="button"  onclick="razorPay()">Add Money</button>
                                                 </div>
-                                            </div>
-                                        </form>
+                                                </div>
+                                                </form>
                                                 <div>
                                                     <br>
 
                                                 <br>
-                                                <div class="select-menu">
-                                                    <div class="select">
-                                                      <span>Histoy</span>
-                                                      <i class="fas fa-angle-down"></i>
-                                                    </div>
-                                                    <div class="options-list">
-                                            <table class="table  table-check">
-                                                <thead>
+                                          
+                                    <div>
+               
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                            
+                                                    <th>Transactions</th>
+                                                    <th>Amount</th>
+                                                    <th>Date</th>
+                                                </tr>
+                                        </thead>
+                                    <tbody>
+                        
+                                                <% walletDetail?.transaction.forEach((Data) => { %>
                                                     <tr>
-                                                        <td>Transactions</td>
-                                                        <td>Amount</td>
-                                                        <td>Date</td>
-                                                    </tr>
-                                                </thead>
-                                                    <tbody>
-                                                        <% walletDetail?.transaction.forEach((Data)=>{ %>
-                                                    <tr>
-                                                        <td><%=Data.creditOrDebit %></td>
+                                                        <td><%= Data.creditOrDebit%></td>
                                                         <td>₹ <%=Data.amount %></td>
                                                         <td><%=Data.date.toLocaleDateString() %></td>
+                                                        <td><%//= transaction.remarks %></td>
                                                     </tr>
-                                                    <% }) %>
-                                                </tbody>
-                                            </table>
-                                                    </div>
-                                                  </div>
-                                                  
+                                                <% }) %>
+                        
+                                    </tbody>
+                                        </table>
+                                    </div>
                                                 </div>
-                                        </div>
-                                    </div>
-                                    </div>
-
+                                            </div>
+                                                </div>
+                                                </div>
+                                          
+                                           
                                     <!--..............for wallet -->
                                     <style>
                                     .walletBack {
@@ -222,22 +226,39 @@
                                                 </div>
                                                 <%})%>
                                                 <% } else { %>
-                                                    <p>No addresses found.</p>
+                                                    <p>No addresses found</p>
                                                 <% } %>
-                                                <!-- <script>
-                                                      async function remove(ID){
-                        
-                                                        await axios.patch('/removeAddress',{ID})
-                                                    }
-            
-                                                    async function radioButton(addressId){
-                                                        await axios.patch('/radioAddress',{addressId})
-                                                    }
-                                                </script> -->
+                                               
                                                 
-                                            </div>
-                                          <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11 mt-md-7 mt-4" data-bs-toggle="modal" data-bs-target="#addAddress">Add Address</button>  
-                                        
+                                            <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-11 mt-md-7 mt-4" data-bs-toggle="modal" data-bs-target="#addAddress">Add Address</button>  
+
+                                                    
+
+                                            <nav aria-label="Page navigation example" class="mt-6 mb-4">
+                                                <ul class="pagination justify-content-start">
+                                                    <% if (pages > 1) { %>
+                                                        <li class="page-item mx-3">
+                                                            <a class="page-link" href="?page=<%= pages - 1 %>">Prev</a>
+                                                        </li>
+                                                    <% } %>
+
+                                                    <% for (let i = 1; i <= totalPagess; i++) { %>
+                                                        <li class="page-item <%= pages == i ? 'active' : '' %> mx-3">
+                                                            <a class="page-link" href="?page=<%= i %>"><%= i %></a>
+                                                        </li>
+                                                    <% } %>
+
+                                                    <% if (pages < totalPagess) { %>
+                                                        <li class="page-item mx-3">
+                                                            <a class="page-link" href="?page=<%= pages + 1 %>">Next</a>
+                                                        </li>
+                                                    <% } %>
+                                                </ul>
+                                            </nav>
+
+                                            
+
+
                                           <!--......................... add address modal...............................-->
                                             
                                           <div class="modal" id="addAddress" tabindex="-1">
@@ -311,13 +332,14 @@
                                           
 
                                                 
-                                          </div>
+                                        </div>
 
                                     </div>
 
                                     <!--........................ address end here..................................-->
 
                                     </div>
+                                </div>
     
                                     <!-- ...............................edit address.......................................... -->
 
@@ -406,7 +428,7 @@
                                                 </div>
                                                 
                             
-                                            </form>
+                                    
                                             </div>
                                             <div class="modal-footer">
                                               <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
@@ -438,14 +460,14 @@
                                         </form>
                                     </div>
                                     
-                                    
-                                    
+                                     
                             </section>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
     </main>
     <style>
         .amount{
