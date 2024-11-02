@@ -214,11 +214,11 @@
                                     </svg>
                                     <span
                                         class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
-                                        style="--square-size: 18px">3</span>
+                                        style="--square-size: 18px" id="CountData"></span>
                                 </a>
                             </div>
                             <!-- cart -->
-                            <div class="px-5 d-none d-xl-inline-block">
+                            <div class="px-5 d-none d-xl-inline-block" >
                                 <a class="position-relative lh-1 color-inherit text-decoration-none" href="/cart"
                                     >
                                     <svg class="icon icon-shopping-bag-open-ligh">
@@ -226,7 +226,7 @@
                                     </svg>
                                     <span
                                         class="badge bg-dark text-white position-absolute top-0 start-100 translate-middle mt-4 rounded-circle fs-13px p-0 square"
-                                        style="--square-size: 18px">3</span>
+                                        style="--square-size: 18px" id="countData"></span>
                                 </a>
                             </div>
                             <!-- theams -->
@@ -283,4 +283,33 @@
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <script>
+
+        function cartItem (){
+            const cartCountElement = document.getElementById('countData')
+            axios.post('/countCart')
+            .then(response=>{
+                const cartCount = response.data.count 
+                cartCountElement.textContent= cartCount
+            })
+        }
+        cartItem()
+
+
+        // function for count wishlist
+
+        function wishlistItems (){
+            const wishlistCountElement = document.getElementById('CountData')
+            axios.post('/countWishlist')
+            .then(response=>{
+                const wishlistCount = response.data.Count
+                wishlistCountElement.textContent = wishlistCount
+            })
+        }
+
+        wishlistItems()
+
+    </script>
 </header>

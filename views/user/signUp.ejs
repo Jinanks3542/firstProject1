@@ -2,7 +2,7 @@
 
 <body>
     <!-- nav bar -->
-    <%- include('../layouts/navbar.ejs') %>
+   
     <!-- navbar -->
 
     <main id="content" class="wrapper layout-page">
@@ -24,41 +24,7 @@
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-8 mx-auto">
-                    <!-- <form id="myForm" method="post" action="/signUp">
-                        <div class="mb-6">
-                            <label for="name" class="visually-hidden">Name</label>
-                            <input name="name" id="name" type="text" class="form-control"
-                                placeholder="First name" required>
-                        </div>
-                        
-                        <div class="mb-6">
-                            <label for="email" class="visually-hidden">Email address</label>
-                            <input name="email" id="email" type="email" class="form-control" placeholder="Your email"
-                                required>
-                        </div>
-                        <div  class="mb-7">
-                            <label for="password" class="visually-hidden">Password</label>
-                            <input name="password" id="password" type="password" class="form-control"
-                                placeholder="Password" required>
-                        </div>
-                        <div class="mb-7">
-                            <label for="mobile" class="visually-hidden">Mobile Number</label>
-                            <input name="mno" id="mobile" type="mobile" class="form-control"
-                                placeholder="mobile" required>
-                        </div>
-                       <p></p>
-                        <button type="submit" value="Login" class="btn btn-primary w-100">Sign Up</button>
-                        <div class="border-bottom mt-10"></div>
-                        <div class="text-center mt-n4 lh-1 mb-7">
-                            <span class="fs-14 bg-body lh-1 px-4">or Sign Up with</span>
-                        </div>
-                        <div class="d-flex">
-                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5"><i
-                                    class="fab fa-facebook-f me-4" style="color: #2E58B2"></i>Facebook</a>
-                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 mt-0"><i
-                                    class="fab fa-google me-4" style="color: #DD4B39"></i>Google</a>
-                        </div>
-                    </form> -->
+                    
                     <form id="myForm" method="post" action="/signUp" onsubmit="return validateForm()">
                         <div class="mb-6">
                             <label for="name" class="visually-hidden">Name</label>
@@ -99,8 +65,8 @@
                             <span class="fs-14 bg-body lh-1 px-4">or Sign Up with</span>
                         </div>
                         <div class="d-flex">
-                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5"><i
-                                    class="fab fa-facebook-f me-4" style="color: #2E58B2"></i>Facebook</a>
+                            <!-- <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5"><i
+                                    class="fab fa-facebook-f me-4" style="color: #2E58B2"></i>Facebook</a> -->
                             <a href="/auth/google" class="btn btn-outline-primary w-100 px-2 font-weight-500 mt-0"><i
                                     class="fab fa-google me-4" style="color: #DD4B39"></i>Google</a>
                         </div>
@@ -141,10 +107,14 @@
         
                     // Password validation
                     const password = document.getElementById('password').value;
-                    if (password.length < 6) {
-                        document.getElementById('passwordError').innerText = "Password must be at least 6 characters";
-                        valid = false;
-                    }
+                        if (password.length < 6) {
+                            document.getElementById('passwordError').innerText = "Password must be at least 6 characters";
+                            valid = false;
+                        } else if (/^\d+$/.test(password)) { 
+                            // Check if the password contains only digits
+                            document.getElementById('passwordError').innerText = "Password must want to include characters also";
+                            valid = false;
+                        }
         
                     // Mobile validation
                     const mobile = document.getElementById('mobile').value;

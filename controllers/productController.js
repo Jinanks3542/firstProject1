@@ -73,9 +73,11 @@ const productBlock = async (req, res) => {
         const productId = await productModel.findOne({ _id: req.body.id })
         productId.is_blocked = !productId.is_blocked
         await productId.save()
-       
+
+        res.json({success:true, isBlocked: productId.is_blocked})
     } catch (error) {
         console.log(error.message);
+        res.status(500).json({ success: false });
     }
 }
 

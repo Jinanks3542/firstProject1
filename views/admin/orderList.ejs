@@ -38,14 +38,15 @@
 											</tr>
 										</thead>
 										<tbody>
+											
 											<% orderDatas.forEach(order => { %>
 												<% let totalOrderAmount = 0 %>
 												<% let totalItems = 0 %>
-												<% order.products.forEach(product => { 
-													let productTotal = product.productId.offerPrice * product.quantity
-													totalOrderAmount += productTotal
-													totalItems += product.quantity
-												%>
+												<% order.products.forEach(product => { %>
+													<% let productTotal = product.productId.offerPrice * product.quantity %>
+													<% totalOrderAmount += productTotal %>
+													<% totalItems += product.quantity %>
+												
 												<% }) %>
 												<tr>
 													<td class="align-middle">
@@ -58,7 +59,7 @@
 														<%= totalItems %> 
 													</td>
 													<td class="align-middle">
-														₹ <%= totalOrderAmount.toFixed(2) %>
+														₹ <%= order.orderAmount.toFixed(2) %>
 													</td>
 												
 													<td class="align-middle">

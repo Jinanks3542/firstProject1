@@ -18,7 +18,8 @@ router.get('/login',auth.myAccountauthorize,userControllers.login)
 router.post('/login',userControllers.verifyLogin)
 router.get('/userHome',auth.isblocked,userControllers.loadUserhome)
 router.get('/myAccount',auth.noUserLogin,auth.isblocked,userControllers.loadAccount)
-// router.post('/userProfile',userControllers,loadAccount)
+router.post('/userProfile',userControllers.editProfile)
+
 
 // user signUp
 router.get('/logout',userControllers.userSignUp)
@@ -34,6 +35,8 @@ router.get('/resendOtp',userControllers.resendOtp)
 // shop related
 router.get('/shop',auth.noUserLogin,auth.isblocked,userControllers.shop)
 router.get('/singleProduct/:id',auth.isblocked,userControllers.singleProduct)
+router.post('/countCart',userControllers.countCart)
+router.post('/countWishlist',userControllers.countWishlist)
 
 
 
@@ -55,6 +58,8 @@ router.post('/address',auth.isblocked,cartController.checkoutDetails)
 router.patch('/removeAddress',auth.isblocked,cartController.removeAddress)
 router.patch('/radioAddress',auth.isblocked,cartController.chooseAddress)
 router.post('/razor',auth.isblocked,orderController.razor)
+router.post('/edittAddress',cartController.editAddress)
+router.patch('/saveChanges',cartController.saveEditData)
 
 
 // order related
@@ -73,6 +78,7 @@ router.post('/wishRemove',auth.isblocked,userControllers.wishRemove)
 // wallet
 router.post('/razors',auth.isblocked,walletController.razorPay)
 router.post('/addWallet',auth.isblocked,walletController.walletAdd)
+router.post('/walletFail',walletController.walletFail)
 
 router.post('/changePassword',auth.isblocked,userControllers.changepassword)
 router.get('/singleOderDatas/:orderId',auth.isblocked,userControllers.viewOrder)
@@ -81,6 +87,7 @@ router.patch('/removeCoupon',cartController.removeCoupon)
 router.post('/addAddress',auth.isblocked,userControllers.addAddress)
 router.post ('/editAddress',auth.isblocked,userControllers.editAddress)
 router.patch('/saveEdit',auth.isblocked,userControllers.saveEdit)
+router.patch('/removePfAddress',userControllers.removePfAddress)
 
 module.exports=router
 

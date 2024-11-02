@@ -2,7 +2,7 @@
 
     <body>
 		
-        <form  class="wrapper dashboard-wrapper" action="" method="post" enctype="multipart/form-data" >
+        <div  class="wrapper dashboard-wrapper" >
             <div class="d-flex flex-wrap flex-xl-nowrap">
                 <%- include('../layouts/adminSidbar.ejs') %>
                     <div class="page-content">
@@ -11,7 +11,7 @@
                           
 						<main id="content" class="bg-body-tertiary-01 d-flex flex-column main-content">
 							<div class="dashboard-page-content">
-								<form action="/admin/addCoupen" method="post">
+								<form id="couponForm" action="/admin/addCoupen" method="post" onsubmit="validateCouponForm(event)">
 									<div class="row mb-9 align-items-center">
 										<div class="col-xxl-9">
 											<div class="row">
@@ -36,20 +36,24 @@
 																<div class="col-md-6">
 																	<label for="name" class="mb-2 fs-13px ls-1 fw-bold text-uppercase">Coupon Name</label>
 																	<input name="name" type="text"  class="form-control" id="name" required>
+																	<div class="error-message text-danger" id="nameError"></div>
 																</div>
 																<div class="col-md-6">
 																	<label for="buyMinPrice" class="mb-2 fs-13px ls-1 fw-bold text-uppercase">Buy Minimum Price</label>
-																	<input name="buyMinPrice" type="number" id="buyMinPrice"  class="form-control" required>
+																	<input name="buyMinPrice" type="number" id="buyMinPrice"  class="form-control" min="0" required>
+																	<div class="error-message text-danger" id="buyMinPriceError"></div>
 																</div>
 															</div>
 															<div class="row mb-4">
 																<div class="col-md-6">
 																	<label for="buyMaxPrice" class="mb-2 fs-13px ls-1 fw-bold text-uppercase">Buy Maximum Price</label>
-																	<input name="buyMaxPrice" type="number" id="buyMaxPrice"  class="form-control" required>
+																	<input name="buyMaxPrice" type="number" id="buyMaxPrice"  class="form-control" min="0"  required>
+																	<div class="error-message text-danger" id="buyMaxPriceError"></div>
 																</div>
 																<div class="col-md-6">
 																	<label for="discountAmount" class="mb-2 fs-13px ls-1 fw-bold text-uppercase">Discount Percentage</label>
-																	<input name="discountAmount" type="number" id="discountAmount"  class="form-control" required>
+																	<input name="discountAmount" type="number" id="discountAmount"  class="form-control" min="0" max=100 required>
+																	<div class="error-message text-danger" id="discountAmountError"></div>
 																</div>
 															</div>
 															<div class="row mb-4">
@@ -58,42 +62,25 @@
 																	<input name="minPrice" type="number" id="minPrice"class="form-control" required>
 																</div>
 																<div class="col-md-6">
-																	<label for="validity" class="mb-2 fs-13px ls-1 fw-bold text-uppercase">Coupon Validity</label>
-																	<input name="validity" type="number" id="validity"  class="form-control" required>
+																	<label for="validityy" class="mb-2 fs-13px ls-1 fw-bold text-uppercase">validityy</label>
+																	<input name="validityy" type="number" id="validityy"class="form-control" min="1"  max="30">
+																	<div class="error-message text-danger" id="validityError"></div>
 																</div>
 															</div>
 															<div class="row mb-4">
 																<div class="col-md-12">
 																	<label for="description" class="mb-2 fs-13px ls-1 fw-bold text-uppercase">Description</label>
-																	<input name="description" id="description"  class="form-control" rows="3" required>
+																	<input name="description" type="text" id="description"  class="form-control" rows="3" required>
+																	<div class="error-message text-danger" id="descriptionError"></div>
 																</div>
 															</div>
 														</div>
 													</div>
 												</div>
-												<!-- Uncomment if you want to include the media section -->
-												<!-- <div class="col-lg-4">
-													<div class="card mb-8 rounded-4">
-														<div class="card-header p-7 bg-transparent">
-															<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
-														</div>
-														<div class="card-body p-7">
-															<div class="input-upload">
-																<div class="mb-7">
-																	<img id="img" src="../assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt>
-																</div>
-																<input onchange="preview(this)" class="form-control" name='image' type="file">
-															</div>
-														</div>
-													</div>
-												</div> -->
+												
 											</div>
 										</div>
 									</div>
-									
-									
-									
-									
 									
 								</form>
 							</div>
@@ -103,7 +90,7 @@
 					</div>
 				
 			</div>
-		</form>
+		</div>
 	<style>
 ::-webkit-scrollbar{
 	width: 0;
@@ -116,6 +103,50 @@
 				img.src=URL.createObjectURL(e.files[0])
 			}
 		</script>	
+
+		<script>
+			function validateCouponForm(event){
+				event.preventDefault()
+
+
+				document.getElementById('nameError').textContent = ""
+				document.getElementById('buyMinPriceError').textContent = ""
+				document.getElementById('buyMaxPriceError').textContent = ""
+				document.getElementById('discountAmountError').textContent = ""
+       			document.getElementById('validityError').textContent = ""
+
+				let isValid = true;
+				
+				const name = document.getElementById('name').value
+				if(name.trim()===''||/\d/.test(name) || /[^\w\s]/.test(name) || /\s{2,}/.test(name) || name !== name.replace(/\s+/g, ' ')){
+					document.getElementById('nameError').textContent = 'please enter valid name'
+					isValid = false
+				}
+
+				const percentage = document.getElementById('discountAmount').value.trim()
+				if(percentage ===''|| percentage <= 0 || percentage > 100){
+					document.getElementById('discountAmountError').textContent = 'please enter valid percentage'
+					isValid = false
+				}
+
+				const minPrice = document.getElementById('buyMinPrice').value.trim()
+				if(minPrice===''||minPrice<500){
+					document.getElementById('buyMinPriceError').textContent = 'Please enter valid amount'
+					isValid = false
+				}
+
+				const maxPrice = document.getElementById('buyMaxPrice').value.trim()
+				if(maxPrice===''||maxPrice<1500){
+					document.getElementById('buyMaxPriceError').textContent = 'please enter valid amount'
+					isValid = false
+				}
+
+				if(isValid){
+					document.getElementById('couponForm').submit()
+				}
+
+			}
+		</script>
         <%- include('../layouts/adminFooter.ejs') %>
             <%- include('../layouts/svg2.ejs') %>
 

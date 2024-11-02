@@ -24,7 +24,7 @@ const couponSchema = mongoose.Schema({
         required:true
     },
     dataDuration:{
-        type:String
+        type:Number
     },
     description:{
         type:String,

@@ -271,6 +271,13 @@
 														</tr>
 													</thead>
 													<tbody>
+
+														<% console.log(totalData,': data is here for you');
+														 %>
+														<% totalData.forEach(i=>{%>
+															<% console.log(i.products,':totalData is here');
+															 %>
+															<% }) %>
 														<% bestSellingProducts.forEach((product, i) => { %>
 														<tr>
 															<td class="text-center">
@@ -279,7 +286,7 @@
 															<td>
 																<div class="d-flex align-items-center flex-nowrap">
 																	<a href="../shop/product-details-v1.html" title="Flowers cotton dress">
-																		<img src="#" data-src="<%=product.images[0]%>" alt="Flowers cotton dress"
+																		<img src="#" data-src="<%=product.images[0]%>" 
 																			class="lazy-image" width="60" height="80">
 																	</a>
 																	<a href="../shop/product-details-v1.html" title="Flowers cotton dress" class="ms-6">
@@ -298,7 +305,6 @@
 									</div>
 								</div>
 							
-								
 								<div class="col-xl-6">
 									<div class="card rounded-4 mb-4"> 
 										<div class="card-body px-0 pt-7 pb-0">
@@ -338,7 +344,52 @@
 											</div>
 										</div>
 									</div>
+
+									<!-- best selling brand -->
+
+									<div class="card rounded-4 mb-4"> 
+										<div class="card-body px-0 pt-7 pb-0">
+											<div class="row align-items-center justify-content-between mb-4">
+												<div class="col-md-12">
+													<h2 class="fs-4 mb-0">Best Selling Brands</h2>
+												</div>
+											</div>
+							
+											<div class="table-responsive">
+												<table class="table table-hover align-middle table-nowrap mb-0">
+													<thead>
+														<tr>
+															<th>No.</th>
+															<th>Brand</th>
+															<th class="text-center">Sold Count</th>
+														</tr>
+													</thead>
+													<tbody>
+														<% bestSellingBrand.forEach((brand, i) => { %>
+														<tr>
+															<td class="text-center">
+																<%=i+1 %>
+															</td>
+															<td>
+																<div class="d-flex align-items-center flex-nowrap">
+																	<a href="../shop/Brand-details-v1.html" title="Brand Name">
+																		<p class="fw-semibold text-body-emphasis mb-0"><%=brand.brandName%></p>
+																	</a>
+																</div>
+															</td>
+															<td class="text-center"><%=brand.soldCount%></td>
+														</tr>
+														<% }) %>
+													</tbody>
+												</table>
+											</div>
+										</div>
+									</div>
+
+									<!-- best selling brand end here -->
+
 								</div>
+
 							</div>
 							
 							

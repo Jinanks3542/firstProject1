@@ -33,7 +33,7 @@ const razorPay = async (req, res) => {
             } else {
                 console.log('shkjfdhsfhlasdfhas;dkfhsdfjhasfkjhskjfhksjdfhksdfkjsfjk')
                 console.error("Error creating order:", err);
-                res.status(500).send({ success: false, msg: "Failed to create order" });
+                res.status(500).send({ success: false, msg: "Failed to add amount" });
             }
         });
     } catch (error) {
@@ -53,8 +53,30 @@ const walletAdd = async (req,res)=>{
     }
 }
 
+const walletFail = async (req,res)=>{
+    try {
+        const {userId} = req.session
+        const amount = req.body.amount
+
+        const findFailedData = await wallet.findOne({userId,'transaction.amount':amount,'transaction.creditOrDebit':'failed'})
+        console.log(findFailedData,':::::::::::::::');
+        if(!findFailedData){
+        await wallet.findOneAndUpdate({userId},{$push:{transaction:{amount:amount,creditOrDebit:'failed',date:new Date()}}},{upsert:true,new:true})
+        return res.send({success:true, msg:'Failed Transaction Recorded'})
+        }else{
+            res.send({ success: false, msg: 'Transaction already recorded as failed' });
+        }
+    } catch (error) {
+        console.log(error.message);
+        
+    }
+}
+
 module.exports = {
     razorPay,
     walletAdd,
+    walletFail
 }
 
+
+ 

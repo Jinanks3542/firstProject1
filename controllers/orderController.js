@@ -50,22 +50,16 @@ const placeOrder = async(req,res)=>{
         let totalSum=0
         
         if(!req.session.Coupon){
-        cartDatas.products.forEach((element)=> {
-            quantityTotal=element.productId.offerPrice*element.quantity
-            totalSum+=quantityTotal
-
+            cartDatas.products.forEach((element)=> {
+                quantityTotal=element.productId.offerPrice*element.quantity
+                totalSum+=quantityTotal        
+            });
+        }else{
+            totalSum = req.session.totalOrderAmount
             
-            
-            
-        });
-        
-    }else{
-        totalSum = req.session.totalOrderAmount
-        
-         await User.findOneAndUpdate({_id:req.session.userId,'coupons.code':req.session.code},{$set:{'coupons.$.couponStatus':'Claimed'}})
-         req.session.totalOrderAmount=undefined
-        
-    }
+            await User.findOneAndUpdate({_id:req.session.userId,'coupons.code':req.session.code},{$set:{'coupons.$.couponStatus':'Claimed'}})
+            req.session.totalOrderAmount=undefined 
+        }
 
         const productData=cartDatas.products
         
@@ -74,7 +68,6 @@ const placeOrder = async(req,res)=>{
             buyHigh:{$gte:totalSum}
 
         })
-        
         
         let result = true
         let value
@@ -275,29 +268,38 @@ const cancelOrder = async (req, res) => {
     try {
       const { orderId, productId, cancelReason } = req.body;
       const userid = req.session.userId;
+      const percentage = req.session.Coupon
+      
   
       const cancel = await Order.findOneAndUpdate(
         { _id: orderId, 'products._id': productId, UserId: userid },
         { $set: { 'products.$.ProductStatus': 'Canceled' } },
         { new: true } 
       );
+
   
       if (cancel) {
         const check = await Order.findOne(
           { UserId: userid, 'products._id': productId },
           { 'products.$': 1 }
         ).populate('products.productId');
-  
+
+        
         let productTotal = 0;
+        let creditAmount = 0
         productTotal = check.products[0].productPrice * check.products[0].quantity;
+        console.log(productTotal,':productTotal');
+        
+        creditAmount = Math.round(productTotal-(cancel.offer/100)*productTotal)
+        
         const orderData = await Order.findOne({ _id: orderId });
   
         if (check.products[0].ProductStatus === 'Canceled' && orderData.payment === 'Online Payment') {
           await Wallet.findOneAndUpdate(
             { userId: userid },
             {
-              $inc: { balance: productTotal },
-              $push: { transaction: { amount: productTotal, creditOrDebit: 'credit' } }
+              $inc: { balance: creditAmount },
+              $push: { transaction: { amount: creditAmount, creditOrDebit: 'credit' } }
             },
             { upsert: true, new: true }
           );
@@ -337,9 +339,20 @@ const returnApprove = async(req,res)=>{
                 { UserId: userId, 'products._id': productId },
                 { 'products.$': 1 }
               ).populate('products.productId'); 
-
+              
+            //   for getting coupon percentage
+              let couponPercentage =0
+              check.products.forEach((product)=>{
+                couponPercentage = product.productId.offer
+                
+              })
+              
+              
               let productTotal = 0;
+              let amountCredited = 0;
               productTotal = check.products[0].productPrice * check.products[0].quantity;
+              amountCredited =Math.round( productTotal - (couponPercentage/100)*productTotal)
+
               const orderData = await Order.findOne({ _id: orderId });
 
               if (check.products[0].ProductStatus === 'Return'){
@@ -347,13 +360,14 @@ const returnApprove = async(req,res)=>{
                     await Wallet.findOneAndUpdate(
                       { userId: userId },
                       {
-                        $inc: { balance: productTotal },
-                        $push: { transaction: { amount: productTotal, creditOrDebit: 'credit' } }
+                        $inc: { balance: amountCredited },
+                        $push: { transaction: { amount: amountCredited, creditOrDebit: 'credit' } }
                       },
                       { upsert: true, new: true }
                     );
                   
               }
+
               res.json({ success: true });
               
         }else{
@@ -372,7 +386,6 @@ const rePayment = async(req,res)=>{
 
     try {
         const {orderId,productId,amount}=req.body
-        console.log(orderId,productId,amount,'..................................something hereeeeeeeee');
         const orderData = await Order.findOne({_id:orderId})
         await Order.findOneAndUpdate({_id:orderId},{$set:{paymentStatus:'paid',orderAmount:amount}})
         return res.json({success:true,message:'order sucessfully placed'})        

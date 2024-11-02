@@ -91,38 +91,37 @@
     <script>
 
         async function returnApproved(orderId,productId,returnReason){
-        console.log(productId,orderId,returnReason,'..................sdrtfgyhuijk');
             
-const result = await Swal.fire({
-    title: "Are you sure?",
-    text: "Approve Return request?",
-    icon: "warning",
-    confirmButtonText: "Yes",
-    confirmButtonColor: "#3085d6",
-    showCancelButton: true,
-    cancelButtonColor: "#d33"
-})
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: "Approve Return request?",
+                icon: "warning",
+                confirmButtonText: "Yes",
+                confirmButtonColor: "#3085d6",
+                showCancelButton: true,
+                cancelButtonColor: "#d33"
+            })
 
-if(result.isConfirmed){
-    const response = await axios.patch('/admin/returnApprove',{productId,orderId,returnReason})
-    
-    if(response.data.loginRequired){
-        window.location.href = '/login'
-    }else{
-        if(response.data.success){
-            Swal.fire({
-            position: "center",
-            icon: "success",
-            title: "Request Accepted!",
-            showConfirmButton: false,
-            timer: 1500
-            }).then((result) => {
-                window.location.reload()
-            });
-        }
-    }
-}
-}
+                if(result.isConfirmed){
+                    const response = await axios.patch('/admin/returnApprove',{productId,orderId,returnReason})
+                    
+                    if(response.data.loginRequired){
+                        window.location.href = '/login'
+                    }else{
+                        if(response.data.success){
+                            Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Request Accepted!",
+                            showConfirmButton: false,
+                            timer: 1500
+                            }).then((result) => {
+                                window.location.reload()
+                            });
+                        }
+                    }
+                }
+                }
     </script>
 
     <%- include('../layouts/adminFooter.ejs') %>

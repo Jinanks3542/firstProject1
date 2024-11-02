@@ -63,6 +63,8 @@ const verifyLogin = async (req, res) => {
 const loadHome = async (req, res) => {
     try {
         const totalData = await order.find({'products.ProductStatus':'Delivered'}).exec()
+        // console.log();
+        
         
         // Best selling products
         const bestSellingProducts = await order.aggregate([{$match:{'products.ProductStatus':'Delivered'}},{$unwind:'$products'},{$group:{_id:'$products.productId',totalSold:{$sum:'$products.quantity'},soldCount:{$sum:1}}},{$sort:{totalSold:-1}},{$limit:10},{$lookup: {
@@ -82,7 +84,6 @@ const loadHome = async (req, res) => {
           }}
         ])
         
-      console.log(bestSellingProducts,'.....................................bestSellingProducts');
       
 
       const bestSellingCategories = await order.aggregate([ { $match: { 'products.ProductStatus': 'Delivered' } },
@@ -124,13 +125,50 @@ const loadHome = async (req, res) => {
           },
         }])
 
-        console.log(bestSellingCategories,'.......................................bestSellingCategories');
         
-        res.render('admin/home',{totalData,bestSellingProducts,bestSellingCategories})
+        const bestSellingBrand = await order.aggregate([
+            { $match: { 'products.ProductStatus': 'Delivered' } },
+            { $unwind: '$products' },
+            {
+                $lookup: {
+                    from: 'products', 
+                    localField: 'products.productId', 
+                    foreignField: '_id',
+                    as: 'productDetails',
+                },
+            },
+            { $unwind: '$productDetails' },
+            {
+                $lookup: {
+                    from: 'brands', 
+                    localField: 'productDetails.brand', 
+                    foreignField: '_id',
+                    as: 'brandDetails',
+                },
+            },
+            { $unwind: '$brandDetails' },
+            {
+                $group: {
+                    _id: '$brandDetails._id',
+                    brandName: { $first: '$brandDetails.brandName' },
+                    totalSold: { $sum: '$products.quantity' },
+                    soldCount: { $sum: 1 },
+                },
+            },
+            { $sort: { totalSold: -1 } },
+            { $limit: 10 },
+        ]);
+        
+        console.log(bestSellingBrand, ': bestSellingBrand data are there');
+        
+
+
+        res.render('admin/home',{totalData,bestSellingProducts,bestSellingCategories,bestSellingBrand})
     } catch (error) {
         console.log(error.message);
     }
 }
+
 
 
 const allUsers = async (req, res) => {
@@ -138,7 +176,7 @@ const allUsers = async (req, res) => {
         const limit = 7
         const page = parseInt(req.query.page)||1
         const skip = (page-1) * limit
-        const allUsers = await user.countDocuments()
+        const allUsers = await user.countDocuments()   
         const totalPages = Math.ceil(allUsers/limit)
 
         const userData = await user.find().sort({_id:-1}).skip(skip).limit(limit).exec()

@@ -96,13 +96,13 @@
                                                                     <a href="/admin/editProduct/<%=product._id%>"
                                                                         class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4"><i
                                                                             class="far fa-pen me-2"></i> Edit</a>
-                                                                    <% if(product.is_Blocked){ %>
+                                                                    <% if(product.is_blocked){ %>
                                                                     <button
-                                                                        class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4" onclick="block('<%=product._id%>')" ><i
+                                                                        class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4" onclick="block('<%=product._id%>',this)" ><i
                                                                             class="far fa-trash me-2"></i>UnBlock </button>
                                                                     <% }else{ %>
                                                                     <button
-                                                                        class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4" onclick="block('<%=product._id%>')" ><i
+                                                                        class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4" onclick="block('<%=product._id%>',this)" ><i
                                                                             class="far fa-trash me-2"></i>Block </button>
                                                                     <% } %>
                                                                 </div>
@@ -119,20 +119,6 @@
                                 </div>
 
                                 <%- include('../layouts/adminPagination.ejs') %>
-
-                                <!-- <footer class="pt-6 pb-10 footer-dashboard mt-auto">
-                                    <div class="row">
-                                        <div class="col-sm-6 text-sm-start text-center">
-                                            <script>
-                                                document.write(new Date().getFullYear());
-                                            </script>
-                                            © Glowing - Beauty & Cosmetics Shop HTML Template .
-                                        </div>
-                                        <div class="col-sm-6 text-sm-end text-center">
-                                            All rights reserved
-                                        </div>
-                                    </div>
-                                </footer> -->
                             </main>
                     </div>
             </div>
@@ -147,7 +133,7 @@
                 </div>
 
                 <script> 
-                function block(id){
+                function block(id,btn){
                     fetch('/admin/productBlock', {
 							method: 'post',
 							headers: {
@@ -155,6 +141,22 @@
 							},
 							body:JSON.stringify({id}) 
 						})
+
+                        .then((response)=>response.json())
+                        .then((data)=>{
+                            if(data.success){
+                                if(data.isBlocked){
+                                    btn.innerHTML = '<i class="far fa-eye me-2"></i> UnBlock';
+                                }else{
+                                    btn.innerHTML = '<i class="far fa-ban me-2"></i> Block';
+                                }
+                            }else{
+                                alert('have some issues on blocking products')
+                            }
+                        }).catch((error)=>{
+                            console.log('Error:' , error);
+                            
+                        })
                 }
 
                 function Offer(ProductId){

@@ -2,7 +2,10 @@
 
 <body>
     <!-- nav bar -->
-    <%- include('../layouts/navbar.ejs') %>
+    <!-- <%//- include('../layouts/navbar.ejs') %> -->
+     <div class=" py-0 d-flex justify-content-center" >
+        <h3>GLOWING</h3>
+     </div>
     <!-- navbar -->
 
      <main id="content" class="wrapper layout-page">
@@ -40,14 +43,9 @@
                                             placeholder="Password" name="password" required>
                                     </div>
                                     <p class="text-danger "><%=locals.msg%></p>
-                                    <a href="" class="d-inline-block fs-15 lh-12 mb-7">Forgot your password?</a>
+                                    
                                     <button type="submit" class="btn btn-primary w-100 mb-7">Submit</button>
-                                    <!-- <div class="form-check mb-7 d-flex">
-                                        <input type="checkbox" class="form-check-input rounded-0" id="customCheck1"
-                                            name="remember">
-                                        <label class="form-check-label fs-15 ps-4 text-body-emphasis"
-                                            for="customCheck1">Keep me signed in.</label>
-                                    </div> -->
+                                    
                                     
                                         <div class="col-sm-6 mb-4 mb-sm-0 px-5">
                                             <a href="/auth/google" class="btn btn-outline-primary w-100 px-2 fw-500">

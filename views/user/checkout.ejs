@@ -95,9 +95,7 @@
                     </div>
                     <div class="col-lg-8 order-lg-first pe-xl-20 pe-lg-6">
                         <div class="checkout">
-                            <!-- <p class="mb-5">Returning customer? 
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#signInModal">Click here to login</a>
-                            </p> -->
+                            
                             <p>Have a coupon?
                                 <h6 class="text-danger" id="invalidAmount"></h6>
                                 <h6 class="text-danger" id="TimeExceed"></h6>
@@ -208,7 +206,7 @@
                                             Phone: <%= value.phone %>
                                         </p>
                                         <div>
-                                            <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-2 mt-md-4 mt-2" style=" bottom: 10px; left: 10px; padding: 0.2rem 0.5rem; font-size: 0.7rem;" data-bs-toggle="modal" data-bs-target="#editAddress">Edit Address</button>
+                                            <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-2 mt-md-4 mt-2" style=" bottom: 10px; left: 10px; padding: 0.2rem 0.5rem; font-size: 0.7rem;" data-bs-toggle="modal" data-bs-target="#editAddress" onclick="editAddress('<%=value._id%>')" >Edit Address</button>
                                             <button class="btn btn-dark btn-hover-bg-primary btn-hover-border-primary px-2 mt-md-4 mt-2" style=" bottom: 10px; left: 10px; padding: 0.2rem 0.5rem; font-size: 0.7rem;" onclick="remove('<%=value._id%>')" >Remove</button>
                                            
                                         </div>
@@ -217,7 +215,11 @@
                                     <script>
                                           async function remove(ID){
             
-                                            await axios.patch('/removeAddress',{ID})
+                                            const response = await axios.patch('/removeAddress',{ID})
+
+                                            if(resonse.data.success){
+                                                window.location.reload()
+                                            }
                                         }
 
                                         async function radioButton(addressId){
@@ -247,7 +249,7 @@
                                         data-bs-toggle="tab" data-bs-target="#credit-card-tab">
                                         <input type="radio"   name="pp"  value="Cash on Delivery">
                                         <svg class="icon icon-paylay fs-32px text-body-emphasis">
-                                            <!-- <use xlink:href="#icon-card"></use> -->
+                                          
                                         </svg>
                                         <span class="ms-3 text-body-emphasis fw-semibold fs-6" >Cash on delivery</span>
                                     </button>
@@ -278,13 +280,14 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
+                    <input type="hidden" id="addressId" name="addressId" value="">
                     <div class="mb-7">
                         
                         <div class="row">
                             <div class="col-md-6 mb-md-0 mb-7">
                                 <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">name</label>
                                 <input type="text" class="form-control" id="editName" name="name"
-                                    placeholder="First Name"  value="<%=  %>" required>
+                                    placeholder="First Name"  value="" required>
                                     <div id="nameError" class="text-danger"></div>
                             </div>
                             
@@ -294,10 +297,7 @@
                                     placeholder="Phone number" required>
                                     <div id="numberError" class="text-danger"></div>
                             </div>
-                            <!-- <div class="col-md-6">
-                                <input type="text" class="form-control" id="last-name" name="lasttname"
-                                    placeholder="Last Name" required>
-                            </div> -->
+                           
                         </div>
                     </div>
                     <div class="mb-7">
@@ -361,7 +361,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" onclick="">Save Changes</button>
+                  <button type="button" class="btn btn-primary" onclick="saveChanges()">Save Changes</button>
                 </div>
               </div>
             </div>
@@ -454,7 +454,7 @@
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" onclick="addAddress()">Add Address</button>
+                  <button type="button" class="btn btn-primary" onclick="addAddress()">Save Address</button>
                 </div>
               </div>
             </div>
@@ -579,33 +579,13 @@ async function removeCoupon() {
         const pin = document.getElementById('pincode').value
         
         const locality = document.getElementById('locality').value
-        console.log(name);
 
-
-        // document.getElementById('nameError').innerText = "";
-        // document.getElementById('numberError').innerText = "";
-        // document.getElementById('streetError').innerText = "";
-        // document.getElementById('localityError').innerText = "";
-        // document.getElementById('stateError').innerText = "";
-        // document.getElementById('pincodeError').innerText = "";
-        // document.getElementById('cityError').innerText = "";
-
-        
-        // if(firstName === '' && phone === '' && state === '' && pincode === '' && locality === ''){
-        //         document.getElementById('adEmptyError').innerHTML = 'Please fill all the fields';
-        //         return false
-        //     } 
-
-        //     if(firstName === '' || /\d/.test(firstName) || /[^\w\s]/.test(firstName)){
-        //         document.getElementById('nameError').innerHTML = 'Please enter a name';
-        //         return false
-        //     } 
-
-
-            console.log(name,phone,street,city,state,pin,locality,'name,phone,street,city,state,pin,locality')
         const close = document.getElementById('CloseId')
-        await axios.post('/address',{name,phone,street,city,state,pin,locality})
-        
+
+        const response = await axios.post('/address',{name,phone,street,city,state,pin,locality})
+        if(response.data.success){
+            window.location.reload()
+        }
         close.click()
         
 }
@@ -620,9 +600,7 @@ const form = document.getElementById('orderForm')
 
     try {
         let final = amount;
-    //  console.log(stock);
-    //  console.log(quantity);
-     
+  
      const upi= document.querySelector('input[name="pp"]:checked')
 
      const Toast = Swal.mixin({
@@ -753,7 +731,91 @@ function razor(amount, userId) {
 
 
 
+// ..............................edit address
 
+async function editAddress(editID){
+    const name = document.getElementById('editName')
+    const phone = document.getElementById('editphone')
+    const street = document.getElementById('editstreetAddress')
+    const locality = document.getElementById('editlocality')
+    const state = document.getElementById('editstate')
+    const pinCode = document.getElementById('editpincode')
+    const city = document.getElementById('editcity')
+    const addressId = document.getElementById('addressId')
+
+   try {
+    const response = await axios.post('/edittAddress',{editID})
+    const data = response.data
+    if(data){
+        name.value = data.name
+        phone.value = data.phone
+        street.value = data.street
+        locality.value = data.locality
+        state.value = data.state
+        pinCode.value = data.pincode
+        city.value = data.city
+        addressId.value = data.addressId 
+    }
+   } catch (error) {
+    console.log(erroe.message);
+    
+   }
+}
+
+
+async function saveChanges(){
+    const name = document.getElementById('editName').value
+    const phone = document.getElementById('editphone').value
+    const street = document.getElementById('editstreetAddress').value
+    const locality = document.getElementById('editlocality').value
+    const state = document.getElementById('editstate').value
+    const pinCode = document.getElementById('editpincode').value
+    const city = document.getElementById('editcity').value
+    const addressId = document.getElementById('addressId').value
+   
+    try {
+        const response = await axios.patch('/saveChanges',{
+            name,
+            phone,
+            street,
+            locality,
+            state,
+            pincode,
+            city,
+            addressId
+        })
+        if(response.data.success){
+            Swal.fire({
+                title: 'Success!',
+                text: 'Address updated successfully!',
+                icon: 'success',
+                confirmButtonText: 'OK'
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    window.location.reload()
+                }
+            })
+            
+        }else{
+            Swal.fire({
+                title: 'Error!',
+                text: 'Failed to update the address.',
+                icon: 'error',
+                confirmButtonText: 'Try Again'
+            });
+            
+        }
+    } catch (error) {
+        console.error(error.message);
+        Swal.fire({
+            title: 'Error!',
+            text: 'An error occurred while updating the address.',
+            icon: 'error',
+            confirmButtonText: 'OK'
+        });
+        
+    }
+}
 
         
 </script>

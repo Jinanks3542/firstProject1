@@ -31,40 +31,42 @@
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-8 mx-auto">
-                    <form method="post" action="/otp">
+                    <div  id="otpForm">
                         <div class="mb-6">
-                            <label for="name" class="">otp</label>
+                            <p id="errorMsg" class="text-danger"></p>
                             <br>
                             <br>
                             <p class="text-danger "><%=locals.msg%></p>
-                           <div class="d-flex align-items-center  justify-content-center  gap-5 ">
+                            <div class="d-flex align-items-center  justify-content-center  gap-5 ">
                                 <% for (let i = 0; i < 4; i++) { %>
-                                    <input style="border-radius: 10px; height: 4rem;" type="number" class="border-primary   otp-input form-control " max="9"  maxlength="1" id="otp<%= i %>" name="otp" pattern="\d" required>
+                                    <input style="border-radius: 10px; height: 4rem;" type="number" class="border-primary  otp-input form-control " max="9"  maxlength="1" id="otp<%= i %>" name="otp" pattern="\d" required>
                                 <% } %>
                             </div>
                                 <br>
+                                <div id="otp-timer" class="text-center mb-4">
+                                    OTP expires in <span id="countdown">60</span> seconds.
+                                </div>    
                         </div>
                         <p></p>
                        
-                        <button type="submit" value="Login" class="btn btn-primary w-100">Submit</button>
+                        <button  class="btn btn-primary w-100" onclick="submitOtp()">Submit</button>
                      <br>
-                     <br>
-                        <!-- <div class="text-center mt-n4 lh-1 mb-7">
-                            <span class="fs-14 bg-body lh-1 px-4">or Sign Up with</span>
-                        </div> -->
+                     <br>   
+                        
                         <div class="d-flex">
-                            <a href="/resendOtp" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5"><i
+                            <a href="/resendOtp" id="resendOtpBtn" class="btn btn-outline-primary w-100 px-2 font-weight-500 me-5" disabled><i
                                     ></i>Resend</a> 
-                            <a href="#" class="btn btn-outline-primary w-100 px-2 font-weight-500 mt-0"><i
-                                    ></i>Re Submit</a>
+                            
                         </div>
                         
-                    </form>
+                    </div>
+                    
                 </div>
             </div>
         </section>
     </main>
-    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
     <script>
         const otpFields = document.querySelectorAll('.otp-input');
         otpFields.forEach((field, index) => {
@@ -73,7 +75,6 @@
                 if (/^\d$/.test(input) && index < otpFields.length - 1) {
                     otpFields[index + 1].focus();
                 } else if (/^\d$/.test(input) && index === otpFields.length - 1) {
-                    // If last digit entered and it's valid, stop the focus on the last field
                     event.target.blur();
                 } else {
                     event.target.value = ''; 
@@ -86,6 +87,53 @@
                 }
             });
         });
+
+
+        let timeLeft = 60;
+        const countdownEl = document.getElementById("countdown");
+        const resendBtn = document.getElementById("resendOtpBtn");
+
+        const timer = setInterval(() => {
+            timeLeft--;
+            countdownEl.textContent = timeLeft;
+
+            if (timeLeft === 0) {
+                clearInterval(timer);
+                resendBtn.disabled = false;
+                document.getElementById("otp-timer").textContent = "OTP has expired. Please resend.";
+            }
+        }, 1000);
+
+
+        async function submitOtp(){
+            console.log('data here');
+            const otpInput = document.querySelectorAll('.otp-input')
+            const getOtp = Array.from(otpInput).map(input=>input.value).join('')
+            console.log(getOtp,':otp is here');
+            
+
+            if(getOtp.length!==4){
+                document.getElementById('errorMsg').textContent = 'Please enter a valid 4-digit OTP';
+                return
+            }
+
+            try{
+            const response = await axios.post('/otp',{getOtp})
+            
+                if(response.data.success){
+                    window.location.href='/'
+                }else{
+                    document.getElementById('errorMsg').textContent = response.data.message || 'Invalid OTP'
+                
+                }
+            
+                }catch(error){
+                console.error(error);
+                document.getElementById('errorMsg').textContent = 'An error occurred. Please try again.';
+            }
+        }
+
+
     </script>
     
     <!-- footer -->

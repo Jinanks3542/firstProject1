@@ -691,7 +691,92 @@ let discountAmount =0
 //// previous code3 for apply coupon  end here ////////////
 
 
+//   code for razorpay wallet add and fail amount
+// let paymentProcess = false
+
+            // function razorPay() {
+            //     if(paymentProcess) return 
+            //     paymentProcess = true
+            //     const form = document.getElementById('myForm')
+            //     const amount = document.getElementById('amount')
+            //     const addFailed = document.getElementById('creditFail')
+            //     console.log(amount.value)
+   
+            //         fetch('/razors', {
+            //             method: 'POST',
+            //             headers: { 'Content-type': 'application/json' },
+            //             body: JSON.stringify({ amount:amount.value })
+            //         }).then(res => res.json()).then(data => {
+            //             if (data.success) {
+                            
+            //                 let options = {
+            //                     "key": `${data.key_id}`,
+            //                     "amount":` ${data.amount}`,
+            //                     "currency": "INR",
+            //                     "name": "GLOWING",
+            //                     "handler": function (response) {
+            //                         form.submit();
+            //                     },
+            //                     "profile": {
+            //                         "name": `${data.name}`,
+            //                         "email": `${data.email}`
+            //                     }
+            //                 }
+
+            //                 let razorpayObject = new Razorpay(options);
+            //                 razorpayObject.on('payment.failed', (response) => {
+            //                     if(paymentProcess){
+            //                     addFailed.value = 'failed'
+            //                     fetch('/walletFail', {
+            //                         method: 'POST',
+            //                         headers: { 'Content-Type': 'application/json' },
+            //                         body: JSON.stringify({ amount: amount.value })
+            //                     }).then(response =>response.json()).then(data=>{
+            //                         if(data.success){
+            //                          Swal.fire({
+            //                             icon: 'error',
+            //                             title: 'Payment Failed',
+            //                             text: 'Some issues happened while processing your payment. Please try again.',
+            //                             confirmButtonText: 'Return to Checkout',
+            //                             background: '#31363F'
+            //                         }).then(() => {
+            //                             window.location.href = '/myAccount';
+            //                         });
+            //                         }
+            //                     })
+
+                                    
+            //                 });
+            //                 razorpayObject.open();
+            //             } 
+            //         })
+            //         .catch(error => {
+            //         console.error('Error:', error);
+            //         });
+
+            //  }
 
 
+
+//                                    <!-- <a href="" class="d-inline-block fs-15 lh-12 mb-7">Forgot your password?</a> -->
+
+
+// from add coupon
+
+												<!-- <div class="col-lg-4">
+													<div class="card mb-8 rounded-4">
+														<div class="card-header p-7 bg-transparent">
+															<h4 class="fs-18px mb-0 font-weight-500">Media</h4>
+														</div>
+														<div class="card-body p-7">
+															<div class="input-upload">
+																<div class="mb-7">
+																	<img id="img" src="../assets/images/dashboard/upload.svg" width="102" class="d-block mx-auto" alt>
+																</div>
+																<input onchange="preview(this)" class="form-control" name='image' type="file">
+															</div>
+														</div>
+													</div>
+												</div> -->
 
 

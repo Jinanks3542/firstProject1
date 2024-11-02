@@ -126,7 +126,6 @@
                     let totalAmount = cartAmountTotal- discountPrice
                     req.session.totalOrderAmount = totalAmount
                     res.json({discount:discountPrice,total:totalAmount})
-
                 }else{
                     res.json({err:'Invalid Amount',total:cartAmountTotal,discount:0})
                 }
@@ -217,7 +216,7 @@
            if(!findData){
            const f= await Address.findOneAndUpdate({UserId:userId},{$addToSet:{address:{name,street,city,state,pincode:pin,locality,phone}}},{new:true,upsert:true})
             
-            res.redirect('/checkout')
+            res.json({success:true})
            }
         } catch (error) {
             console.log(error.message);
@@ -231,6 +230,9 @@
             const {ID}=req.body
             
             const addressData = await Address.findOneAndUpdate({UserId:userId},{$pull:{address:{_id:ID}}},{new:true})
+            if(addressData){
+                res.json({success:true})
+            }
             
         } catch (error) {
             console.log(error.message);
@@ -257,11 +259,68 @@
                  },
             ]);
 
-            console.log(addressId);
                 } catch (error) {
             console.log(error.message);
         }
     }
+
+
+    const editAddress = async (req,res)=>{
+        try {
+            const {editID} = req.body
+
+            const getEditedAddress = await Address.findOne({'address._id':editID},{'address.$':1})
+            console.log(getEditedAddress,':getEditedAddress');
+            
+            if(getEditedAddress){
+                const Address = getEditedAddress.address[0]
+                res.json({
+                    name:Address.name,
+                    phone:Address.phone,
+                    pincode:Address.pincode,
+                    street:Address.street,
+                    locality:Address.locality,
+                    state:Address.state,
+                    city:Address.city,
+                    addressId:Address._id
+                })
+            }else{
+                res.status(404).json({message:'address not found'})
+            }
+
+        } catch (error) {
+            console.log(error.message);
+            
+        }
+    }
+
+
+    const saveEditData = async(req,res)=>{
+        try {
+            const {userId}=req.session
+            const {name, phone, pinCode, street, locality, state, city, addressId} = req.body
+            
+            const updateAddress = await Address.updateOne({UserId:userId,'address._id':addressId},
+
+                {$set:
+                {
+                    'address.$.name':name,
+                    'address.$.phone':phone,
+                    'address.$.pincode':pinCode,
+                    'address.$.street':street,
+                    'address.$.locality':locality,
+                    'address.$.state':state,
+                    'address.$.city':city,
+
+                }})
+                
+                res.json({success:true})
+        } catch (error) {
+           console.log(error.message);
+            
+        }
+    }
+
     module.exports={
         loadCart,
         addCart,
@@ -271,6 +330,8 @@
         checkoutDetails,
         removeAddress,
         chooseAddress,
+        editAddress,
+        saveEditData,
         couponApply,
         removeCoupon
     }

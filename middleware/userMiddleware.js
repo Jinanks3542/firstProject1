@@ -19,8 +19,12 @@ const userLogin = (req,res,next)=>{
 
 const isblocked= async (req,res,next)=>{
     const id = req.session.userId
+    console.log(id);
+    
     
     const user = await User.findOne({_id:id})
+    console.log(user);
+    
     if(!user.is_blocked){
         next()
         

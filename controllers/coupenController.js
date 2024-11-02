@@ -15,8 +15,8 @@ const generatecode = () => {
 
 const LoadCoupen = async (req,res)=>{
     try {
+        
         const coupons = await Coupon.find()
-        console.log(coupons,'nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn');
        res.render('admin/allCoupen',{coupons}) 
        
     } catch (error) {
@@ -32,28 +32,67 @@ const loadAddCoupen = async (req,res)=>{
     }
 }
 
-const addCoupen = async (req,res)=>{
+// const addCoupen = async (req,res)=>{
+//     try {
+//         const {name,buyMinPrice,buyMaxPrice,discountAmount,minPrice,description}=req.body
+
+//         const validity=parseInt(req.body.validity)
+//         const currentDate = new Date();
+//         const expiryDate = new Date(currentDate);
+//         expiryDate.setDate(currentDate.getDate() + validity);
+//         await Coupon.create({
+//             name:name,
+//             min:minPrice,
+//             expiryDate:expiryDate,
+//             offer:discountAmount,
+//             code:generatecode(),
+//             dataDuration:validity,
+//             description:description,
+//             buyLow:buyMinPrice,
+//             buyHigh:buyMaxPrice
+//         })
+//         res.redirect('/admin/allcoupen')
+//     } catch (error) {
+//         console.log(error.message);
+//     }
+// }
+
+const addCoupen = async (req, res) => {
     try {
-        const {name,buyMinPrice,buyMaxPrice,discountAmount,minPrice,validity,description}=req.body
+        const { name, buyMinPrice, buyMaxPrice, discountAmount, minPrice, validityy, description } = req.body;
+
+        
+        console.log(req.body.name)
+        const validityPeriod = parseInt(validityy);
+        console.log(validityy,":Validity");
+        console.log(validityPeriod,":validityPeriod");
+        
+        if (isNaN(validityPeriod)) {
+            throw new Error('Invalid coupon validity period');
+        }
+
         const currentDate = new Date();
         const expiryDate = new Date(currentDate);
-        expiryDate.setDate(currentDate.getDate() + parseInt(validity));
+        expiryDate.setDate(currentDate.getDate() + validityPeriod);
+
         await Coupon.create({
-            name:name,
-            min:minPrice,
-            expiryDate:expiryDate,
-            offer:discountAmount,
-            code:generatecode(),
-            dataDuration:validity,
-            description:description,
-            buyLow:buyMinPrice,
-            buyHigh:buyMaxPrice
-        })
-        res.redirect('/admin/allcoupen')
+            name: name,
+            min: minPrice,
+            expiryDate: expiryDate,
+            offer: discountAmount,
+            code: generatecode(),
+            dataDuration: validityy,
+            description: description,
+            buyLow: buyMinPrice,
+            buyHigh: buyMaxPrice
+        });
+
+        res.redirect('/admin/allcoupen');
     } catch (error) {
         console.log(error.message);
     }
-}
+};
+
 
 
 

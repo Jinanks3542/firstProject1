@@ -48,7 +48,6 @@ const signUp = async (req, res) => {
 
 
 
-
 const userInsert = async (req, res) => {
   try {
 
@@ -60,10 +59,10 @@ const userInsert = async (req, res) => {
       return res.redirect("/signUp");
     }
     
-    
-
     const spassword = await securePassword(req.body.password);
-    if (req.body.code) req.session.ref = req.body.code;
+    if (req.body.code){
+      req.session.ref = req.body.code;
+    } 
     const code=await generatecode()
     const user = new User({
       name: req.body.name,
@@ -76,6 +75,7 @@ const userInsert = async (req, res) => {
 
     req.session.userData = user;
     req.session.otp = generateOTP();
+    req.session.otpExpiresAt = Date.now()+60*1000
     console.log("Generated OTP:", req.session.otp);
 
     await otpMailSending(req.session.userData, req.session.otp);
@@ -182,21 +182,34 @@ const loadOtp = async (req, res) => {
 };
 
 
-
 const verifyOtp = async (req, res) => {
   try {
-    const userOtp = req.body.otp.join("");
-
+    const userOtp = req.body.getOtp
+    console.log(userOtp,':user otp is here');
     
+  
     console.log("mobile", req.session.userData.mobile);
 
-    const { name, email, password, mobile } = req.session.userData;
-    if (req.session.otp && userOtp == req.session.otp) {
-      if (req.session.ref) {
-        refrealUser = await User.findOne({refferalId: req.session.ref });
+    const { name, email, password, mobile,ref,refferalId,refferalCodeSave } = req.session.userData;
+    if(Date.now()>req.session.otpExpiresAt){
+      req.flash('msg','Your otp has expired')
+    }
+
+
+    
+
+    if (userOtp === req.session.otp) {
+      console.log(req.session.otp,':req.session.otp');
+      let refrealUser =null
+      if (refferalCodeSave) {
+        console.log(refferalCodeSave,':referal id is here');
+        
+        refrealUser = await User.findOne({refferalId: refferalCodeSave });
+        console.log(refrealUser,':used user is here');
+        
         
         if(refrealUser){
-            const get = await wallet.findOneAndUpdate({userId:refrealUser._id},{$inc:{balance:100},$push:{transaction:{amount:100,creditOrDebit:'credit'}}},{upsert:true,new:true})
+             await wallet.findOneAndUpdate({userId:refrealUser._id},{$inc:{balance:100},$push:{transaction:{amount:100,creditOrDebit:'credit'}}},{upsert:true,new:true})
              
         }
       }
@@ -205,44 +218,38 @@ const verifyOtp = async (req, res) => {
         email: email,
         password: password,
         mobile: mobile,
-        refferalId:req.session.userData.refferalId,
-        refferalCodeSave:req.session.userData.refferalCodeSave
+        refferalId:refferalId,
+        refferalCodeSave:refferalCodeSave
       });
       const userData = await user.save();
-      if(userData.refferalCodeSave){
-        if(refrealUser){
-          const data = await wallet.findOneAndUpdate({userId:user._id},{$inc:{balance:100},$push:{transaction:{amount:100,creditOrDebit:'credit'}}},{upsert:true,new:true})
-          
-        }
-        //delete req.session.otp;
-        req.session.userId = userData._id;
-        res.redirect("/");
-      }else{
-        res.redirect('/signUp')
-      }
-    
-      console.log(req.session.userId);
-      
 
       
-    } else {
-      console.log("shhshs");
-      if (!req.session.otp) return res.redirect("/signUp");
-      req.flash("msg", "Invalid OTP");
-      res.redirect("/otp");
-    }
+      if(userData.refferalCodeSave&&refrealUser){
+        
+           await wallet.findOneAndUpdate({userId:user._id},{$inc:{balance:100},$push:{transaction:{amount:100,creditOrDebit:'credit'}}},{upsert:true,new:true})
+      }
+        delete req.session.otp;
+
+        req.session.userId = userData._id;
+         res.json({success:true, message:'OTP verified successfully'})
+      
+      
+     }else{
+       
+      return res.json({success:false, message:'Invalid OTP'})
+     
+    }  
+   
   } catch (error) {
     console.log(error.message);
   }
 };
 
 
-
 function generateOTP() {
   const otp = Math.floor(1000 + Math.random() * 9000);
   return otp.toString();
 }
-
 
 
 const otpMailSending = async (userData, otp) => {
@@ -271,10 +278,11 @@ const otpMailSending = async (userData, otp) => {
 };
 
 
-
 const resendOtp = async (req, res) => {
   try {
     req.session.otp = generateOTP();
+    req.session.otpExpiresAt = Date.now()+60*1000
+
     console.log(req.session.otp);
 
     await otpMailSending(req.session.userData, req.session.otp);
@@ -312,10 +320,10 @@ const shop = async (req, res) => {
     }
     if (req.query?.sort == "lowToHigh") {
       delete sortObj._id;
-      sortObj.price = 1;
+      sortObj.offerPrice = 1;
     } else if (req.query?.sort == "highToLow") {
       delete sortObj._id;
-      sortObj.price = -1;
+      sortObj.offerPrice = -1;
     }
     // const PrdctsCount = await productModel.countDocuments({ is_blocked: false })
 
@@ -354,6 +362,39 @@ const shop = async (req, res) => {
     console.log(error.message);
   }
 };
+
+// 
+
+const countCart = async(req,res)=>{
+  try {
+    const userId = req.session.userId
+    
+      const userCart = await cartModel.findOne({userId})
+      const itemLength = userCart? userCart.products.length: 0
+      
+      res.json({count:itemLength})
+    
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+}
+
+
+
+const countWishlist = async(req,res)=>{
+  try {
+    const userId = req.session.userId
+    const userWishlist = await wishlistModel.findOne({userId})
+    console.log(userWishlist,':userWishlist');
+    
+    const itemLength = userWishlist?userWishlist.products.length:0
+    res.json({Count:itemLength})
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+}
 
 
 const singleProduct = async (req, res) => {
@@ -436,6 +477,22 @@ const loadAccount = async (req, res) => {
   }
 };
 
+// .................profile edit
+
+
+const editProfile = async (req,res)=>{
+  try {
+    const {name,phone}=req.body
+    const userId = req.session.userId;
+    const editUser = await User.findByIdAndUpdate(userId,{name:name,mobile:phone})
+    res.redirect('/myAccount')
+    console.log(editUser,'bbbbbbbbbbbbbbbbbb');
+
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+}
 
 
 const viewOrder = async (req, res) => {
@@ -468,7 +525,7 @@ const viewOrder = async (req, res) => {
   }
 };
 
-// changePassword
+//......... changePassword
 
 
 const changepassword = async (req, res) => {
@@ -509,7 +566,7 @@ const changepassword = async (req, res) => {
   }
 };
 
-// add address
+//......... add address
 
 
 const addAddress = async (req, res) => {
@@ -600,6 +657,23 @@ const saveEdit = async (req, res) => {
   }
 };
 
+
+const removePfAddress = async (req,res)=>{
+  try {
+    const removeId = req.body.ID
+    const {userId} = req.session
+    console.log(removeId,':removeId is hereeeeeeeeee');
+    const deletedData = await Address.findOneAndUpdate({UserId:userId},{$pull:{address:{_id:removeId}}},{new:true})
+    if(deletedData){
+      res.json({success:true})
+    }
+    
+  } catch (error) {
+    console.log(error.message);
+    
+  }
+}
+
 //....wishlist
 
 const loadWishlist = async (req, res) => {
@@ -674,6 +748,8 @@ module.exports = {
   resendOtp,
   loadUserhome,
   shop,
+  countCart,
+  countWishlist,
   singleProduct,
   userSignUp,
   loadAccount,
@@ -686,4 +762,6 @@ module.exports = {
   addAddress,
   editAddress,
   saveEdit,
+  removePfAddress,
+  editProfile,
 };
