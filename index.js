@@ -1,7 +1,8 @@
 const express = require('express')
 const app = express()
+require('dotenv').config();
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://127.0.0.1:27017/firstProject')
+mongoose.connect(process.env.mongodbUrl);
 const path = require('path')
 const userRoute=require('./routes/userRoute')
 const adminRoute =require('./routes/adminRoute')
