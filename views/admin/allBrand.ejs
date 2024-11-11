@@ -106,7 +106,7 @@
                                                                     <a onclick="brands('<%=allbrand._id%>',this)" data-bs-toggle="modal" data-bs-target="#exampleModal"
                                                                         class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4"><i
                                                                             class="far fa-pen me-2" ></i> Edit</a>
-                                                                            <% console.log(allbrand.is_Blocked); %>
+                                                                            <%// console.log(allbrand.is_Blocked); %>
                                                                     <a href="#"
                                                                         class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4"  onclick="block('<%=allbrand._id%>',this)"><i class="fa <%=allbrand.is_Blocked?'fa-eye':'fa-ban';  %>"></i> <%=allbrand.is_Blocked?' Unblock':'  Block';  %></a>
                                                                 </div>

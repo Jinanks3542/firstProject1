@@ -102,59 +102,31 @@
                     height: 100% !important;
                 }
             </style>
+            <% console.log(categories,'categories are hereeeeeIII');
+             %>
+             
             <div class="row">
-                <div class="cat col-lg-4 mt-9 pt-2 mt-md-0 pt-md-0" data-animate="fadeInUp">
-                    <div  class="row">
-                    <div class="card catCard border-0 rounded-0 hover-zoom-in hover-shine">
-                        <img class="lazy-image dark-mode-img card-img object-fit-cover img-fluid" src="image/oilyskin2.jpg"
-                            data-src="" width="330" style="max-height: 523px;" alt>
-                        <div
-                            class="card-img-overlay d-inline-flex flex-column p-8 justify-content-end text-center">
-                            <div><a href="/shop?cat=66346f9bae06e0bf85317fea" class="btn btn-white px-12">Oily Skin</a></div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+                
+
+              
+                <% categories.forEach((category)=>{ %>
                 <div class="cat col-lg-4 mt-9 pt-2 mt-md-0 pt-md-0" data-animate="fadeInUp">
                     <div class="row">
                         <div class=" card border-0 rounded-0 hover-zoom-in hover-shine">
-                            <img class="lazy-image dark-mode-img card-img object-fit-cover img-fluid" src="image/dryskin1.jpg"
-                                data-src="" width="330" style="max-height: 523px;" alt>
+                            <img class="lazy-image dark-mode-img card-img object-fit-cover img-fluid" data-src="/productImage/<%=category.image %>"
+                                 width="330" style="max-height: 523px;" alt>
                             <div
                                 class="card-img-overlay d-inline-flex flex-column p-8 justify-content-end text-center">
-                                <div><a href="/shop?cat=6624f1f85bc42a4930ef4e80" class="btn btn-white px-12">Dry Skin</a></div>
+                                <div><a href="/shop?cat=<%=category._id  %>" class="btn btn-white px-12"><%=category.catName  %></a></div>
                             </div>
                         </div>
                     </div>
+                </div> 
+                  
+                    <% }) %>
                 </div>
-                    <div class=" cat col-lg-4 mt-9 pt-2 mt-md-0 pt-md-0" data-animate="fadeInUp">
-                        <div class="row">
-                            <div class="card border-0 rounded-0 hover-zoom-in hover-shine">
-                                <img class="lazy-image dark-mode-img card-img object-fit-cover img-fluid" src="image/combiskin.jpg"
-                                    data-src="" width="330" style="max-height: 523px;" alt>
-                                <div
-                                    class="card-img-overlay d-inline-flex flex-column p-8 justify-content-end text-center">
-                                    <div><a href="/shop?cat=66346f79ae06e0bf85317fe6" class="btn btn-white px-12">Combination Skin</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="row">
-                        <div class="col-12 mt-9 pt-2" data-animate="fadeInUp">
-                            <div class="card border-0 rounded-0 hover-zoom-in hover-shine">
-                                <img class="lazy-image card-img object-fit-cover img-fluid light-mode-img" src="#"
-                                    data-src="./assets/images/banner/banner-17.jpg" width="690" height="330" alt>
-                                <img class="lazy-image dark-mode-img card-img object-fit-cover img-fluid" src="#"
-                                    data-src="./assets/images/banner/banner-white-17.jpg" width="690" height="330" alt>
-                                <div
-                                    class="card-img-overlay d-inline-flex flex-column p-8 justify-content-end text-center">
-                                    <div><a href="#" class="btn btn-white px-12">Haircare</a></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div> -->
-                </div>
-            </div>
+                
+            <!-- </div> -->
         </section>
         <section id="our_best_seller_3">
             <div class="container container-xxl mb-20">

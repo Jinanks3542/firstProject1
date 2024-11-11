@@ -40,7 +40,7 @@ const placeOrder = async(req,res)=>{
         const {userId}=req.session
         
         const cartDatas = await Cart.findOne({userId:userId}).populate("products.productId")
-        console.log(cartDatas,'cart datas here');
+        //console.log(cartDatas,'cart datas here');
         
         
         const choosedData = await Address.findOne({UserId:userId,'address.status':true},{'address.$':1})
@@ -125,7 +125,7 @@ const placeOrder = async(req,res)=>{
 
         })
        const save= await orderDataSave.save()
-        console.log(save.offer,':coupon percentage');
+        //console.log(save.offer,':coupon percentage');
         
         
        if(save){
@@ -226,7 +226,7 @@ const razor = async (req, res) => {
             currency: "INR",
             receipt: 'absharameen625@gmail.com'
         };
-        console.log('Creating order with options:', options,user);
+        //console.log('Creating order with options:', options,user);
 
         instance.orders.create(options, (err, order) => {
             if (!err) {
@@ -288,7 +288,7 @@ const cancelOrder = async (req, res) => {
         let productTotal = 0;
         let creditAmount = 0
         productTotal = check.products[0].productPrice * check.products[0].quantity;
-        console.log(productTotal,':productTotal');
+        //console.log(productTotal,':productTotal');
         
         creditAmount = Math.round(productTotal-(cancel.offer/100)*productTotal)
         

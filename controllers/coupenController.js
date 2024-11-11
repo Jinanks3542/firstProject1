@@ -62,10 +62,10 @@ const addCoupen = async (req, res) => {
         const { name, buyMinPrice, buyMaxPrice, discountAmount, minPrice, validityy, description } = req.body;
 
         
-        console.log(req.body.name)
-        const validityPeriod = parseInt(validityy);
-        console.log(validityy,":Validity");
-        console.log(validityPeriod,":validityPeriod");
+        // console.log(req.body.name)
+        // const validityPeriod = parseInt(validityy);
+        // console.log(validityy,":Validity");
+        // console.log(validityPeriod,":validityPeriod");
         
         if (isNaN(validityPeriod)) {
             throw new Error('Invalid coupon validity period');

@@ -1,8 +1,12 @@
 const express = require('express')
 const app = express()
 require('dotenv').config();
-const mongoose = require('mongoose')
-mongoose.connect(process.env.mongodbUrl);
+const mongoose = require('mongoose');
+mongoose.connect(process.env.mongodbUrl).then(() => {
+    console.log('moongodb conneted.');
+}).catch((error) => {
+    console.error(error + "mongodb connection error.")
+})
 const path = require('path')
 const userRoute=require('./routes/userRoute')
 const adminRoute =require('./routes/adminRoute')

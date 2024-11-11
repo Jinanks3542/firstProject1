@@ -30,7 +30,7 @@ const addOffer = async (req, res) => {
   try {
     const name = req.body.name;
     const offer = req.body.offer;
-    console.log(name,offer);
+    //console.log(name,offer);
     
     // const offers = await Offer.findOne({offer:offer})
     // console.log(offers,':offers');

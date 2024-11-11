@@ -51,7 +51,7 @@ const signUp = async (req, res) => {
 const userInsert = async (req, res) => {
   try {
 
-    console.log("Signup process started");
+    //console.log("Signup process started");
 
     const emailExist = await User.findOne({ email: req.body.email });
     if (emailExist) {
@@ -118,7 +118,8 @@ const newArrivals = await productModel.find()
 .sort({ _id: -1 }) 
 .limit(5);
 
-    res.render("user/home",{bestSellingProducts,newArrivals});
+const categories = await Category.find({})
+    res.render("user/home",{bestSellingProducts,newArrivals,categories});
   } catch (error) {
     console.log(error);
   }
@@ -146,7 +147,7 @@ const verifyLogin = async (req, res) => {
 
     if (userData) {
       const passwordMatch = await bcrypt.compare(password, userData.password);
-      console.log(passwordMatch, "yes here");
+      //console.log(passwordMatch, "yes here");
       if (passwordMatch) {
         if (userData.is_blocked) {
           req.flash("msg", "You are Blocked");
@@ -188,7 +189,7 @@ const verifyOtp = async (req, res) => {
     console.log(userOtp,':user otp is here');
     
   
-    console.log("mobile", req.session.userData.mobile);
+    //console.log("mobile", req.session.userData.mobile);
 
     const { name, email, password, mobile,ref,refferalId,refferalCodeSave } = req.session.userData;
     if(Date.now()>req.session.otpExpiresAt){
@@ -202,10 +203,10 @@ const verifyOtp = async (req, res) => {
       console.log(req.session.otp,':req.session.otp');
       let refrealUser =null
       if (refferalCodeSave) {
-        console.log(refferalCodeSave,':referal id is here');
+        //console.log(refferalCodeSave,':referal id is here');
         
         refrealUser = await User.findOne({refferalId: refferalCodeSave });
-        console.log(refrealUser,':used user is here');
+        //console.log(refrealUser,':used user is here');
         
         
         if(refrealUser){
@@ -313,7 +314,10 @@ const shop = async (req, res) => {
     const totalPages = Math.ceil(productCount / limit);
     const categoryId = req.query.cat || null;
 
-    let filter = { is_blocked: false };
+    let filter = { is_blocked: false,is_categoryBlocked:false} ;
+    // let blockCat = {is_categoryBlocked:false}
+    console.log(filter,'gfhghghfgfghghgh');
+    
     let sortObj = { _id: -1 };
     if (categoryId) {
       filter.categoryId = categoryId;
@@ -333,6 +337,9 @@ const shop = async (req, res) => {
       .skip(skip)
       .limit(limit)
       .sort(sortObj);
+
+      console.log(productse,'productse arae hereeee');
+      
 
     const categories = await Category.find();
 
@@ -386,7 +393,7 @@ const countWishlist = async(req,res)=>{
   try {
     const userId = req.session.userId
     const userWishlist = await wishlistModel.findOne({userId})
-    console.log(userWishlist,':userWishlist');
+    //console.log(userWishlist,':userWishlist');
     
     const itemLength = userWishlist?userWishlist.products.length:0
     res.json({Count:itemLength})
@@ -486,7 +493,7 @@ const editProfile = async (req,res)=>{
     const userId = req.session.userId;
     const editUser = await User.findByIdAndUpdate(userId,{name:name,mobile:phone})
     res.redirect('/myAccount')
-    console.log(editUser,'bbbbbbbbbbbbbbbbbb');
+    //console.log(editUser,'bbbbbbbbbbbbbbbbbb');
 
   } catch (error) {
     console.log(error.message);
@@ -662,7 +669,7 @@ const removePfAddress = async (req,res)=>{
   try {
     const removeId = req.body.ID
     const {userId} = req.session
-    console.log(removeId,':removeId is hereeeeeeeeee');
+    //console.log(removeId,':removeId is hereeeeeeeeee');
     const deletedData = await Address.findOneAndUpdate({UserId:userId},{$pull:{address:{_id:removeId}}},{new:true})
     if(deletedData){
       res.json({success:true})
@@ -713,7 +720,7 @@ const addWishlist = async (req, res) => {
         { upsert: true }
       );
       res.send({ success: true });
-      console.log("Item added successfully");
+      //console.log("Item added successfully");
     }
   } catch (error) {
     console.log(error.message);

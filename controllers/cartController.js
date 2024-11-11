@@ -173,7 +173,7 @@
                   model: 'Brand'
                 }
               });
-              console.log(cartDetail,'cart detail');
+              //console.log(cartDetail,'cart detail');
             //   let i = 0
             //   let  totalAmount =0
             //   while(i<cartDetail.products.length){
@@ -214,7 +214,7 @@
             })
         
            if(!findData){
-           const f= await Address.findOneAndUpdate({UserId:userId},{$addToSet:{address:{name,street,city,state,pincode:pin,locality,phone}}},{new:true,upsert:true})
+           await Address.findOneAndUpdate({UserId:userId},{$addToSet:{address:{name,street,city,state,pincode:pin,locality,phone}}},{new:true,upsert:true})
             
             res.json({success:true})
            }
@@ -270,7 +270,7 @@
             const {editID} = req.body
 
             const getEditedAddress = await Address.findOne({'address._id':editID},{'address.$':1})
-            console.log(getEditedAddress,':getEditedAddress');
+            //console.log(getEditedAddress,':getEditedAddress');
             
             if(getEditedAddress){
                 const Address = getEditedAddress.address[0]

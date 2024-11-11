@@ -34,7 +34,7 @@
                         </tr>
                         <% } else { %>
                         <%wishlists?.[0]?.products?.forEach(item=>{  %>
-                            <% console.log(item) %>
+                            <%// console.log(item) %>
                             <tr class="border">
                             <th scope="row" class=" ps-xl-10 py-6 d-flex align-items-center border-0">
                                 <a href="javascript:void(0);" class=" d-block text-muted fw-lighter"  onclick="remove('<%=item.productId._id%>')">
@@ -692,7 +692,7 @@
             const response = await axios.post('/wishRemove',{id})
             
             if(response.data.success){
-                console.log('Item removed successfully:', id);
+                // console.log('Item removed successfully:', id);
 
                 window.location.reload()
             }else{
