@@ -1,11 +1,16 @@
 const express = require('express')
 const app = express()
 require('dotenv').config();
+const mongoose = require('mongoose')
+mongoose.connect(process.env.mongodbUrl).then(() => {
+    console.log('moongodb conneted.')
+}).catch((error) => {
+    console.error(error + "mongodb connection error.")
 const mongoose = require('mongoose');
 mongoose.connect(process.env.mongodbUrl).then(() => {
     console.log('moongodb conneted.');
 }).catch((error) => {
-    console.error(error + "mongodb connection errors.")
+    console.error(error + "mongodb connection error.")
 })
 const path = require('path')
 const userRoute=require('./routes/userRoute')
@@ -28,7 +33,5 @@ app.use('/admin',adminRoute)
 const port=3000
 
 app.listen(port,()=>{
-    console.log(`Server is running on http://localhost:${port}`)
+    console.log(`Server is running`)
 })
-
-// app.listen(3000,()=>console.log('server running'))
