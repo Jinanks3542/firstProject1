@@ -28,6 +28,8 @@
                                                 <table class="table table-hover align-middle table-nowrap mb-0">
                                                     <tbody>
                                                         <% categories.forEach((category, index) => { %>
+                                                            <% console.log(category,'category is hereeeeeeee');
+                                                             %>
                                                             <tr>
                                                                 <td class="text-center">
                                                                     <div class="form-check">
@@ -60,7 +62,7 @@
                                                                     <div>  
                                                                         <span style="font-size: 19px;">Offer</span>
                                                                         <select  name="offerSelect" onchange="catOffer('<%=category._id%>')" id="offerValue<%=category._id  %>" style="width: 40px; height: 20px;" >
-                                                                            <% console.log('....................ctfvgyuhdivfe3gyhufbegydhuvfgdye',catOffer,'....................................wdergtyjuio');%>
+                                                                            <%// console.log('....................ctfvgyuhdivfe3gyhufbegydhuvfgdye');%>
                                                                             <% catOffer.forEach((catoffer)=>{ %>
                                                                                 
                                                                             <option value="<%=catoffer.offer %>"  <% if (catoffer.offer === category.offer) { %> selected <% } %>> <%=catoffer.offer%> </option>
@@ -77,9 +79,15 @@
                                                                             class="btn btn-primary py-4 px-5 btn-xs fs-13px me-4">
                                                                             <i class="far fa-pen me-2"></i> Edit
                                                                         </a>
-                                                                        <a href="#" class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4" onclick="block('<%=category._id%>')">
-                                                                            <i class="far fa-trash me-2"></i>Block
-                                                                        </a>
+                                                                        <% if(category.is_Blocked){ %>
+                                                                        <button class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4" onclick="block('<%=category._id%>',this)">
+                                                                            <i class="far fa-trash me-2"></i>Un Block
+                                                                        </button>
+                                                                        <% }else{ %>
+                                                                            <button class="btn btn-outline-primary btn-hover-bg-danger btn-hover-border-danger btn-hover-text-light py-4 px-5 fs-13px btn-xs me-4" onclick="block('<%=category._id%>',this)">
+                                                                                <i class="far fa-trash me-2"></i>Block
+                                                                            </button>
+                                                                            <% } %>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -94,7 +102,7 @@
                                 </div>
                                 <script>
                                      function catOffer(categoryId) {
-                                        console.log(categoryId,'..........................dsfghfgds');
+                                        // console.log(categoryId,'..........................dsfghfgds');
                                         
                                         
                                          const offerSelect = document.getElementById('offerValue'+categoryId);
@@ -127,8 +135,21 @@
 
                 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
                 <script>
-                    function block(id){
+                    function block(id,btnElement){
                         axios.patch('/admin/categoryBlock',{id})
+                        .then(response=>{
+                            if(response.data.success){
+                                const isBlocked = response.data.is_Blocked
+                                btnElement.innerHTML = isBlocked? '<i class="far fa-trash me-2"></i>Un Block' :'<i class="far fa-trash me-2"></i>Block'
+                            }else{
+                                alert('Failed to block categories')
+                            }
+                        })
+                        .catch(error=>{
+                            console.error(error.message);
+                            alert('failed to update the category blocking status')
+                            
+                        })
                     }
                 </script>
 

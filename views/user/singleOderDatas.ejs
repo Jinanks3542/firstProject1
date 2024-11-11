@@ -372,9 +372,9 @@ async function cancelOrder(orderId,productId) {
 
     if (cancelReason) {
       
-      console.log('Product ID:', productId);
-      console.log('Order ID:', orderId);
-      console.log('Cancel Reason:', cancelReason);
+    //   console.log('Product ID:', productId);
+    //   console.log('Order ID:', orderId);
+    //   console.log('Cancel Reason:', cancelReason);
 
       
       const response = await axios.post('/cancelOrder', {
@@ -384,7 +384,7 @@ async function cancelOrder(orderId,productId) {
       });
 
       // Check the response
-      console.log('Response:', response);
+    //   console.log('Response:', response);
 
       
       if (response.data.loginRequired) {

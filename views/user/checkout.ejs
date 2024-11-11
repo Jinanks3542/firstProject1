@@ -217,7 +217,7 @@
             
                                             const response = await axios.patch('/removeAddress',{ID})
 
-                                            if(resonse.data.success){
+                                            if(response.data.success){
                                                 window.location.reload()
                                             }
                                         }
@@ -369,96 +369,70 @@
 
           <!-- add address -->
 
-        <div class="modal" id="addAddress" tabindex="-1">
+          <div class="modal" id="addAddress" tabindex="-1">
             <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title">Modal title</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-7">
-                        
-                        <div class="row">
-                            <div class="col-md-6 mb-md-0 mb-7">
-                                <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">name</label>
-                                <input type="text" class="form-control" id="firstName" name="name"
-                                    placeholder="First Name" required>
-                                    <div id="nameError" class="text-danger"></div>
-                            </div>
-                            
-                            <div class="col-md-6 mb-md-0 mb-7">
-                                <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Phone</label>
-                                <input type="number" class="form-control" id="phone" name="phone"
-                                    placeholder="Phone number" required>
-                                    <div id="numberError" class="text-danger"></div>
-                            </div>
-                           
-                        </div>
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Address</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="mb-7">
-                        <div class="row">
-                            <div class="col-md-8 mb-md-0 mb-7">
-                                <label for="street-address"
-                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">Street
-                                    Address</label>
-                                <input type="text" class="form-control" id="streetAddress" name="street"
-                                    required>
-                                    <div id="streetError" class="text-danger"></div>
-                            </div>
-                           
-                        </div>
-                    </div>
-
-                   
-                    <div class="mb-7">
-                        <div class="row">
-                            <div class="col-md-4 mb-md-0 mb-7">
-                                <label for="city"
-                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">locality</label>
-                                <input type="text" class="form-control" id="locality" name="locality" required>
-                                <div id="localityError" class="text-danger"></div>
-                            </div>
-                            <div class="col-md-4 mb-md-0 mb-7">
-                                <label for="state"
-                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">State</label>
-                                <input type="text" class="form-control" id="state" name="state" required>
-                                <div id="stateError" class="text-danger"></div>
-                            </div>
-                            <div class="col-md-4">
-                                <label for="zip"
-                                    class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">pin
-                                    code</label>
-                                <input type="number" class="form-control" id="pincode" name="pincode" required>
-                                <div id="pincodeError" class="text-danger"></div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="mb-2 fs-6 fw-semibold text-uppercase">Name</label>
+                                    <input type="text" class="form-control" id="firstName" name="name" placeholder="First Name" required>
+                                    <p id="addnameError" style="color: red; font-size: 0.875em;"></p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="phone" class="mb-2 fs-6 fw-semibold text-uppercase">Phone</label>
+                                    <input type="number" class="form-control" id="phone" name="phone" placeholder="Phone number" required>
+                                    <p id="addnumberError"></p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="mb-7">
-                        <label class="mb-5 fs-13px letter-spacing-01 fw-semibold text-uppercase">city</label >
-                        <div class=" bg-body-secondary rounded">
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label for="streetAddress" class="mb-2 fs-6 fw-semibold text-uppercase">Street Address</label>
+                                    <input type="text" class="form-control" id="streetAddress" name="street" required>
+                                    <p id="addstreetError" style="color: red; font-size: 0.875em;"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label for="locality" class="mb-2 fs-6 fw-semibold text-uppercase">Locality</label>
+                                    <input type="text" class="form-control" id="locality" name="locality" required>
+                                    <p id="addlocalityError" style="color: red; font-size: 0.875em;"></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="state" class="mb-2 fs-6 fw-semibold text-uppercase">State</label>
+                                    <input type="text" class="form-control" id="state" name="state" required>
+                                    <p id="addstateError" style="color: red; font-size: 0.875em;"></p>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="pincode" class="mb-2 fs-6 fw-semibold text-uppercase">Pin Code</label>
+                                    <input type="number" class="form-control" id="pincode" name="pincode" required>
+                                    <p id="addpincodeError" style="color: red; font-size: 0.875em;"></p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="mb-2 fs-6 fw-semibold text-uppercase">City</label>
                             <input type="text" class="form-control" id="city" name="city" required>
-                            <div id="cityError" class="text-danger"></div>
-                            
+                            <p id="addcityError" style="color: red; font-size: 0.875em;"></p>
                         </div>
                     </div>
-                    
-                    <div class="mb-7">
-
-                        <div class="row">
-                           
-                        </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="addAddress()">Save Address</button>
                     </div>
-                    
-                </form>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" id="CloseId" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary" onclick="addAddress()">Save Address</button>
-                </div>
-              </div>
             </div>
-          </div>
+        </div>
+        
           <!-- add address end here -->
     </main>
 
@@ -562,33 +536,99 @@ async function removeCoupon() {
 
 
         
-    async function addAddress(){
+async function addAddress() {
+    console.log("Starting addAddress validation");
 
-        // for name
+    const name = document.getElementById('firstName').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+    const street = document.getElementById('streetAddress').value.trim();
+    const city = document.getElementById('city').value.trim();
+    const state = document.getElementById('state').value.trim();
+    const pin = document.getElementById('pincode').value.trim();
+    const locality = document.getElementById('locality').value.trim();
+    const close = document.getElementById('CloseId');
 
-        const name = document.getElementById('firstName').value 
-  
-        const phone = document.getElementById('phone').value
-      
-        const street = document.getElementById('streetAddress').value
-        
-        const city = document.getElementById('city').value
-       
-        const state = document.getElementById('state').value
+    let isValid = true;
+    // Clear previous error messages
+    document.getElementById('addnameError').innerText = '';
+    document.getElementById('addnumberError').innerText = '';
+    document.getElementById('addstreetError').innerHTML = '';
+    document.getElementById('addlocalityError').innerHTML = '';
+    document.getElementById('addstateError').innerHTML = '';
+    document.getElementById('addpincodeError').innerHTML = '';
+    document.getElementById('addcityError').innerHTML = '';
+
     
-        const pin = document.getElementById('pincode').value
-        
-        const locality = document.getElementById('locality').value
 
-        const close = document.getElementById('CloseId')
+    // Name validation
+    if (name === '' || /\d/.test(name) || /[^\w\s]/.test(name)) {
+        document.getElementById('addnameError').innerHTML = 'Please enter a valid name';
+        isValid = false;
+    }
 
-        const response = await axios.post('/address',{name,phone,street,city,state,pin,locality})
-        if(response.data.success){
-            window.location.reload()
+    // Phone validation
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(phone)) {
+        document.getElementById('addnumberError').innerText = 'Enter a valid 10-digit phone number';
+        isValid = false;
+    }
+
+    // Street Address validation
+    if (street === '') {
+        document.getElementById('addstreetError').innerHTML = 'Street address is required';
+        isValid = false;
+    }
+
+    // Locality validation
+    if (locality === '') {
+        document.getElementById('addlocalityError').innerHTML = 'Locality is required';
+        isValid = false;
+    }
+
+    // City validation
+    if (city === '') {
+        document.getElementById('addcityError').innerHTML = 'City is required';
+        isValid = false;
+    }
+
+    // State validation
+    if (state === '') {
+        document.getElementById('addstateError').innerHTML = 'State is required';
+        isValid = false;
+    }
+
+    // Pincode validation
+    const pincodeRegex = /^[0-9]{6}$/;
+    if (!pincodeRegex.test(pin)) {
+        document.getElementById('addpincodeError').innerHTML = 'Please enter a valid 6-digit pin code';
+        isValid = false;
+    }
+
+    console.log("isValid status after validation:", isValid);
+
+    if (isValid) {
+        try {
+            console.log('Attempting to send address data');
+            const response = await axios.post('/address', { name, phone, street, city, state, pin, locality });
+            
+            if (response.data.success) {
+                console.log("Address saved successfully");
+                window.location.reload();
+            } else {
+                console.error("Address could not be saved.");
+            }
+
+            close.click(); // Close modal
+        } catch (error) {
+            console.error("An error occurred while adding the address:", error.message);
         }
-        close.click()
-        
+    } else {
+        console.log("Validation failed; not proceeding with submission.");
+    }
 }
+
+
+
 
 
 
@@ -634,7 +674,7 @@ const form = document.getElementById('orderForm')
             form.submit()
             }
         }else{
-            console.log('ok its here');
+            // console.log('ok its here');
             if(!address){
               alert('no address selected')
               return

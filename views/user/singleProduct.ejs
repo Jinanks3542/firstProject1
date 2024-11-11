@@ -123,51 +123,59 @@
                   console.log('slls') 
                    
                     const {data}= await axios.patch('/addCart', { id })
-                    if(data.success){
-                        const Toast = Swal.mixin({
-                        toast: true,
-                       
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
-                        }
-                    });
+                    if(data.loginRequired){
+                        console.log('hgfgh')
+                        window.location.href='/login'
+                    }else{
+
+                        if(data.success){
+                            const Toast = Swal.mixin({
+                            toast: true,
+                        
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                        });
                    
-                    Toast.fire({
-                     
-                        icon: "success",
-                        title: "successfully added"
-                    });
-                    }else if(data.fail){
-                        const Toast = Swal.mixin({
-                        toast: true,
-                       
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.onmouseenter = Swal.stopTimer;
-                            toast.onmouseleave = Swal.resumeTimer;
+                        Toast.fire({
+                        
+                            icon: "success",
+                            title: "successfully added"
+                        });
+
+                        }else if(data.fail){
+                            const Toast = Swal.mixin({
+                            toast: true,
+                        
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.onmouseenter = Swal.stopTimer;
+                                toast.onmouseleave = Swal.resumeTimer;
+                            }
+                            });
+                    
+                            Toast.fire({
+                            
+                                icon: "error",
+                                title: "product already exists"
+                            });
                         }
-                    });
-                   
-                    Toast.fire({
-                     
-                        icon: "error",
-                        title: "product already exists"
-                    });
                     }
                 }
+                    
 
                 // .........wishlist
 
                 async function addToWishlist(id){
-                    console.log(id,'asdfgh');
+                    // console.log(id,'asdfgh');
                     const response= await axios.patch('/addWishlist',{id})
 
                     if(response.data.success){

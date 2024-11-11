@@ -4,7 +4,7 @@
 <body>
 	<div class="wrapper dashboard-wrapper">
 		<div class="d-flex flex-wrap flex-xl-nowrap">
-			<%- include('../layouts/adminsidbar.ejs')  %>
+			<%- include('../layouts/adminSidbar.ejs')  %>
 			<div class="page-content">
 				<header class="main-header bg-body position-relative d-none d-xl-block px-10 py-6">
 					<div class="container-fluid">
@@ -272,10 +272,10 @@
 													</thead>
 													<tbody>
 
-														<% console.log(totalData,': data is here for you');
+														<%// console.log(totalData,': data is here for you');
 														 %>
 														<% totalData.forEach(i=>{%>
-															<% console.log(i.products,':totalData is here');
+															<%// console.log(i.products,':totalData is here');
 															 %>
 															<% }) %>
 														<% bestSellingProducts.forEach((product, i) => { %>

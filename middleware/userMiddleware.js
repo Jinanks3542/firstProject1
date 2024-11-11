@@ -1,12 +1,18 @@
 const User = require('../model/userModel')
 
 const noUserLogin = (req,res,next)=>{
+    
     if(req.session.userId){
         next()
     }else{
-        res.redirect('/login')
+        if (req.headers['accept'] && req.headers['accept'].includes('application/json')) {
+            res.json({ loginRequired: true });
+        } else {
+            res.redirect('/login');
+        }
     }
 }
+
 
 
 const userLogin = (req,res,next)=>{

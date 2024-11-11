@@ -33,8 +33,8 @@ router.get('/resendOtp',userControllers.resendOtp)
 
 
 // shop related
-router.get('/shop',auth.noUserLogin,auth.isblocked,userControllers.shop)
-router.get('/singleProduct/:id',auth.isblocked,userControllers.singleProduct)
+router.get('/shop',userControllers.shop)
+router.get('/singleProduct/:id',userControllers.singleProduct)
 router.post('/countCart',userControllers.countCart)
 router.post('/countWishlist',userControllers.countWishlist)
 
@@ -47,7 +47,7 @@ router.get("/auth/google/callback",googleLogin.googleCallback, googleLogin.setup
 
 // cart related
 router.get('/cart',auth.noUserLogin,auth.isblocked,cartController.loadCart)
-router.patch('/addCart',auth.isblocked,cartController.addCart)
+router.patch('/addCart',auth.noUserLogin,cartController.addCart)
 router.patch('/cart',auth.isblocked,cartController.priceUpdate)
 router.post('/remove',auth.isblocked,cartController.remove)
 

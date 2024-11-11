@@ -37,7 +37,7 @@ const loadAddProduct = async (req, res) => {
         const brand = await brandModel.find({})
         const offerApply = await Offer.find()
         
-        console.log(categories);
+        //console.log(categories);
         res.render('admin/addProduct', { categories, brand })
     } catch (error) {
         console.log(error.message);
@@ -48,7 +48,7 @@ const productAdd = async (req, res) => {
     try {
 
         const { productName, description, category, price, stock,brand } = req.body
-        console.log(brand);
+        //console.log(brand);
         const productAdded = new productModel({
             productName: productName,
             description: description,

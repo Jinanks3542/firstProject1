@@ -33,17 +33,17 @@ const verifyLogin = async (req, res) => {
     try {
         const email = req.body.email
         const password = req.body.password
-        console.log('email', email);
-        console.log('password', password);
+        //console.log('email', email);
+        //console.log('password', password);
 
 
         const adminData = await Admin.findOne({ email: email })
-        console.log('adminData', adminData);
+        //console.log('adminData', adminData);
         if (adminData) {
 
             const passwordMatch = await bcrypt.compare(password, adminData.password);
 
-            console.log('passwordMatch', passwordMatch);
+            //console.log('passwordMatch', passwordMatch);
 
             if (passwordMatch) {
                 return res.redirect('/admin/home')
@@ -159,7 +159,7 @@ const loadHome = async (req, res) => {
             { $limit: 10 },
         ]);
         
-        console.log(bestSellingBrand, ': bestSellingBrand data are there');
+        //console.log(bestSellingBrand, ': bestSellingBrand data are there');
         
 
 
@@ -253,7 +253,7 @@ const salesReport = async(req,res)=>{
                     const day = new Date()
                     const weakStart= new Date(day)
                     weakStart.setDate(day.getDate()-7)
-                    console.log(day , weakStart,'dat')
+                    //console.log(day , weakStart,'dat')
                     const weekly = await order.find({'products.ProductStatus':'Delivered',orderDate:{$gte:weakStart,$lte:day}})
                    
                     res.send({data:weekly})
