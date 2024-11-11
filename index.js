@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 mongoose.connect(process.env.mongodbUrl).then(() => {
     console.log('moongodb conneted.');
 }).catch((error) => {
-    console.error(error + "mongodb connection error.")
+    console.error(error + "mongodb connection errors.")
 })
 const path = require('path')
 const userRoute=require('./routes/userRoute')
