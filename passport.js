@@ -9,7 +9,7 @@ passport.use(
         {
             clientID: process.env.CLIENTID,
             clientSecret: process.env.CLIENT_SECRET,
-            callbackURL: "http://jinanks.shop/auth/google/callback",
+            callbackURL: "https://jinanks.shop/auth/google/callback",
         },
         async (accessToken, refreshToken, profile, done) => {
             try {
