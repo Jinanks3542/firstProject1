@@ -8,6 +8,9 @@
         <div class="invoice-info" >
             <div class="invoice-details" style="font-family: serif;">
                 <h4>Order Details</h4>
+                <% console.log(forInvoice._id,'orderId');
+                 %>
+                 
                 <p><strong>Order ID:</strong> <%= forInvoice._id %></p>
                 <p><strong>Date:</strong> <%=forInvoice.orderDate.toDateString() %></p>
                 <p><strong>Items:</strong>  <%= forInvoice.products.length %> Items</p>
