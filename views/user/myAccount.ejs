@@ -514,7 +514,7 @@
                                                                                                     <button
                                                                                                         type="submit"
                                                                                                         class="btn btn-primary"
-                                                                                                        onclick="addAddress()">Add
+                                                                                                        >Add
                                                                                                     </button>
                                                                                                 </div>
                                                                                             </form>
@@ -1065,7 +1065,8 @@
 
                 function validateForm(event) {
                     event.preventDefault();
-
+                    console.log('address here');
+                    
                     document.getElementById("nameError").textContent = "";
                     document.getElementById("numberError").textContent = "";
                     document.getElementById("streetError").textContent = "";

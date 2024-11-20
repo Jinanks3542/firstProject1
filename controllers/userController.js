@@ -578,11 +578,13 @@ const changepassword = async (req, res) => {
 
 const addAddress = async (req, res) => {
   try {
-    const { userId } = req.session;
+    const { userId } = req.session;    
+    console.log('ounj');
+    
 
     const { name, phone, street, city, state, pincode, locality } = req.body;
 
-    await Address.findOneAndUpdate(
+    const addresss = await Address.findOneAndUpdate(
       { UserId: userId },
       {
         $addToSet: {
@@ -596,8 +598,13 @@ const addAddress = async (req, res) => {
             phone: phone,
           },
         },
+      },{
+        upsert : true,
+        new : true
       }
     );
+    console.log('kolkjjn', addresss);
+    
 
     res.redirect("/myAccount");
   } catch (error) {
