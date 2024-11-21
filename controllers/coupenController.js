@@ -67,13 +67,13 @@ const addCoupen = async (req, res) => {
         // console.log(validityy,":Validity");
         // console.log(validityPeriod,":validityPeriod");
         
-        if (isNaN(validityPeriod)) {
+        if (isNaN(validityy)) {
             throw new Error('Invalid coupon validity period');
         }
 
         const currentDate = new Date();
         const expiryDate = new Date(currentDate);
-        expiryDate.setDate(currentDate.getDate() + validityPeriod);
+        expiryDate.setDate(currentDate.getDate() + validityy);
 
         await Coupon.create({
             name: name,
