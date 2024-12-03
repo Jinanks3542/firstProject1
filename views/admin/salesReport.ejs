@@ -40,7 +40,7 @@
                 
                                     
                                     <div class="col-md-5 d-flex justify-content-end">
-                                        <a type="button" href="javascript:window.print()" class="btn btn-primary waves-effect waves-light w-sm me-2">
+                                        <a type="button" onclick="exportPDF()" class="btn btn-primary waves-effect waves-light w-sm me-2">
                                             <i class="mdi mdi-download d-block"></i> PDF
                                         </a>
                                         
@@ -68,7 +68,6 @@
                                         </thead>
 
                                         <tbody id="tbody">
-                                           
                                            
                                            <% data.forEach((sales, index) => { %>
                                             <% let totalPrice=0 %>
@@ -138,6 +137,10 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
         <script>
             async function report(){
                 const reportType = document.getElementById('selectType').value
@@ -149,6 +152,14 @@
                let Trow="";
                 
                data?.forEach((sales,index)=>{
+                 let totalPrice=0
+                 let totalDiscount=0 
+                 let couponDiscount=0
+
+                 sales.products.forEach((ele)=>{
+                    totalPrice += ele.productPrice*ele.quantity
+                 })
+                 couponDiscount= totalPrice-sales.orderAmount
                     Trow+=`   <tr>
                                                 
                                                 <td class="text-center align-middle">
@@ -166,6 +177,14 @@
                                                 <td class="align-middle">
                                                     ${ new Date(sales.orderDate).toLocaleDateString()} 
                                                 </td>
+
+                                                <td class="align-middle">
+                                                    ${couponDiscount.toFixed(2)}
+                                                </td>
+
+                                                  <td class="align-middle">
+                                                    ${sales.offer}%
+                                                </td>
                                                 
                                                 <td class="align-middle">
                                                     ${ sales.orderAmount} 
@@ -181,7 +200,6 @@
             }
 
             
-
             function exportExcel(){
                 const table = document.getElementById('dataDiv');
                 const ws = XLSX.utils.table_to_sheet(table);
@@ -191,6 +209,71 @@
             }
         </script>
     
+
+        <script>
+         function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('landscape'); 
+
+            // Add a title to the PDF
+            doc.setFontSize(16);
+            doc.text("Sales Report", 14, 10); 
+
+            
+            const table = document.querySelector("table");
+            const tableHeaders = [];
+            const tableData = [];
+
+            
+            const headers = table.querySelectorAll("thead tr th");
+            headers.forEach((header) => {
+                tableHeaders.push(header.textContent.trim());
+            });
+
+            
+            const rows = table.querySelectorAll("tbody tr");
+            rows.forEach((row) => {
+                const rowData = [];
+                row.querySelectorAll("td").forEach((cell) => {
+                    rowData.push(cell.textContent.trim());
+                });
+                tableData.push(rowData);
+            });
+
+            
+            doc.autoTable({
+                head: [tableHeaders],
+                body: tableData,
+                startY: 20, 
+                theme: 'striped',
+                styles: {
+                    fontSize: 10,
+                    cellPadding: 4,
+                    overflow: 'linebreak', // Enable word wrapping
+                },
+                headStyles: {
+                    fillColor: [40, 140, 240], // Blue header background
+                    textColor: 255, // White text
+                    fontSize: 11,
+                    halign: 'center',
+                },
+                columnStyles: {
+                    0: { cellWidth: 20 }, // Sl. No.
+                    1: { cellWidth: 50 }, // Order ID
+                    2: { cellWidth: 40 }, // Billing Name
+                    3: { cellWidth: 30 }, // Date
+                    4: { cellWidth: 35 }, // Coupon Discount
+                    5: { cellWidth: 30 }, // Offer
+                    6: { cellWidth: 40, halign: 'right' }, // Total Amount
+                    7: { cellWidth: 40 }, // Payment Method
+                },
+            });
+
+            // Save the PDF
+            doc.save("sales_report.pdf");
+        }
+
+        </script>
 
 
     <%- include('../layouts/adminFooter.ejs') %>

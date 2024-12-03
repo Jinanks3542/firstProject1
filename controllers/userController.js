@@ -316,7 +316,7 @@ const shop = async (req, res) => {
 
     let filter = { is_blocked: false,is_categoryBlocked:false} ;
     // let blockCat = {is_categoryBlocked:false}
-    console.log(filter,'gfhghghfgfghghgh');
+    // console.log(filter,'gfhghghfgfghghgh');
     
     let sortObj = { _id: -1 };
     if (categoryId) {
@@ -338,7 +338,7 @@ const shop = async (req, res) => {
       .limit(limit)
       .sort(sortObj);
 
-      console.log(productse,'productse arae hereeee');
+      // console.log(productse,'productse arae hereeee');
       
 
     const categories = await Category.find();
@@ -457,6 +457,17 @@ const loadAccount = async (req, res) => {
     const order = await Order.find({ UserId: userId })
       .populate("products.productId").skip(skip).limit(limit)
       .sort({ _id: -1 }).exec();
+
+      // order.forEach((order)=>{
+      //   console.log('---------- orders ----------',order.products)
+
+      // })
+
+      // userOrders.forEach((userOrders)=>{
+      //   console.log('---------- userOrders ----------',userOrders.products)
+
+      // })
+      
 
       
     // pagination for wallet
@@ -603,7 +614,7 @@ const addAddress = async (req, res) => {
         new : true
       }
     );
-    console.log('kolkjjn', addresss);
+    // console.log('kolkjjn', addresss);
     
 
     res.redirect("/myAccount");

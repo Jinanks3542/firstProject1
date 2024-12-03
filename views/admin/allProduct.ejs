@@ -87,8 +87,13 @@
                                                                     <option value="<%=Offer.offer%>"  <% if (Offer.offer === product.offer) { %> selected <% } %>><%=Offer.offer%></option>
                                                                 <% }) %>
                                                             </select></td>
+                                                            <% if(product.offer>0){ %>
+                                                               
                                                             <td id="offerPrice<%=product._id %>">₹ <%=product.offerPrice.toFixed(2) %></td>
-
+                                                            <% }else{ %>
+                                                                <td>
+                                                                    ₹ <%=product.price.toFixed(2)%></td>
+                                                            <% } %>
                                                          
                                                             <td><%=product.stock%></td>
                                                             <td class="text-center">

@@ -32,30 +32,6 @@ const loadAddCoupen = async (req,res)=>{
     }
 }
 
-// const addCoupen = async (req,res)=>{
-//     try {
-//         const {name,buyMinPrice,buyMaxPrice,discountAmount,minPrice,description}=req.body
-
-//         const validity=parseInt(req.body.validity)
-//         const currentDate = new Date();
-//         const expiryDate = new Date(currentDate);
-//         expiryDate.setDate(currentDate.getDate() + validity);
-//         await Coupon.create({
-//             name:name,
-//             min:minPrice,
-//             expiryDate:expiryDate,
-//             offer:discountAmount,
-//             code:generatecode(),
-//             dataDuration:validity,
-//             description:description,
-//             buyLow:buyMinPrice,
-//             buyHigh:buyMaxPrice
-//         })
-//         res.redirect('/admin/allcoupen')
-//     } catch (error) {
-//         console.log(error.message);
-//     }
-// }
 
 const addCoupen = async (req, res) => {
     try {

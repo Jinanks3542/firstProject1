@@ -283,12 +283,18 @@ const cancelOrder = async (req, res) => {
           { UserId: userid, 'products._id': productId },
           { 'products.$': 1 }
         ).populate('products.productId');
+       
+        
+        let canProduct = check.products[0]
 
+        if(check.products[0].ProductStatus === 'Canceled'){
+            await Product.findByIdAndUpdate(canProduct.productId._id,{$inc:{stock:check.products[0].quantity}},{upsert:true, new:true})
+        }
+        
         
         let productTotal = 0;
         let creditAmount = 0
         productTotal = check.products[0].productPrice * check.products[0].quantity;
-        //console.log(productTotal,':productTotal');
         
         creditAmount = Math.round(productTotal-(cancel.offer/100)*productTotal)
         

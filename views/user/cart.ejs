@@ -38,7 +38,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+                                    <% console.log(cart.products,'cart details are here for you');
+                                     %>
                                     <% cart?.products?.forEach(e=> { %>
                                         <tr class="position-relative" id="delete<%=e.productId._id %>">
                                             <th scope="row" class="pe-5 ps-8 py-7 shop-product">
@@ -111,15 +112,41 @@
                                                         // const g=document.getElementById('akak')
                                                         function minus(e,proId,price,q) {
                                                             const inp=e.nextElementSibling
-                                                            inp.value>1&&(inp.value -= 1);
-                                                            priceUpdate(proId,inp,price,q)
+                                                            if(inp.value>1){
+                                                                inp.value -= 1
+                                                                priceUpdate(proId,inp,price,q)
+                                                            };
+                                                            
 
                                                          }
                                                          function plus(e,proId,price,q){
-                                                            const inp=e.previousElementSibling;
+                                                            const inp=e.previousElementSibling; 
                                                             let val=Number(inp.value)   
-                                                            val<q&&(inp.value=val+1 );
-                                                            priceUpdate(proId,inp,price,q)
+                                                            if(val<q){
+                                                                inp.value=val+1 ;
+                                                                priceUpdate(proId,inp,price,q)
+
+                                                            }else{
+                                                                const Toast = Swal.mixin({
+                                                                toast: true,
+                                                            
+                                                                position: "center",
+                                                                showConfirmButton: false,
+                                                                timer: 2000,
+                                                                timerProgressBar: true,
+                                                                didOpen: (toast) => {
+                                                                    toast.onmouseenter = Swal.stopTimer;
+                                                                    toast.onmouseleave = Swal.resumeTimer;
+                                                                }
+                                                            });
+                                                    
+                                                            Toast.fire({
+                                                            
+                                                                icon: "error",
+                                                                title: "Stock limit is reached"
+                                                            });
+                                                            }
+                                                            
                                                          }
                                                     </script>
 

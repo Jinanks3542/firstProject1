@@ -60,10 +60,15 @@
         </div>
 
         <div class="invoice-footer" style="padding-left: 470px;">
-            <a type="button" href="javascript:window.print()" class="btn btn-primary">Download</a>
+            <button type="button" class="btn btn-primary" onclick="downloadPDF()">Download</button>
         </div>
     </div>
 </div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+
 
 <style>
     .invoice {
@@ -97,6 +102,60 @@
         text-align: right;
     }
 </style>
+
+
+<script>
+    async function downloadPDF() {
+        const { jsPDF } = window.jspdf; // Import the jsPDF library
+        const invoiceElement = document.querySelector('.invoice'); // Select the invoice section
+        const downloadButton = document.querySelector('.btn-primary'); // Select the download button
+
+        // Temporarily hide the download button
+        downloadButton.style.display = 'none';
+
+        // Use html2canvas to take a snapshot of the invoice
+        const canvas = await html2canvas(invoiceElement, {
+            scale: 2, // Increase quality
+            useCORS: true, // Enable cross-origin resource sharing for images
+        });
+
+        const imgData = canvas.toDataURL('image/png'); // Convert to image data
+        const pdf = new jsPDF('p', 'mm', 'a4'); // Initialize jsPDF (portrait, mm, A4)
+
+        // Set dimensions to fit A4
+        const imgWidth = 210; // A4 width in mm
+        const pageHeight = 297; // A4 height in mm
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+        let heightLeft = imgHeight;
+        let position = 0;
+
+        // Add the image to the PDF
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        // Handle multi-page content
+        while (heightLeft > 0) {
+            position = heightLeft - imgHeight;
+            pdf.addPage();
+            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            heightLeft -= pageHeight;
+        }
+
+        // Show the download button again after PDF is created
+        downloadButton.style.display = 'block';
+
+        // Download the PDF
+        pdf.save('Invoice.pdf');
+    }
+</script>
+
+<style>
+    .no-print {
+        display: none !important;
+    }
+</style>
+
 
 <%- include('../layouts/svg.ejs') %>
 

@@ -1,4 +1,5 @@
 const User = require('../model/userModel')
+const admin = require('../model/adminModel')
 
 const noUserLogin = (req,res,next)=>{
     
@@ -49,9 +50,27 @@ const myAccountauthorize = async(req,res,next)=>{
     }
 }
 
+const adminLogin= async (req,res,next)=>{
+    if(!req.session.admin){
+        res.redirect('/admin/login')
+    }else{
+        next()
+    }
+}
+
+const adminLogout= async (req,res,next)=>{
+    if(req.session.admin){
+        res.redirect('/admin/home')
+    }else{
+        next()
+    }
+}
+
 module.exports={
     noUserLogin,
     userLogin,
     isblocked,
     myAccountauthorize,
+    adminLogin,
+    adminLogout
 }

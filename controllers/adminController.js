@@ -46,6 +46,8 @@ const verifyLogin = async (req, res) => {
             //console.log('passwordMatch', passwordMatch);
 
             if (passwordMatch) {
+                req.session.admin = adminData._id 
+                
                 return res.redirect('/admin/home')
             } else {
                 res.redirect('/admin/login', { message: 'Email or Password is incorrect' })
@@ -243,7 +245,8 @@ const salesReport = async(req,res)=>{
                 start.setHours(0, 0, 0, 0)
                 const end = new Date(currentDate)
                 end.setHours(23, 59, 59, 999)
-                const daily = await order.find({'products.ProductStatus':'Delivered',orderDate:{$gte:start,$lte:end}})
+                const daily = await order.find({orderDate:{$gte:start,$lte:end},products:{$elemMatch:{ProductStatus:'Delivered'}} })
+                // console.log(daily,'daily data is here');
                 
                 res.send({data:daily})
                 

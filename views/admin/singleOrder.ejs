@@ -109,7 +109,7 @@
                                                                 </a>
                                                             </div>
                                                         </td>
-                                                        <td> ₹ <%= data.productId.offerPrice.toFixed(2) %></td>
+                                                        <td> ₹ <%= data.productPrice.toFixed(2) %></td>
                                                         <td>  <%= data.quantity %></td>
                                                         <td>
                                                             
@@ -127,9 +127,8 @@
                                                                 </select>
                                                             </form>
                                                         </td>
-                                                        <td class="text-end"> ₹ <%= data.productId.offerPrice * data.quantity%></td>
+                                                        <td class="text-end"> ₹ <%= data.productPrice * data.quantity%></td>
                                                         
-
                                                     </tr>
                                                     <% }) %>
                                                     
@@ -141,7 +140,7 @@
                                                         <th colspan="4" class="text-end" style="padding-left: 700px">
                                                             <strong style="color: #e0ece4; font-size: 1.5rem; font-family:monospace;" >Total Price :</strong>
                                                       
-                                                            <strong style="color: #a8aca9; font-size: 1.3rem; font-family: serif;"> ₹ <%=singleData.orderAmount .toFixed(2) %></strong>
+                                                            <strong style="color: #a8aca9; font-size: 1.3rem; font-family: serif;"> ₹ <%=singleData.orderAmount.toFixed(2) %></strong>
                                                         </th>
                                                     </tr>
                                                 </tfoot>

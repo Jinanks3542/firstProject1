@@ -10,18 +10,19 @@ const productController = require('../controllers/productController')
 const brandController = require('../controllers/brandController')
 const orderController = require('../controllers/orderController')
 const offerController = require('../controllers/offerController')
-const coupenController = require('../controllers/coupenController')
+const coupenController = require('../controllers/coupenController');
+const nocache = require('nocache');
 
 
+adminRoute.use(session({secret:"a1a1a1a1",resave:false,saveUninitialized:true}))
+adminRoute.use(nocache())
 
 
-
-
-adminRoute.get('/',adminController.loginPage)
-adminRoute.get('/login',adminController.loginPage)
+// adminRoute.get('/',adminController.loginPage)
+adminRoute.get('/login',auth.adminLogout,adminController.loginPage)
 adminRoute.post('/login',adminController.verifyLogin)
 adminRoute.get('/logout',adminController.logout)
-adminRoute.get('/home',adminController.loadHome)
+adminRoute.get('/home',auth.adminLogin,adminController.loadHome)
 adminRoute.get('/userList',adminController.allUsers)
 adminRoute.put('/userList',adminController.userBlock)
 

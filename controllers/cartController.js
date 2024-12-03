@@ -191,6 +191,7 @@
            
             const addresses = addressDocuments.length > 0 ? addressDocuments[0].address.slice(-3).reverse() : []; 
             const couponsData = await User.findOne({_id:userId}).populate('coupons.couponId')
+            // console.log(couponsData,'coupon data of new user are here');
             
             
             res.render('user/checkout',{cartDetail,addresses,couponsData})
@@ -200,6 +201,8 @@
         }
     }
 
+
+    
 
     const checkoutDetails = async(req,res)=>{
         try {
