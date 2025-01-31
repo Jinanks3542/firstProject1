@@ -517,6 +517,12 @@ const viewOrder = async (req, res) => {
   try {
     const { userId } = req.session;
     const orderId = req.params.orderId;
+    const fullData = await Order.findOne(
+      { "products._id": orderId }
+    )
+      .populate("UserId")
+      .populate("products.productId")
+      .exec();
 
     const singleData = await Order.findOne(
       { "products._id": orderId },
@@ -537,7 +543,7 @@ const viewOrder = async (req, res) => {
       console.error("UserId is not populated!");
     }
 
-    res.render("user/singleOderDatas", { singleData });
+    res.render("user/singleOderDatas", { singleData,fullData });
   } catch (error) {
     console.log(error.message);
   }

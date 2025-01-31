@@ -8,10 +8,11 @@
         <div class="invoice-info" >
             <div class="invoice-details" style="font-family: serif;">
                 <h4>Order Details</h4>
-                <% console.log(forInvoice._id,'orderId');
-                 %>
+             
+                 <%let orderId = forInvoice._id %>
+                 <% let slicedId = orderId.toString().slice(-4) %>
                  
-                <p><strong>Order ID:</strong> <%= forInvoice._id %></p>
+                <p><strong>Order ID:</strong> ..............<%= slicedId %></p>
                 <p><strong>Date:</strong> <%=forInvoice.orderDate.toDateString() %></p>
                 <p><strong>Items:</strong>  <%= forInvoice.products.length %> Items</p>
                 <p><strong>Payment Method:</strong> <%= forInvoice.payment %></p>

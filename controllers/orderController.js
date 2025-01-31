@@ -163,7 +163,6 @@ const loadOrderList = async (req, res) => {
 
         const totalCount = await Order.countDocuments(); 
         const totalPages = Math.ceil(totalCount / limit);
-
         
         const orderDatas = await Order.find()
             .populate('products.productId UserId') 
@@ -172,7 +171,6 @@ const loadOrderList = async (req, res) => {
             .limit(limit) 
             .exec();
 
-        
         res.render('admin/orderList', {
             orderDatas, 
             totalPages, 
@@ -393,7 +391,8 @@ const rePayment = async(req,res)=>{
     try {
         const {orderId,productId,amount}=req.body
         const orderData = await Order.findOne({_id:orderId})
-        await Order.findOneAndUpdate({_id:orderId},{$set:{paymentStatus:'paid',orderAmount:amount}})
+        await Order.findOneAndUpdate({_id:orderId},{$set:{paymentStatus:'paid'}})
+
         return res.json({success:true,message:'order sucessfully placed'})        
     } catch (error) {
         console.log(error.message);

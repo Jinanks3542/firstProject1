@@ -114,12 +114,15 @@
                                                 <% let paymentMethod = singleData.payment %>
                                                 
                                                 <% let amount = 0 %>
-
-
+                                                <!-- for getting the order amount -->
+                                                 <% fullData.products.forEach(amountt=>{
+                                                     amount+=amountt.productId.offerPrice*amountt.quantity
+                                                 }) %>
+                                                
                                                 <% singleData.products.forEach(data => { %>
                                                   
                                                      <!-- for getting the order amount -->
-                                                    <%amount=data.productId.offerPrice*data.quantity  %>
+                                                    <%//amount=data.productId.offerPrice*data.quantity  %>
                                                      
                                                 <tr style="border-bottom: .5px solid gray;">
                                                     <td>
